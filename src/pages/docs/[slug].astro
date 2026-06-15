@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Sidebar from '../../components/Sidebar.astro';
+import DocContent from '../../components/DocContent.astro';
+import { docsData } from '../../data/docsData';
+
+export async function getStaticPaths() {
+  return docsData.map((doc) => ({
+    params: { slug: doc.id },
+    props: { doc },
+  }));
+}
+
+const { doc } = Astro.props;
+---
+
+<BaseLayout title={doc.title} currentTab="docs">
+  <div class="flex flex-col lg:flex-row gap-6 items-start animate-fadeIn">
+    <Sidebar selectedDocId={doc.id} />
+    <div class="flex-1 w-full overflow-x-hidden">
+      <DocContent section={doc} />
+    </div>
+  </div>
+</BaseLayout>

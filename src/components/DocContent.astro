@@ -1,0 +1,136 @@
+---
+import CodeCopyButton from './CodeCopyButton.tsx';
+import type { DocSection } from '../types';
+
+export interface Props {
+  section: DocSection;
+}
+
+const { section } = Astro.props;
+
+function renderInlineCode(cell: string): string {
+  return cell.split("`").map((part, pIdx) => {
+    if (pIdx % 2 === 1) {
+      return `<code class="px-1.5 py-0.5 bg-gray-100 text-emerald-800 font-bold border border-gray-200 mx-0.5">${part}</code>`;
+    }
+    return part;
+  }).join("");
+}
+
+function renderHighlightedCode(code: string): { lineNum: number; html: string; comment: string }[] {
+  return code.split("\n").map((line, idx) => {
+    let content = line;
+    let commentPart = "";
+    const commentIdx = line.indexOf("//");
+    if (commentIdx !== -1) {
+      content = line.substring(0, commentIdx);
+      commentPart = line.substring(commentIdx);
+    }
+
+    const rawHtml = content
+      .replace(/\b(let|const|function|fn|class|extends|constructor|super|this|static|public|private|protected|import|export|match|thread|mutex|try|catch|finally|throw|return|async|await)\b/g, '<span class="text-emerald-700 font-bold">$1</span>')
+      .replace(/\b(number|string|bool|null|any|void|extern)\b/g, '<span class="text-teal-600 font-semibold">$1</span>')
+      .replace(/\b(true|false)\b/g, '<span class="text-amber-600 font-bold">$1</span>')
+      .replace(/([0-9]+\.?[0-9]*|0x[0-9A-Fa-f]+|0b[01]+|0o[0-7]+)/g, '<span class="text-blue-600 font-medium">$1</span>')
+      .replace(/(#[a-zA-Z_]+)/g, '<span class="text-emerald-800 font-semibold">$1</span>')
+      .replace(/(::)/g, '<span class="text-orange-600 font-bold">$1</span>');
+
+    return { lineNum: idx + 1, html: rawHtml, comment: commentPart };
+  });
+}
+---
+
+<article id={`doc-section-${section.id}`} class="py-6 md:py-8 font-mono leading-relaxed max-w-4xl">
+  
+  <h2 class="text-gray-900 text-lg md:text-xl font-bold tracking-tight border-b-2 border-emerald-800/60 pb-3 mb-4 select-all">
+    {section.title}
+  </h2>
+
+  <p class="text-xs md:text-sm text-gray-600 font-medium mb-6 font-sans">
+    {section.content}
+  </p>
+
+  <div class="flex items-center gap-2 mb-6">
+    <span class="text-[10px] text-gray-500 bg-gray-50 border border-gray-200 px-2 py-1 uppercase tracking-tight font-bold">
+      {section.category}
+    </span>
+    <span class="text-[10px] text-emerald-700 font-semibold flex items-center gap-1 font-sans">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-600 shrink-0"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      Verificado Offline • Documentação Integrada
+    </span>
+  </div>
+
+  {section.tableData && (
+    <div class="mb-8 overflow-x-auto border border-gray-250">
+      <table class="w-full text-left font-mono text-xs md:text-xs border-collapse">
+        <thead>
+          <tr class="bg-gray-150 text-gray-900 border-b border-gray-250">
+            {section.tableData.headers.map((hdr) => (
+              <th class="py-2 px-3 font-bold uppercase tracking-tight">{hdr}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {section.tableData.rows.map((row, ri) => (
+            <tr class="border-b border-gray-200 font-semibold hover:bg-emerald-50/20 select-text">
+              {row.map((cell) => (
+                <td class="py-2.5 px-3 whitespace-pre-wrap leading-5" set:html={renderInlineCode(cell)} />
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )}
+
+  {section.codeSnippets && section.codeSnippets.length > 0 && (
+    <div class="flex flex-col gap-6 mt-4">
+      {section.codeSnippets.map((snippet, idx) => {
+        const lines = renderHighlightedCode(snippet.code);
+        return (
+          <div class="border border-gray-250 bg-white">
+            <div class="flex items-center justify-between px-3 md:px-4 py-2 bg-gray-50 border-b border-gray-200 select-none">
+              <span class="text-[10px] md:text-xs text-emerald-800 font-bold flex items-center gap-1.5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-600"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                {snippet.title}
+              </span>
+              <CodeCopyButton code={snippet.code} index={idx} client:load />
+            </div>
+
+            <div class="p-3 md:p-4 overflow-x-auto bg-gray-50">
+              {
+                lines.map((l) => (
+                  <div class="flex hover:bg-emerald-50/50 py-0.5 select-text font-mono text-xs md:text-sm">
+                    <span class="w-8 shrink-0 text-gray-400 text-right pr-3 select-none text-[10px] md:text-xs">{l.lineNum}</span>
+                    <span class="flex-1 font-mono whitespace-pre text-gray-800 leading-relaxed font-semibold">
+                      <span set:html={l.html} />
+                      {l.comment && <span class="text-gray-400 italic select-none font-normal">{l.comment}</span>}
+                    </span>
+                  </div>
+                ))
+              }
+            </div>
+
+            {snippet.description && (
+              <div class="p-2.5 bg-emerald-50/25 border-t border-gray-200 text-[10px] md:text-xs text-gray-500 leading-relaxed font-sans font-medium flex items-start gap-2 select-text">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-700 mt-0.5 shrink-0"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+                <span>{snippet.description}</span>
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  )}
+
+  <div class="flex justify-between items-center mt-10 pt-4 border-t border-gray-200 text-[10px] text-gray-400 leading-relaxed">
+    <span class="font-sans font-medium flex items-center gap-1">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-600 shrink-0"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+      Encontrou algum erro na especificação? Abra uma PR.
+    </span>
+    <span class="text-right font-medium">
+      Versão Oficial: 1.0 • May 2026
+    </span>
+  </div>
+
+</article>

@@ -1,0 +1,170 @@
+---
+const benchmarks = [
+  { metric: "Startup Latency (Cold execution)", interpreter: "1.2ms (Zero compile)", VM: "5.4ms", rustC: "120ms (Compilation block)" },
+  { metric: "Fibonacci(35) Arithmetic speed", interpreter: "244ms (AST traversing)", VM: "42ms (Bytecode VM)", rustC: "2.1ms (Nativo AOT)" },
+  { metric: "Memory Overhead (Base runtime memory)", interpreter: "1.8MB", VM: "2.4MB", rustC: "450KB" }
+];
+---
+
+<div class="flex flex-col gap-8 py-2 max-w-4xl font-mono text-gray-800">
+  
+  <!-- Visual Identity Section -->
+  <section class="py-2 mb-4 relative">
+    <div class="absolute top-0 right-0 text-gray-400 text-[10px] uppercase font-mono select-none">
+      Especif. Formal v1.0
+    </div>
+    
+    <div class="flex items-center gap-2 text-emerald-800 font-bold text-xs uppercase mb-3">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-700"><rect width="16" height="20" x="4" y="2" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg>
+      <span>A Linguagem Pragmática do Futuro</span>
+    </div>
+
+    <h1 class="text-gray-900 text-3xl md:text-3xl.5 font-extrabold tracking-tight mb-4 select-text leading-tight">
+      Dryad Programming Language
+    </h1>
+
+    <p class="text-xs md:text-sm text-gray-650 mb-6 font-sans leading-relaxed select-text font-medium">
+      Uma linguagem multi-paradigma de tipagem dinâmica inspirada em JavaScript/TypeScript, projetada para automação de infraestrutura rápida e binários nativos ultra-leves. Através de uma arquitetura de execução híbrida exclusiva, o Dryad compila trechos estritamente tipados diretamente para ARM64/x86_64, enquanto mantém um interpretador instantâneo para sandbox.
+    </p>
+
+    <div class="flex flex-wrap gap-2.5">
+      <a
+        href="/docs/introducao-e-filosofia"
+        class="px-4 py-2 bg-emerald-750 hover:bg-emerald-850 text-white text-xs font-bold transition-all no-underline flex items-center gap-1.5"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/><path d="M8 7h6"/><path d="M8 11h8"/></svg>
+        Ler Especificação
+      </a>
+
+      <a
+        href="/docs/tabela-codigos-de-erro"
+        class="px-4 py-2 bg-white border border-gray-300 text-gray-600 hover:text-gray-950 hover:bg-gray-50 text-xs font-bold transition-all no-underline"
+      >
+        Códigos de Erro
+      </a>
+    </div>
+  </section>
+
+  <!-- Conceptual Core Mechanics -->
+  <section class="grid grid-cols-1 md:grid-cols-2 gap-8 py-4 border-t border-gray-150">
+    
+    <div class="flex flex-col justify-between py-2">
+      <div>
+        <h3 class="text-gray-900 font-bold text-sm uppercase mb-3 flex items-center gap-1.5">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-700"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          Execução Tripla Dinâmica
+        </h3>
+        <p class="text-gray-650 text-xs font-sans leading-relaxed">
+          Alterne instantaneamente entre o <strong>Tree-Walking Interpreter</strong> para scripting imediato, o <strong>Stack-Based Bytecode VM</strong> de alta confiabilidade, e compilações <strong>Nativas AOT</strong> livres de coletor de lixo periódico.
+        </p>
+      </div>
+      <a
+        href="/docs/modelo-de-execucao"
+        class="text-emerald-750 hover:text-emerald-850 text-[11px] font-bold mt-4 inline-flex items-center gap-1 no-underline"
+      >
+        Como funciona a trilha de execução →
+      </a>
+    </div>
+
+    <div class="flex flex-col justify-between py-2">
+      <div>
+        <h3 class="text-gray-900 font-bold text-sm uppercase mb-3 flex items-center gap-1.5">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-700"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Segurança Determinística
+        </h3>
+        <p class="text-gray-650 text-xs font-sans leading-relaxed">
+          Memory clean previsível implementado através de <strong>Reference Counting automático livre de GC de tracing</strong>, acionado no exato momento que estruturas saem de escopo ou threads encerram, com suporte a bounds-checking em arrays de baixo nível.
+        </p>
+      </div>
+      <a
+        href="/blog"
+        class="text-emerald-750 hover:text-emerald-850 text-[11px] font-bold mt-4 inline-flex items-center gap-1 no-underline"
+      >
+        No-Nonsense Deep Dive no Blog →
+      </a>
+    </div>
+
+  </section>
+
+  <!-- Quick Start -->
+  <section class="py-4 border-t border-gray-150">
+    <h3 class="text-gray-900 font-bold text-xs uppercase mb-3">
+      Instalação Prática & Quick Start (C++/Python Vibe)
+    </h3>
+    
+    <p class="text-xs text-gray-500 mb-4 font-sans leading-relaxed">
+      O instalador oficial detecta sua arquitetura de CPU (x86_64 ou ARM64) e configura de forma instantânea a ferramenta <code class="bg-gray-100 px-1">dryad</code> em suas variáveis de ambiente:
+    </p>
+
+    <div class="bg-gray-900 text-emerald-400 p-4 border border-emerald-950 text-xs md:text-sm select-all">
+      <div class="flex items-center justify-between text-gray-500 text-[10px] pb-2 mb-2 border-b border-gray-800 select-none">
+        <span>Terminal - Instalação de Baixa Latência</span>
+        <span>POSIX</span>
+      </div>
+      <div class="flex items-center gap-2 mb-1.5">
+        <span class="text-gray-600 select-none">$</span>
+        <span>curl -fsSL https://dryad.dev/install | sh</span>
+      </div>
+      <div class="text-gray-550 text-[11px] mb-2 select-none italic">
+        # Instalando Dryad Toolkit v1.0.0... Prontidão detectada.
+      </div>
+      <div class="flex items-center gap-2 mb-1.5">
+        <span class="text-gray-600 select-none">$</span>
+        <span>dryad run scripts/main.dy</span>
+      </div>
+      <div class="text-gray-550 text-[11px] mb-2 select-none italic">
+        # Ola Mundo! Executado dinamicamente via AST Interpreter.
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="text-gray-600 select-none">$</span>
+        <span>dryad build --aot scripts/main.dy -o output_bin</span>
+      </div>
+      <div class="text-gray-550 text-[11px] select-none italic">
+        # Convertido para IR, optimizado com Constant Folding & baixado nativo ELF.
+      </div>
+    </div>
+  </section>
+
+  <!-- Performance Statistics -->
+  <section class="py-4 border-t border-gray-150">
+    <h3 class="text-gray-900 font-bold text-xs uppercase mb-3">
+      Quadro de Performance Comparativa
+    </h3>
+    
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-xs border-collapse font-sans font-medium">
+        <thead>
+          <tr class="bg-gray-100 text-gray-900 border-b border-gray-200 text-[10px] font-mono font-bold">
+            <th class="py-2.5 px-3 uppercase">Métrica</th>
+            <th class="py-2.5 px-3 uppercase text-center">Interpretador AST</th>
+            <th class="py-2.5 px-3 uppercase text-center">Bytecode VM</th>
+            <th class="py-2.5 px-3 uppercase text-center text-emerald-850 font-bold">Nativo AOT (compilado)</th>
+          </tr>
+        </thead>
+        <tbody class="font-mono text-[11px] text-gray-600">
+          {benchmarks.map((bch) => (
+            <tr class="border-b border-gray-200 hover:bg-emerald-50/25">
+              <td class="py-2.5 px-3 font-semibold text-gray-800">{bch.metric}</td>
+              <td class="py-2.5 px-3 text-center">{bch.interpreter}</td>
+              <td class="py-2.5 px-3 text-center">{bch.VM}</td>
+              <td class="py-2.5 px-3 text-center text-emerald-800 font-bold bg-emerald-50/30">{bch.rustC}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <div class="text-[10px] text-gray-400 mt-2 font-mono flex items-start gap-1">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-700 shrink-0 mt-0.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+      <span>Dados coletados sob arquitetura Apple M2 ARM64. O modo Nativo AOT remove o tempo de decolagem de runtime de forma integral.</span>
+    </div>
+  </section>
+
+  <!-- Philosophy -->
+  <section class="flex flex-col gap-2 py-4 border-t border-gray-150 leading-6 text-xs text-gray-650 select-text">
+    <span class="font-bold text-gray-900 text-xs">FILOSOFIA DA LINGUAGEM DE DESENVOLVIMENTO:</span>
+    <blockquote class="italic border-l-2 border-emerald-600 pl-3 my-1">
+      &quot;Clareza sobre performance: Prioriza-se de forma incondicional a legibilidade, consistência de sintaxe e fornecimento de erros limpos com sugestões, antes de otimizações de runtime obscuras.&quot;
+    </blockquote>
+  </section>
+
+</div>

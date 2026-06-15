@@ -1,0 +1,71 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import HeroNotice from '../components/HeroNotice.astro';
+import ShortcutsModal from '../components/ShortcutsModal.tsx';
+import '../index.css';
+
+export interface Props {
+  title: string;
+  currentTab: 'home' | 'docs' | 'blog';
+}
+
+const { title, currentTab } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title} | Dryad Programming Language</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body class="min-h-screen flex flex-col bg-gray-50 text-gray-850 font-mono transition-colors">
+    <Header currentTab={currentTab} />
+    <HeroNotice />
+    <main class="flex-grow max-w-[1360px] w-full mx-auto px-4 py-6 md:py-8">
+      <slot />
+    </main>
+    <Footer currentTab={currentTab} />
+    <ShortcutsModal client:load />
+  </body>
+</html>
+
+<style is:global>
+  html { scroll-behavior: smooth; }
+</style>
+
+<script>
+// Global keyboard shortcuts: g+h → home, g+d → docs, g+b → blog
+let lastKey: string | null = null;
+let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
+document.addEventListener("keydown", (e: KeyboardEvent) => {
+  const tag = (e.target as HTMLElement).tagName;
+  if (tag === "INPUT" || tag === "TEXTAREA" || (e.target as HTMLElement).isContentEditable) {
+    lastKey = null;
+    return;
+  }
+
+  const key = e.key.toLowerCase();
+
+  // Chain logic: G followed by letters
+  if (lastKey === "g") {
+    if (key === "h") {
+      window.location.href = "/";
+    } else if (key === "d") {
+      window.location.href = "/docs/introducao-e-filosofia";
+    } else if (key === "b") {
+      window.location.href = "/blog";
+    }
+    lastKey = null;
+  } else if (key === "g") {
+    lastKey = "g";
+    if (timeoutId) clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => { lastKey = null; }, 1000);
+  } else {
+    lastKey = null;
+  }
+});
+</script>

@@ -1,12 +1,28 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { X, Keyboard } from "lucide-react";
 
-interface ShortcutsModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
+export default function ShortcutsModal() {
+  const [isOpen, setIsOpen] = useState(false);
 
-export default function ShortcutsModal({ isOpen, onClose }: ShortcutsModalProps) {
+  useEffect(() => {
+    const handleOpen = () => setIsOpen(true);
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "?" || (e.key === "k" && (e.metaKey || e.ctrlKey))) {
+        e.preventDefault();
+        setIsOpen(true);
+      }
+      if (e.key === "Escape") {
+        setIsOpen(false);
+      }
+    };
+    window.addEventListener("open-shortcuts", handleOpen);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("open-shortcuts", handleOpen);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
   if (!isOpen) return null;
 
   const shortcuts = [
@@ -30,8 +46,9 @@ export default function ShortcutsModal({ isOpen, onClose }: ShortcutsModalProps)
             Atalhos do Teclado (Shortcuts)
           </h3>
           <button 
-            onClick={onClose}
+            onClick={() => setIsOpen(false)}
             className="text-gray-400 hover:text-gray-700 p-1 cursor-pointer"
+            type="button"
             title="Fechar"
           >
             <X className="w-4 h-4" />
@@ -62,8 +79,9 @@ export default function ShortcutsModal({ isOpen, onClose }: ShortcutsModalProps)
 
         <div className="mt-5 border-t border-gray-200 pt-3 text-center">
           <button 
-            onClick={onClose}
+            onClick={() => setIsOpen(false)}
             className="px-4 py-1.5 bg-emerald-750 text-white border border-emerald-800 text-xs font-semibold hover:bg-emerald-850 cursor-pointer"
+            type="button"
           >
             Entendido
           </button>

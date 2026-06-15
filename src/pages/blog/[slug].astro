@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { blogData } from '../../data/blogData';
+
+export async function getStaticPaths() {
+  return blogData.map((article) => ({
+    params: { slug: article.id },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+---
+
+<BaseLayout title={article.title} currentTab="blog">
+  <div class="max-w-4xl mx-auto animate-fadeIn">
+    <article class="py-2">
+      
+      <!-- Breadcrumbs -->
+      <a
+        href="/blog"
+        class="text-emerald-700 hover:text-emerald-600 font-bold text-xs mb-6 flex items-center gap-1 no-underline"
+      >
+        ← Retornar à listagem geral do DevLog
+      </a>
+
+      <div class="flex flex-wrap items-center gap-3 text-[11px] text-gray-500 font-bold mb-4">
+        <span>{article.date}</span>
+        <span>•</span>
+        <span>Por {article.author}</span>
+        <span>•</span>
+        <span class="text-emerald-700 bg-emerald-50 px-2 py-0.5">{article.readTime}</span>
+      </div>
+
+      <h1 class="text-gray-900 font-bold text-lg md:text-2xl mb-6 select-all border-b border-gray-200 pb-3 leading-tight">
+        {article.title}
+      </h1>
+
+      <div class="flex flex-col gap-5 text-xs md:text-sm text-gray-700 leading-relaxed font-sans font-medium mb-8">
+        {article.content.map((paragraph, pIdx) => (
+          <p>
+            {paragraph.startsWith("1.") || paragraph.startsWith("2.") || paragraph.startsWith("3.") ? (
+              <span class="block pl-3 border-l-2 border-emerald-600 my-1 font-mono text-xs text-emerald-800">
+                {paragraph}
+              </span>
+            ) : (
+              paragraph
+            )}
+          </p>
+        ))}
+      </div>
+
+      <div class="border-t border-gray-200 mt-8 pt-4 flex flex-wrap gap-2 justify-between items-center text-[11px] text-gray-500">
+        <div class="flex gap-1">
+          {article.tags.map((tag) => (
+            <span class="bg-gray-50 font-mono text-[9px] font-bold border border-gray-250 px-1.5 py-0.5 uppercase">
+              {tag}
+            </span>
+          ))}
+        </div>
+        <a href="/blog" class="text-emerald-700 hover:text-emerald-600 font-bold no-underline">
+          Retornar ao Blog
+        </a>
+      </div>
+
+    </article>
+  </div>
+</BaseLayout>

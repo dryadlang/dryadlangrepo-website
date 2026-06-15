@@ -1,4 +1,4 @@
-import { BlogArticle } from "../types";
+import type { BlogArticle } from "../types";
 
 export const blogData: BlogArticle[] = [
   {

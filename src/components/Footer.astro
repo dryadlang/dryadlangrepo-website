@@ -1,0 +1,26 @@
+---
+export interface Props {
+  currentTab: 'home' | 'docs' | 'blog';
+}
+
+const { currentTab } = Astro.props;
+---
+
+<footer class="border-t border-gray-250 bg-white mt-12 py-8 px-4 text-xs font-mono text-gray-500 transition-colors select-none text-center">
+  <div class="max-w-[1360px] mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+    <div class="flex items-center gap-1.5 justify-center md:justify-start">
+      <span class="w-5 h-5 bg-emerald-800 text-white font-bold flex items-center justify-center text-[10px] rounded-xs shadow-xs">dy</span>
+      <span>Dryad Programming Language Team &copy; 2026. Todos os direitos reservados.</span>
+    </div>
+
+    <div class="flex flex-wrap gap-4 font-semibold text-gray-500 justify-center">
+      <a href="/" class="hover:text-emerald-800 hover:underline">Início</a>
+      <a href="/docs/introducao-e-filosofia" class="hover:text-emerald-800 hover:underline">Especificação</a>
+      <a href="/blog" class="hover:text-emerald-800 hover:underline">DevLog</a>
+      <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-800 hover:underline flex items-center gap-0.5">
+        Source Code (Rust/C++)
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>

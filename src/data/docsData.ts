@@ -1,4 +1,4 @@
-import { DocSection } from "../types";
+import type { DocSection } from "../types";
 
 export const docsData: DocSection[] = [
   {
