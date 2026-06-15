@@ -1,0 +1,6 @@
+{
+  "name": "Dryad Programming Language",
+  "description": "The official documentation, blog, and specifications for the Dryad Programming Language.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
