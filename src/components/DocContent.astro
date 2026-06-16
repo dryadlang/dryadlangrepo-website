@@ -17,7 +17,7 @@ function renderInlineCode(cell: string): string {
   }).join("");
 }
 
-function renderHighlightedCode(code: string): { lineNum: number; html: string; comment: string }[] {
+function renderHighlightedCode(code: string): string {
   return code.split("\n").map((line, idx) => {
     let content = line;
     let commentPart = "";
@@ -35,8 +35,10 @@ function renderHighlightedCode(code: string): { lineNum: number; html: string; c
       .replace(/(#[a-zA-Z_]+)/g, '<span class="text-emerald-400 font-semibold">$1</span>')
       .replace(/(::)/g, '<span class="text-orange-400 font-bold">$1</span>');
 
-    return { lineNum: idx + 1, html: rawHtml, comment: commentPart };
-  });
+    const lineNum = `<span class="text-gray-600 select-none">${String(idx + 1).padStart(2)}</span> `;
+    const codeHtml = rawHtml + (commentPart ? `<span class="text-gray-500 italic">${commentPart}</span>` : "");
+    return `${lineNum}${codeHtml}`;
+  }).join("\n");
 }
 ---
 
@@ -79,17 +81,7 @@ function renderHighlightedCode(code: string): { lineNum: number; html: string; c
               <span class="text-xs text-emerald-800 font-semibold">{snippet.title}</span>
               <CodeCopyButton code={snippet.code} index={idx} client:load />
             </div>
-            <pre class="bg-gray-900 text-gray-100 p-4 text-sm leading-relaxed overflow-x-auto font-mono select-text">{
-              lines.map((l) => (
-                <div class="flex">
-                  <span class="w-8 shrink-0 text-gray-600 text-right pr-3 select-text text-xs">{l.lineNum}</span>
-                  <span class="flex-1 whitespace-pre text-gray-200 font-mono">
-                    <span set:html={l.html} />
-                    {l.comment && <span class="text-gray-500 italic select-text font-normal">{l.comment}</span>}
-                  </span>
-                </div>
-              ))
-            }</pre>
+            <pre class="bg-gray-900 text-gray-100 p-4 text-sm leading-snug overflow-x-auto font-mono select-text" set:html={lines}></pre>
             {snippet.description && (
               <p class="text-xs text-gray-500 mt-1 italic leading-relaxed">{snippet.description}</p>
             )}
