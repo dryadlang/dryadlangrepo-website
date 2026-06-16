@@ -1,77 +1,13 @@
 ---
 import SearchWidget from './SearchWidget.tsx';
-
-export interface Props {
-  currentTab: 'home' | 'docs' | 'blog';
-}
-
-const { currentTab } = Astro.props;
 ---
 
-<header class="sticky top-0 z-40 w-full border-b border-gray-200 bg-white font-mono">
-  <div class="max-w-[1360px] mx-auto px-4 h-14 flex items-center justify-between gap-4">
-    
-    <!-- Logo and Name -->
-    <a href="/" class="flex items-center gap-2 cursor-pointer group shrink-0 no-underline">
-      <div class="w-7 h-7 bg-emerald-700 rounded-xs flex items-center justify-center font-bold text-white text-xs select-none shadow-xs group-hover:bg-emerald-600 transition-colors">
-        dy
-      </div>
-      <span class="text-sm font-bold tracking-tight text-gray-900">
-        DRYAD<span class="text-emerald-700 font-normal">lang</span>
-      </span>
+<header class="w-full">
+  <div class="max-w-3xl mx-auto px-4 h-12 flex items-center justify-between gap-4">
+    <a href="/" class="flex items-center gap-2 text-sm font-bold tracking-tight text-gray-900 no-underline hover:text-emerald-800">
+      <img src="/favicon.svg" alt="" class="w-5 h-5" />
+      DRYADlang
     </a>
-
-    <!-- Search Engine Container (React Island) -->
     <SearchWidget client:load />
-
-    <!-- Centralized direct Links view -->
-    <nav class="flex items-center gap-1.5 md:gap-3 text-xs font-semibold">
-      <a
-        href="/"
-        class={`px-2 py-1.5 border-b-2 hover:text-emerald-700 transition-colors no-underline ${
-          currentTab === "home"
-            ? "border-emerald-750 text-emerald-850 font-bold"
-            : "border-transparent text-gray-500"
-        }`}
-      >
-        Início
-      </a>
-      
-      <a
-        href="/docs/introducao-e-filosofia"
-        class={`px-2 py-1.5 border-b-2 hover:text-emerald-700 transition-colors no-underline flex items-center gap-1 ${
-          currentTab === "docs"
-            ? "border-emerald-750 text-emerald-850 font-bold"
-            : "border-transparent text-gray-500"
-        }`}
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden md:inline"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
-        Docs
-      </a>
-
-      <a
-        href="/blog"
-        class={`px-2 py-1.5 border-b-2 hover:text-emerald-700 transition-colors no-underline flex items-center gap-1 ${
-          currentTab === "blog"
-            ? "border-emerald-750 text-emerald-850 font-bold"
-            : "border-transparent text-gray-500"
-        }`}
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden md:inline"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg>
-        Blog
-      </a>
-    </nav>
-
-    <!-- Toolbar items -->
-    <div class="flex items-center gap-1 border-l border-gray-200 pl-3">
-      <div
-        title="Conectado. Prontidão para desenvolvimento offline ativada."
-        class="flex items-center gap-1 mr-1.5"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-700"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-        <span class="text-[10px] text-gray-400 hidden xl:inline font-mono">Local-Cache Ready</span>
-      </div>
-    </div>
-
   </div>
 </header>

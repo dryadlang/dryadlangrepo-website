@@ -1,40 +1,33 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import HeroNotice from '../components/HeroNotice.astro';
 import ShortcutsModal from '../components/ShortcutsModal.tsx';
 import '../index.css';
 
 export interface Props {
   title: string;
-  currentTab: 'home' | 'docs' | 'blog';
 }
 
-const { title, currentTab } = Astro.props;
+const { title } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="pt">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title} | Dryad Programming Language</title>
+    <title>{title} | Dryad</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
-  <body class="min-h-screen flex flex-col bg-gray-50 text-gray-850 font-mono transition-colors">
-    <Header currentTab={currentTab} />
-    <HeroNotice />
-    <main class="flex-grow max-w-[1360px] w-full mx-auto px-4 py-6 md:py-8">
+  <body class="min-h-screen flex flex-col bg-white text-gray-900 font-sans">
+    <Header />
+    <main class="w-full max-w-3xl mx-auto px-4 py-10 md:py-14">
       <slot />
     </main>
-    <Footer currentTab={currentTab} />
+    <Footer />
     <ShortcutsModal client:load />
   </body>
 </html>
-
-<style is:global>
-  html { scroll-behavior: smooth; }
-</style>
 
 <script>
 // Global keyboard shortcuts: g+h → home, g+d → docs, g+b → blog
@@ -50,7 +43,6 @@ document.addEventListener("keydown", (e: KeyboardEvent) => {
 
   const key = e.key.toLowerCase();
 
-  // Chain logic: G followed by letters
   if (lastKey === "g") {
     if (key === "h") {
       window.location.href = "/";

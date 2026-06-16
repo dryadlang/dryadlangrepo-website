@@ -12,13 +12,39 @@ export async function getStaticPaths() {
 }
 
 const { doc } = Astro.props;
+
+// Find current index for prev/next navigation
+const currentIndex = docsData.findIndex((d) => d.id === doc.id);
+const prevDoc = currentIndex > 0 ? docsData[currentIndex - 1] : null;
+const nextDoc = currentIndex < docsData.length - 1 ? docsData[currentIndex + 1] : null;
 ---
 
-<BaseLayout title={doc.title} currentTab="docs">
-  <div class="flex flex-col lg:flex-row gap-6 items-start animate-fadeIn">
+<BaseLayout title={doc.title}>
+  <article>
+    <p class="text-xs text-gray-500 mb-4">
+      <a href="/docs/introducao-e-filosofia" class="text-emerald-800 no-underline hover:underline font-semibold">Docs</a>
+      <span class="text-gray-300 mx-1">/</span>
+      <span class="text-gray-600">{doc.category}</span>
+    </p>
+
     <Sidebar selectedDocId={doc.id} />
-    <div class="flex-1 w-full overflow-x-hidden">
-      <DocContent section={doc} />
-    </div>
-  </div>
+    <DocContent section={doc} />
+
+    <nav class="flex justify-between text-sm mt-10 pt-4 border-t border-gray-100">
+      <span>
+        {prevDoc && (
+          <a href={`/docs/${prevDoc.id}`} class="text-emerald-800 no-underline hover:underline font-semibold">
+            ← {prevDoc.title.replace(/^\d+(\.\d+)?\s+/, "")}
+          </a>
+        )}
+      </span>
+      <span>
+        {nextDoc && (
+          <a href={`/docs/${nextDoc.id}`} class="text-emerald-800 no-underline hover:underline font-semibold">
+            {nextDoc.title.replace(/^\d+(\.\d+)?\s+/, "")} →
+          </a>
+        )}
+      </span>
+    </nav>
+  </article>
 </BaseLayout>

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Search } from "lucide-react";
 import { docsData } from "../data/docsData";
 
 interface DocSection {
@@ -65,49 +64,37 @@ export default function SearchWidget() {
   };
 
   return (
-    <div ref={searchContainerRef} className="relative flex-1 max-w-sm md:max-w-md hidden sm:block">
-      <div className="relative">
-        <Search className="absolute left-2.5 top-2.5 w-4 h-4 text-gray-400" />
-        <input
-          ref={searchInputRef}
-          type="text"
-          placeholder="Buscar documentação... (pressione '/')"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          onFocus={() => setIsFocused(true)}
-          className="w-full pl-9 pr-14 py-1.5 text-xs bg-gray-50 border border-gray-300 text-gray-800 focus:outline-hidden focus:border-emerald-700 focus:bg-white focus:ring-1 focus:ring-emerald-600 transition-all font-mono"
-        />
-        <kbd className="absolute right-2.5 top-2.5 px-1.5 py-0.5 bg-gray-200 border border-gray-300 text-[10px] text-gray-500 font-bold pointer-events-none uppercase">
-          /
-        </kbd>
-      </div>
+    <div ref={searchContainerRef} className="relative flex-1 max-w-xs hidden sm:block">
+      <input
+        ref={searchInputRef}
+        type="text"
+        placeholder="buscar documentação..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        onFocus={() => setIsFocused(true)}
+        className="w-full px-2.5 py-1 text-xs bg-white border border-gray-300 text-gray-700 focus:outline-hidden focus:border-gray-500 font-mono"
+      />
 
       {isFocused && searchResults.length > 0 && (
-        <div className="absolute left-0 right-0 top-11 bg-white border border-gray-300 shadow-md text-xs max-h-80 overflow-y-auto z-50">
-          <div className="p-2 border-b border-gray-150 text-gray-450 font-semibold text-[10px]">
-            Resultados correspondentes ({searchResults.length}):
-          </div>
+        <div className="absolute left-0 right-0 top-8 bg-white border border-gray-300 text-xs max-h-80 overflow-y-auto z-50">
           {searchResults.map((result) => (
             <div
               key={result.id}
               onClick={() => handleSearchResultClick(result.id)}
-              className="flex items-center justify-between p-2.5 border-b border-gray-100 hover:bg-emerald-50/50 cursor-pointer transition-colors"
+              onKeyDown={(e) => { if (e.key === 'Enter') handleSearchResultClick(result.id); }}
+              tabIndex={0}
+              className="px-2.5 py-2 border-b border-gray-100 hover:bg-gray-50 cursor-pointer"
             >
-              <div className="flex flex-col gap-0.5 truncate">
-                <span className="font-bold text-gray-800 truncate">{result.title}</span>
-                <span className="text-[10px] text-gray-400 truncate">Categoria: {result.category}</span>
-              </div>
-              <span className="text-[10px] text-emerald-700 shrink-0 font-semibold bg-emerald-50 px-2 py-0.5">
-                Ir para seção →
-              </span>
+              <span className="text-gray-900 font-semibold">{result.title}</span>
+              <span className="text-gray-400 ml-2">({result.category})</span>
             </div>
           ))}
         </div>
       )}
 
       {isFocused && searchQuery.trim() && searchResults.length === 0 && (
-        <div className="absolute left-0 right-0 top-11 bg-white border border-gray-300 shadow-md p-4 text-center text-xs text-gray-400 z-50">
-          Nenhuma seção ou código localizado para "{searchQuery}".
+        <div className="absolute left-0 right-0 top-8 bg-white border border-gray-300 p-3 text-center text-xs text-gray-400 z-50">
+          Nenhum resultado para "{searchQuery}".
         </div>
       )}
     </div>
