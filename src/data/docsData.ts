@@ -9,7 +9,7 @@ export const docsData: DocSection[] = [
     codeSnippets: [
       {
         title: "General Structure of a Dryad File",
-        code: `// Importação de módulos nativos
+        code: `// Import native modules
 #io
 #math
 
@@ -44,12 +44,12 @@ principal();`,
     codeSnippets: [
       {
         title: "Native Interpolation & Special Operators",
-        code: `// Template Strings com interpolação nativa
+        code: `// Template strings with native interpolation
 let nome = "Dryad";
 let versao = 1.0;
 let mensagem = 'Linguagem: \${nome}, Versão: \${versao}';
 
-// Operador de Namespace duplo dois-pontos (::) estilo C++/Rust
+// Double colon namespace operator (::) C++/Rust style
 import math;
 let cosseno = math::cos(0);`,
         description: "Use of backticks ('\${}') for template strings and the :: operator for disambiguation and access to structured namespaces."
@@ -66,8 +66,8 @@ let cosseno = math::cos(0);`,
         title: "Native Directives and Delimiters",
         code: `#io                     // Token NativeDirective("io")
 let hex = 0xFF;         // Literal hexadecimal
-let bin = 0b1010;       // Literal binário
-let octal = 0o755;      // Literal octal
+let bin = 0b1010;       // Binary literal
+let octal = 0o755;      // Octal literal
 `,
         description: "Dryad supports numbers in decimal, hexadecimal, binary, and octal formats."
       }
@@ -94,9 +94,9 @@ let octal = 0o755;      // Literal octal
       {
         title: "Syntactic Analysis of the # Symbol",
         code: `#io           // OK: NativeDirective("io")
-# <io>        // ERRO LÉXICO (espaço após o símbolo #)
-//#io         // Comentário descartado pela parser
-"#io"         // String literal normal`,
+# <io>        // LEXER ERROR (space after # symbol)
+//#io         // Comment discarded by parser
+"#io"         // Normal string literal`,
         description: "The lexer disambiguates deterministically using the mathematical principle of Non-Ambiguity."
       }
     ]
@@ -109,29 +109,29 @@ let octal = 0o755;      // Literal octal
     codeSnippets: [
       {
         title: "Primitive Types, Arrays, and Tuples",
-        code: `// Tipos Primitivos
+        code: `// Primitive Types
 let idade: number = 32;
 let ativa: bool = true;
 let nome: string = "Membro da Guilda";
 let nulo: null = null;
 let indefinida: any = "Pode conter qualquer valor";
 
-// Arrays: Dinâmicos e heterogêneos
+// Arrays: Dynamic and heterogeneous
 let lista: number[] = [1, 2, 3];
 let misto: any[] = [42, "texto", false];
 
-// Tuplas: Tamanho fixo e heterogêneo
+// Tuples: Fixed size and heterogeneous
 let coordenador: (string, number, bool) = ("Coordenador", 101, true);
-let nomeCargo = coordenador.0;  // Acesso por índice numérico
+let nomeCargo = coordenador.0;  // Access by numeric index
 let nivelPerm = coordenador.1;`,
         description: "Demonstration of annotated variables. In Dryad, the complex tuple type differs from the array type by having a static immutable size with positions accessible via decimal point (.0, .1)."
       },
       {
         title: "First-Class Functions and Literal Objects",
-        code: `// Função representada como Tipo
+        code: `// Function represented as Type
 let soma: fn(number, number) -> number = (a, b) => a + b;
 
-// Objetos Literais como Dicionários Chave-Valor
+// Literal Objects as Key-Value Dictionaries
 let servidor = {
   porta: 3000,
   host: "127.0.0.1",
@@ -162,12 +162,11 @@ let servidor = {
         code: `"use strict types";
 
 function add(a: number, b: number): number {
-  return a + b; // O compilador AOT remove o overhead dinâmico totalmente
-}
+return a + b; // AOT compiler removes all dynamic overhead
 
 @dynamic
 function processarDinamico(x: any): any {
-  return x + 1; // Fallback para tipo dinâmico com coerções lentas
+  return x + 1; // Fallback to dynamic type with slow coercions
 }`,
         description: "Direct benefits: 30% to 50% performance gain in hot path sections due to the absence of VM checks."
       }
@@ -181,10 +180,10 @@ function processarDinamico(x: any): any {
     codeSnippets: [
       {
         title: "Dryad Coercion Rules",
-        code: `let termo = 40 + "2";      // "402" (concatenação de string)
-let flag = true + 5;        // 6 (booleano vira 1 no contexto aritmético)
-let desativada = false * 2; // 0 (false vira 0)
-let compara = [] == [];     // Arrays e objetos são comparados por referência`,
+        code: `let termo = 40 + "2";      // "402" (string concatenation)
+let flag = true + 5;        // 6 (boolean becomes 1 in arithmetic context)
+let desativada = false * 2; // 0 (false becomes 0)
+let compara = [] == [];     // Arrays and objects are compared by reference`,
         description: "Essential implicit behaviors for lexical type coercion."
       }
     ],
@@ -216,16 +215,16 @@ let compara = [] == [];     // Arrays e objetos são comparados por referência`
         code: `let status = 404;
 
 let mensagem = match status {
-  200 => "Executado com Sucesso",
-  404 => "Recurso Não Encontrado",
-  _ => "Erro desconhecido" // Wildcard obrigatório para abranger os demais estados
+  200 => "Success",
+  404 => "Not Found",
+  _ => "Unknown error" // Wildcard required to cover all other states
 };
 
-// Exemplo com Condições Adicionais (Guards!)
+// Example with Additional Conditions (Guards!)
 let numero = 15;
 match numero {
-  val => val > 10 && val < 20 => io_write_file("saida", "Variável está na faixa central"),
-  _ => io_write_file("saida", "Fora do escopo")
+  val => val > 10 && val < 20 => io_write_file("saida", "Variable is in the middle range"),
+  _ => io_write_file("saida", "Out of scope")
 };`,
         description: "'Match' expressions return the result of the selected expression directly for local assignment."
       }
@@ -242,14 +241,14 @@ match numero {
         code: `try {
   let fd = __open("documento_importante.txt", 0);
   if (fd < 0) {
-    throw 5001; // Lança código de erro de arquivo não encontrado
+    throw 5001; // Throws file not found error code
   }
 } catch (error) {
-  // Lida com o erro coletado da pilha recursiva
-  io_write_file("log.err", "Falha de execução: \${error}");
+  // Handles the error collected from the call stack
+  io_write_file("log.err", "Execution failure: \${error}");
 } finally {
-  // Sempre executado para liberação de arquivos, conexões de FD ou buffers
-  io_write_file("progresso", "Fluxo finalizado!");
+  // Always executed to release files, FD connections, or buffers
+  io_write_file("progresso", "Flow finished!");
 }`,
         description: "Dryad's exception flow guarantees continuous error propagation along the stack in the absence of local handlers."
       }
@@ -289,7 +288,7 @@ let area = q.area(); // Retorna 25`,
       },
       {
         title: "Concurrent Execution with OS Threads",
-        code: `// Funções de thread executam de forma isolada real no S.O.
+        code: `// Thread functions execute truly isolated in the OS
 let mu = mutex();
 let valorCompartilhado = 0;
 
@@ -303,7 +302,7 @@ thread function processarParalelo(id: number) {
 let handle1 = thread processarParalelo(1);
 let handle2 = thread processarParalelo(2);
 
-// Recuperação assíncrona dos handles de retorno
+// Async retrieval of return handles
 let resultado = await handle1;`,
         description: "Control of critical sections accessed by multiple simultaneous OS threads through built-in Mutex primitives."
       }
@@ -317,11 +316,11 @@ let resultado = await handle1;`,
     codeSnippets: [
       {
         title: "FFI Loading and Calling",
-        code: `#io       // Carrega módulo nativo de I/O em escopo global
-#crypto   // Módulo global nativo de criptografia pesada
+        code: `#io       // Loads native I/O module into global scope
+#crypto   // Global native cryptography module
 
 function main() {
-  // Acesso sem quotes
+  // Access without quotes
   let content = io_read_file("chave.pem");
   let validacao = crypto_decrypt(content);
 
@@ -352,7 +351,7 @@ main();`,
     codeSnippets: [
       {
         title: "On-Demand Compilation",
-        code: `// Ativação dinâmica para execução otimizada de Bytecode
+        code: `// Dynamic activation for optimized Bytecode execution
 set_compile_mode(true);
 
 function loopsMassivos() {
@@ -384,7 +383,7 @@ loopsMassivos();`,
     codeSnippets: [
       {
         title: "Using the Intrinsic Syscall System",
-        code: `// Declaração de syscall nativa interna do runtime
+        code: `// Internal runtime native syscall declaration
 @intrinsic("syscall.open")
 extern function __open(path: string, flags: i32): i32;
 
@@ -394,14 +393,14 @@ extern function __read(fd: i32, buf: ptr<u8>, len: usize): isize;
 @intrinsic("syscall.close")
 extern function __close(fd: i32): void;
 
-// Classe Abstrata de manipulador em Dryad Puro
+// Abstract handler class in pure Dryad
 export class Arquivo {
   private fd: number;
 
   constructor(caminho: string) {
     this.fd = __open(caminho, 0); // O_RDONLY
     if (this.fd < 0) {
-      throw "Falha ao ler arquivo nativo!";
+      throw "Failed to read native file!";
     }
   }
 }`,
