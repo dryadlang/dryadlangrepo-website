@@ -25,11 +25,11 @@ export default function ShortcutsModal() {
   if (!isOpen) return null;
 
   const shortcuts = [
-    { keys: ["/"], desc: "Focar na caixa de busca global" },
-    { keys: ["G", "H"], desc: "Ir para a Página Inicial" },
-    { keys: ["G", "D"], desc: "Ir para a Documentação" },
-    { keys: ["G", "B"], desc: "Ir para o Blog" },
-    { keys: ["Esc"], desc: "Fechar modais" }
+    { keys: ["/"], desc: "Focus the global search box" },
+    { keys: ["G", "H"], desc: "Go to the Home page" },
+    { keys: ["G", "D"], desc: "Go to Documentation" },
+    { keys: ["G", "B"], desc: "Go to the Blog" },
+    { keys: ["Esc"], desc: "Close modals" }
   ];
 
   return (
@@ -40,13 +40,13 @@ export default function ShortcutsModal() {
         aria-modal="true"
       >
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-sm font-bold text-gray-900">Atalhos do Teclado</h3>
+          <h3 className="text-sm font-bold text-gray-900">Keyboard Shortcuts</h3>
           <button
             onClick={() => setIsOpen(false)}
             className="text-gray-400 hover:text-gray-700 p-1 cursor-pointer text-xs"
             type="button"
           >
-            [fechar]
+            [close]
           </button>
         </div>
 
@@ -72,7 +72,7 @@ export default function ShortcutsModal() {
             className="text-xs text-gray-500 hover:text-gray-800 underline cursor-pointer"
             type="button"
           >
-            fechar
+            close
           </button>
         </div>
       </div>

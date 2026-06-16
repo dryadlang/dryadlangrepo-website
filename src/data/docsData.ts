@@ -3,12 +3,12 @@ import type { DocSection } from "../types";
 export const docsData: DocSection[] = [
   {
     id: "introducao-e-filosofia",
-    title: "1. Introdução e Filosofia da Linguagem",
-    category: "Visão Geral",
-    content: "O Dryad é uma linguagem de programação multi-paradigma de tipagem dinâmica inspirada em JavaScript/TypeScript, mas com características de baixo nível e um sistema de módulos robusto que a tornam ideal tanto para scripts de automação quanto para sistemas compilados mais eficientes. O design do Dryad é centrado na simplicidade e na clareza do código, oferecendo uma experiência de desenvolvimento pragmática com uma forte herança de design similar aos ecossistemas de Rust e C++.",
+    title: "1. Introduction and Language Philosophy",
+    category: "Overview",
+    content: "Dryad is a dynamically-typed, multi-paradigm programming language inspired by JavaScript/TypeScript, but with low-level features and a robust module system that make it ideal for both automation scripts and more efficient compiled systems. Dryad's design is centered on simplicity and code clarity, offering a pragmatic development experience with a strong design heritage similar to the Rust and C++ ecosystems.",
     codeSnippets: [
       {
-        title: "Estrutura Geral de um Arquivo Dryad",
+        title: "General Structure of a Dryad File",
         code: `// Importação de módulos nativos
 #io
 #math
@@ -22,28 +22,28 @@ function principal() {
 }
 
 principal();`,
-        description: "Exemplo demonstrando a herança sintática de JavaScript, uso de diretivas nativas (#io, #math) e o operador de namespace (::) para acessar funções importadas."
+        description: "Example demonstrating JavaScript's syntactic heritage, use of native directives (#io, #math) and the namespace operator (::) to access imported functions."
       }
     ],
     tableData: {
-      headers: ["Objetivo de Design", "Descrição Prática"],
+      headers: ["Design Goal", "Practical Description"],
       rows: [
-        ["Familiaridade Sintática", "Sintaxe expressiva baseada em JS/TS para reduzir a curva de aprendizado."],
-        ["Flexibilidade de Paradigma", "Suporte simultâneo para programação procedural (top-level), funcional e orientada a objetos."],
-        ["Tipagem Dinâmica Opcional", "Anotações de tipo opcionais em tempo de desenvolvimento que servem para documentação e validações."],
-        ["Modelo de Execução Triplo", "Execução via interpretador direto AST, compilador de bytecode stack-based rápida ou compilador AOT nativo."],
-        ["Concorrência Nativa", "Primitivas de concorrência com threads reais de S.O., async/await e facilidades de controle por Mutex."]
+        ["Syntactic Familiarity", "Expressive syntax based on JS/TS to reduce the learning curve."],
+        ["Paradigm Flexibility", "Simultaneous support for procedural (top-level), functional, and object-oriented programming."],
+        ["Optional Dynamic Typing", "Optional type annotations at development time that serve for documentation and validations."],
+        ["Triple Execution Model", "Execution via direct AST interpreter, fast stack-based bytecode compiler, or native AOT compiler."],
+        ["Native Concurrency", "Concurrency primitives with real OS threads, async/await, and Mutex-based control facilities."]
       ]
     }
   },
   {
     id: "caracteristicas-distintivas",
-    title: "1.2 Características Distintivas & Princípios",
-    category: "Visão Geral",
-    content: "O design da linguagem é regido pelos axiomas da Clareza sobre Performance (priorizando legibilidade antes de otimizações precoces), Consistência Sintática e Erros Informativos (mensagens de erro claras com sugestões de correção e pilha de chamadas).",
+    title: "1.2 Distinctive Features & Principles",
+    category: "Overview",
+    content: "The language design is governed by the axioms of Clarity over Performance (prioritizing readability before premature optimizations), Syntactic Consistency, and Informative Errors (clear error messages with correction suggestions and call stack traces).",
     codeSnippets: [
       {
-        title: "Interpolação Nativa & Operadores Especiais",
+        title: "Native Interpolation & Special Operators",
         code: `// Template Strings com interpolação nativa
 let nome = "Dryad";
 let versao = 1.0;
@@ -52,63 +52,63 @@ let mensagem = 'Linguagem: \${nome}, Versão: \${versao}';
 // Operador de Namespace duplo dois-pontos (::) estilo C++/Rust
 import math;
 let cosseno = math::cos(0);`,
-        description: "Uso de aspas simples invertidas ('\${}') para template strings e operador :: para desambiguação e acesso a namespaces estruturados."
+        description: "Use of backticks ('\${}') for template strings and the :: operator for disambiguation and access to structured namespaces."
       }
     ]
   },
   {
     id: "estrutura-lexical",
-    title: "2. Estrutura Lexical",
-    category: "Lexicografia",
-    content: "A estrutura lexical do Dryad é Unicode de ponta a ponta (UTF-8). O alfabeto é composto por letras [a-zA-Z], dígitos [0-9], espaços em branco insignificantes (exceto em literais e template strings) e caracteres especiais. O analisador léxico garante que a interpretação seja livre de ambiguidades.",
+    title: "2. Lexical Structure",
+    category: "Lexicography",
+    content: "Dryad's lexical structure is end-to-end Unicode (UTF-8). The alphabet consists of letters [a-zA-Z], digits [0-9], insignificant whitespace (except in literals and template strings), and special characters. The lexer ensures ambiguity-free interpretation.",
     codeSnippets: [
       {
-        title: "Directivas Nativas e Delimitadores",
+        title: "Native Directives and Delimiters",
         code: `#io                     // Token NativeDirective("io")
 let hex = 0xFF;         // Literal hexadecimal
 let bin = 0b1010;       // Literal binário
 let octal = 0o755;      // Literal octal
 `,
-        description: "Dryad suporta números em formatos decimais, hexadecimais, binários e octais."
+        description: "Dryad supports numbers in decimal, hexadecimal, binary, and octal formats."
       }
     ],
     tableData: {
-      headers: ["Categoria", "Palavras Reservadas"],
+      headers: ["Category", "Reserved Words"],
       rows: [
-        ["Declaração", "let, const"],
-        ["Controle de Fluxo", "if, else, for, while, do, break, continue, match, in"],
-        ["Funções & Tarefas", "function, fn, async, await, return, thread, mutex"],
-        ["Orientação a Objetos", "class, new, extends, this, super, static, public, private, protected"],
-        ["Módulos & FFI", "import, export, use, as, from"],
-        ["Exceções", "try, catch, finally, throw"],
-        ["Literais básicos", "true, false, null"]
+        ["Declaration", "let, const"],
+        ["Flow Control", "if, else, for, while, do, break, continue, match, in"],
+        ["Functions & Tasks", "function, fn, async, await, return, thread, mutex"],
+        ["Object Orientation", "class, new, extends, this, super, static, public, private, protected"],
+        ["Modules & FFI", "import, export, use, as, from"],
+        ["Exceptions", "try, catch, finally, throw"],
+        ["Basic Literals", "true, false, null"]
       ]
     }
   },
   {
     id: "diretivas-nativas",
-    title: "2.6 Diretivas Nativas e Desambiguação Lexical",
-    category: "Lexicografia",
-    content: "O caractere `#` é tratado com duas finalidades no Dryad. Ele serve exclusivamente para indicar Diretivas Nativas (quando seguido imediatamente pelos caracteres '<' e '>' ou no formato simplificado #modulo sem espaços). Em outros contextos inadequados, o analisador léxico acusa Erro de Sintaxe (1000-1999 Lexer Errors).",
+    title: "2.6 Native Directives and Lexical Disambiguation",
+    category: "Lexicography",
+    content: "The `#` character serves two purposes in Dryad. It is used exclusively to indicate Native Directives (when immediately followed by '<' and '>' characters or in the simplified #module format without spaces). In other inappropriate contexts, the lexer reports a Syntax Error (1000-1999 Lexer Errors).",
     codeSnippets: [
       {
-        title: "Análise Sintática do Símbolo #",
+        title: "Syntactic Analysis of the # Symbol",
         code: `#io           // OK: NativeDirective("io")
 # <io>        // ERRO LÉXICO (espaço após o símbolo #)
 //#io         // Comentário descartado pela parser
 "#io"         // String literal normal`,
-        description: "O analisador léxico se desambigua de forma determinística utilizando o princípio da Não-Ambiguidade matemática."
+        description: "The lexer disambiguates deterministically using the mathematical principle of Non-Ambiguity."
       }
     ]
   },
   {
     id: "sistema-de-tipos",
-    title: "3. Sistema de Tipos",
-    category: "Estruturas de Dados",
-    content: "O Dryad implementa um sistema de tipos dinâmico com anotações opcionais de desenvolvimento. Os tipos são associados aos valores de runtime e não diretamente às variáveis. Porém, o compilador possui um modo estrito em desenvolvimento ('use strict types') que possibilita otimizações estáticas extremas em compilações Ahead-of-Time (AOT).",
+    title: "3. Type System",
+    category: "Data Structures",
+    content: "Dryad implements a dynamic type system with optional development-time annotations. Types are associated with runtime values rather than directly with variables. However, the compiler has a strict development mode ('use strict types') that enables extreme static optimizations in Ahead-of-Time (AOT) compilations.",
     codeSnippets: [
       {
-        title: "Tipos Primitivos, Arrays e Tuplas",
+        title: "Primitive Types, Arrays, and Tuples",
         code: `// Tipos Primitivos
 let idade: number = 32;
 let ativa: bool = true;
@@ -124,10 +124,10 @@ let misto: any[] = [42, "texto", false];
 let coordenador: (string, number, bool) = ("Coordenador", 101, true);
 let nomeCargo = coordenador.0;  // Acesso por índice numérico
 let nivelPerm = coordenador.1;`,
-        description: "Demonstração de variáveis anotadas. No Dryad, o tipo complexo tupla difere do tipo array por possuir um tamanho imutável estático de posições acessáveis por ponto decimal (.0, .1)."
+        description: "Demonstration of annotated variables. In Dryad, the complex tuple type differs from the array type by having a static immutable size with positions accessible via decimal point (.0, .1)."
       },
       {
-        title: "Funções de Primeira Classe e Objetos Literais",
+        title: "First-Class Functions and Literal Objects",
         code: `// Função representada como Tipo
 let soma: fn(number, number) -> number = (a, b) => a + b;
 
@@ -137,28 +137,28 @@ let servidor = {
   host: "127.0.0.1",
   ["ativo"]: true
 };`,
-        description: "Assinatura elegante de tipos para closures, arrow functions de alta ordem e dicionários de hash."
+        description: "Elegant type signatures for closures, higher-order arrow functions, and hash dictionaries."
       }
     ],
     tableData: {
-      headers: ["Tipo Primitivo", "Comportamento em Runtime", "Literais Disponíveis"],
+      headers: ["Primitive Type", "Runtime Behavior", "Available Literals"],
       rows: [
-        ["number", "Ponto flutuante IEEE 754 f64 (dupla precisão)", "42, 3.14, 0xFF, 1e10"],
-        ["string", "Sequência de caracteres Unicode decodificada em UTF-8", '"hello", \'world\', `template`'],
-        ["bool", "Representação booleana clássica", "true, false"],
-        ["null", "Valor nulo/indefinido sem representação", "null"],
-        ["any", "Tipo universal (implícito se omitido)", "Aceita qualquer valor físico"]
+        ["number", "IEEE 754 f64 floating point (double precision)", "42, 3.14, 0xFF, 1e10"],
+        ["string", "Unicode character sequence decoded in UTF-8", '"hello", \'world\', `template`'],
+        ["bool", "Classic boolean representation", "true, false"],
+        ["null", "Null/undefined value without representation", "null"],
+        ["any", "Universal type (implicit if omitted)", "Accepts any physical value"]
       ]
     }
   },
   {
     id: "modo-estrito-futuro",
-    title: "3.5 Modo Estrito de Tipos (AOT)",
-    category: "Estruturas de Dados",
-    content: "O 'use strict types' ativa o validador estático em tempo de compilação. Com isso, o compilador AOT elimina checagens dinâmicas de tipo no runtime, viabiliza substituições em pilha para referências locais (Escape Analysis), resolve devirtualizações de métodos estaticamente e converte laços sobre coleções diretamente em blocos vetorizados SIMD.",
+    title: "3.5 Strict Type Mode (AOT)",
+    category: "Data Structures",
+    content: "'use strict types' activates the static validator at compile time. With this, the AOT compiler eliminates dynamic type checks at runtime, enables stack allocations for local references (Escape Analysis), resolves method devirtualizations statically, and converts collection loops directly into vectorized SIMD blocks.",
     codeSnippets: [
       {
-        title: "Modo Estrito Estático (Otimizações)",
+        title: "Static Strict Mode (Optimizations)",
         code: `"use strict types";
 
 function add(a: number, b: number): number {
@@ -169,50 +169,50 @@ function add(a: number, b: number): number {
 function processarDinamico(x: any): any {
   return x + 1; // Fallback para tipo dinâmico com coerções lentas
 }`,
-        description: "Benefícios diretos: ganho de performance na ordem de 30% a 50% em trechos de hot path devido à ausência de checagens na VM."
+        description: "Direct benefits: 30% to 50% performance gain in hot path sections due to the absence of VM checks."
       }
     ]
   },
   {
     id: "coercoes-e-operadores",
-    title: "4. Operadores & Precedência",
-    category: "Expressões",
-    content: "O Dryad segue regras formais de precedência que agrupam operações de esquerda para direita (associação de esquerda), com exceção das atribuições locais e exponenciações. Conversões implícitas incluem a concatenação automática de 'number' para 'string' se um dos operandos for cadeia de caracteres.",
+    title: "4. Operators & Precedence",
+    category: "Expressions",
+    content: "Dryad follows formal precedence rules that group operations from left to right (left associativity), except for local assignments and exponentiations. Implicit conversions include automatic 'number' to 'string' concatenation if one of the operands is a character string.",
     codeSnippets: [
       {
-        title: "Regras de Coerção do Dryad",
+        title: "Dryad Coercion Rules",
         code: `let termo = 40 + "2";      // "402" (concatenação de string)
 let flag = true + 5;        // 6 (booleano vira 1 no contexto aritmético)
 let desativada = false * 2; // 0 (false vira 0)
 let compara = [] == [];     // Arrays e objetos são comparados por referência`,
-        description: "Comportamentos implícitos essenciais para a coerção lexical de tipos."
+        description: "Essential implicit behaviors for lexical type coercion."
       }
     ],
     tableData: {
-      headers: ["Nível", "Operador", "Associatividade"],
+      headers: ["Level", "Operator", "Associativity"],
       rows: [
-        ["1", "., [], (), new", "Esquerda-para-direita"],
-        ["2", "++, -- (postfix)", "Esquerda-para-direita"],
-        ["3", "++, --, !, -, +, ~ (prefix)", "Direita-para-esquerda"],
-        ["4", "** (exponenciação)", "Direita-para-esquerda"],
-        ["5", "*, /, %", "Esquerda-para-direita"],
-        ["6", "+, -", "Esquerda-para-direita"],
-        ["7", "«, », »>, «<", "Esquerda-para-direita"],
-        ["8", "<, <=, >, >=, in", "Esquerda-para-direita"],
-        ["9", "==, !=", "Esquerda-para-direita"],
-        ["10", "& (Bitwise AND)", "Esquerda-para-direita"],
-        ["15", "=, +=, -=, *=, /=", "Direita-para-esquerda"]
+        ["1", "., [], (), new", "Left-to-right"],
+        ["2", "++, -- (postfix)", "Left-to-right"],
+        ["3", "++, --, !, -, +, ~ (prefix)", "Right-to-left"],
+        ["4", "** (exponentiation)", "Right-to-left"],
+        ["5", "*, /, %", "Left-to-right"],
+        ["6", "+, -", "Left-to-right"],
+        ["7", "«, », »>, «<", "Left-to-right"],
+        ["8", "<, <=, >, >=, in", "Left-to-right"],
+        ["9", "==, !=", "Left-to-right"],
+        ["10", "& (Bitwise AND)", "Left-to-right"],
+        ["15", "=, +=, -=, *=, /=", "Right-to-left"]
       ]
     }
   },
   {
     id: "match-pattern-matching",
-    title: "4.6 Experessões de Controle & Match",
-    category: "Expressões",
-    content: "A instrução 'match' provê desvios funcionais robustos através do pattern matching. Suporta verificação contra constantes (literais numéricos, literais booleanos ou strings) e o caractere curinga de descarte (_), além de permitir o uso de sentenças booleanas como guarda (guards) estruturais.",
+    title: "4.6 Control Expressions & Match",
+    category: "Expressions",
+    content: "The 'match' statement provides robust functional branching through pattern matching. It supports matching against constants (numeric literals, boolean literals, or strings) and the discard wildcard character (_), as well as allowing boolean sentences as structural guards.",
     codeSnippets: [
       {
-        title: "Verificação Condicional por Pattern Matching",
+        title: "Conditional Verification via Pattern Matching",
         code: `let status = 404;
 
 let mensagem = match status {
@@ -227,18 +227,18 @@ match numero {
   val => val > 10 && val < 20 => io_write_file("saida", "Variável está na faixa central"),
   _ => io_write_file("saida", "Fora do escopo")
 };`,
-        description: "Expressões 'match' retornam o resultado da expressão selecionada diretamente para a atribuição local."
+        description: "'Match' expressions return the result of the selected expression directly for local assignment."
       }
     ]
   },
   {
     id: "controle-fluxo-loops",
-    title: "5. Fluxo de Execução",
-    category: "Instruções",
-    content: "Os comandos de controle se comportam de maneira análoga a C++, porém com uma sintaxe limpa e de rápido parse. Possui loops C-style (`for (let i = 0; i < N; i++)`), loops de iteração iterável (`for (element in collection)`) e tratamento estruturado de erros com Try-Catch-Finally.",
+    title: "5. Execution Flow",
+    category: "Statements",
+    content: "Control statements behave analogously to C++, but with clean, fast-to-parse syntax. It features C-style loops (`for (let i = 0; i < N; i++)`), iterable iteration loops (`for (element in collection)`), and structured error handling with Try-Catch-Finally.",
     codeSnippets: [
       {
-        title: "Tratamento de Exceções Estruturado",
+        title: "Structured Exception Handling",
         code: `try {
   let fd = __open("documento_importante.txt", 0);
   if (fd < 0) {
@@ -251,18 +251,18 @@ match numero {
   // Sempre executado para liberação de arquivos, conexões de FD ou buffers
   io_write_file("progresso", "Fluxo finalizado!");
 }`,
-        description: "O fluxo de exceções de Dryad garante a propagação contínua do erro ao longo da pilha na ausência de tratadores locais."
+        description: "Dryad's exception flow guarantees continuous error propagation along the stack in the absence of local handlers."
       }
     ]
   },
   {
     id: "funcoes-classes-threads",
-    title: "6. Funções & Classes",
-    category: "Instruções",
-    content: "As funções normais em Dryad são Hoisted (podem ser invocadas no arquivo antes de sua declaração sintática) e suportam parâmetros nomeados opcionais e coletores rest (...rest). As classes do Dryad oferecem orientação a objetos com herança simples (extends) e controle de escopo (public, private e protected).",
+    title: "6. Functions & Classes",
+    category: "Statements",
+    content: "Regular functions in Dryad are Hoisted (can be invoked in the file before their syntactic declaration) and support optional named parameters and rest collectors (...rest). Dryad classes offer object-oriented programming with single inheritance (extends) and scope control (public, private, and protected).",
     codeSnippets: [
       {
-        title: "Exemplo Prático de Programação Orientada a Objetos",
+        title: "Practical Example of Object-Oriented Programming",
         code: `class Retangulo {
   public largura = 0;
   private altura = 0;
@@ -285,10 +285,10 @@ class Quadrado extends Retangulo {
 
 let q = new Quadrado(5);
 let area = q.area(); // Retorna 25`,
-        description: "Uso de propriedades encapsuladas e escopo privado para segurança de memória local."
+        description: "Use of encapsulated properties and private scope for local memory safety."
       },
       {
-        title: "Execução Concorrente com S.O. Threads",
+        title: "Concurrent Execution with OS Threads",
         code: `// Funções de thread executam de forma isolada real no S.O.
 let mu = mutex();
 let valorCompartilhado = 0;
@@ -305,18 +305,18 @@ let handle2 = thread processarParalelo(2);
 
 // Recuperação assíncrona dos handles de retorno
 let resultado = await handle1;`,
-        description: "Controle de seções críticas acessadas por múltiplas tarefas de S.O. simultâneas através das primitivas integradas de Mutex."
+        description: "Control of critical sections accessed by multiple simultaneous OS threads through built-in Mutex primitives."
       }
     ]
   },
   {
     id: "sistema-de-modulos",
-    title: "7. Sistema de Módulos & FFI",
-    category: "Modularidade",
-    content: "Dryad oferece a capacidade de desfrutar de diretivas em arquivos para acionar módulos puramente em C ou Rust através do seu FFI otimizado, de forma instantânea sem precisar de wrappers boilerplate.",
+    title: "7. Module System & FFI",
+    category: "Modularity",
+    content: "Dryad offers the ability to use file directives to invoke modules written purely in C or Rust through its optimized FFI, instantly without needing boilerplate wrappers.",
     codeSnippets: [
       {
-        title: "Carregamento e Chamada do FFI",
+        title: "FFI Loading and Calling",
         code: `#io       // Carrega módulo nativo de I/O em escopo global
 #crypto   // Módulo global nativo de criptografia pesada
 
@@ -329,29 +329,29 @@ function main() {
 }
 
 main();`,
-        description: "Os módulos nativos mapeiam tipos básicos do C diretamente para a representação do Dryad em runtime de forma contígua em memória."
+        description: "Native modules map basic C types directly to Dryad's runtime representation contiguously in memory."
       }
     ],
     tableData: {
-      headers: ["Tipo Dryad", "Tipo C correspondente", "Comportamento"],
+      headers: ["Dryad Type", "Corresponding C Type", "Behavior"],
       rows: [
-        ["number", "double (f64)", "Ponto flutuante binário normalizado em 64 bits."],
-        ["string", "const char*", "Buffer UTF-8 terminado com caractere nulo (\\0)."],
-        ["bool", "bool / uint8_t", "Contém 0 para falso e 1 para verdadeiro."],
-        ["null", "NULL / nullptr", "Passado diretamente como ponteiro de endereço nulo (0x0)."],
-        ["array", "void*", "Buffer opaco gerenciado por contagem de referências."],
-        ["object", "void*", "Ponteiro interno de objeto persistido."]
+        ["number", "double (f64)", "Normalized 64-bit binary floating point."],
+        ["string", "const char*", "UTF-8 buffer terminated with null character (\\0)."],
+        ["bool", "bool / uint8_t", "Contains 0 for false and 1 for true."],
+        ["null", "NULL / nullptr", "Passed directly as a null address pointer (0x0)."],
+        ["array", "void*", "Opaque buffer managed by reference counting."],
+        ["object", "void*", "Internal persisted object pointer."]
       ]
     }
   },
   {
     id: "modelo-de-execucao",
-    title: "8. Modelo de Execução Triplo",
-    category: "Arquitetura",
-    content: "Diferente de interpretadores comuns que forçam um pipeline unilateral, o compilador e interpretador do Dryad contam com três modos configuráveis em runtime de acordo com a meta da tarefa. Essa engenharia visa versatilidade extrema.",
+    title: "8. Triple Execution Model",
+    category: "Architecture",
+    content: "Unlike common interpreters that force a one-way pipeline, Dryad's compiler and interpreter feature three configurable runtime modes according to the task's goal. This engineering aims for extreme versatility.",
     codeSnippets: [
       {
-        title: "Compilação sob Demanda",
+        title: "On-Demand Compilation",
         code: `// Ativação dinâmica para execução otimizada de Bytecode
 set_compile_mode(true);
 
@@ -364,26 +364,26 @@ function loopsMassivos() {
 }
 
 loopsMassivos();`,
-        description: "Otimizações dinâmicas na VM de bytecode stack-based para operações sequenciais."
+        description: "Dynamic optimizations in the stack-based bytecode VM for sequential operations."
       }
     ],
     tableData: {
-      headers: ["Estratégia", "Características Técnicas", "Quando Utilizar"],
+      headers: ["Strategy", "Technical Characteristics", "When to Use"],
       rows: [
-        ["Tree-Walking Interpreter", "Executa a Árvore de Sintaxe Abstrata (AST) diretamente.", "Excelente para desenvolvimento ativo e depuração rápida."],
-        ["Bytecode VM", "Compila a AST para instrução de pilha stack-based para execuções rápidas e limpas.", "Performance intermediária para automações e processamentos locais."],
-        ["Compilador AOT (Ahead-of-Time)", "Compila o Bytecode intermediário (IR) diretamente para assembly de máquina nativo (ARM64 / x86_64).", "Máxima performance absoluta recomendável para produção estável."]
+        ["Tree-Walking Interpreter", "Executes the Abstract Syntax Tree (AST) directly.", "Excellent for active development and rapid debugging."],
+        ["Bytecode VM", "Compiles the AST to stack-based instructions for fast, clean execution.", "Intermediate performance for automations and local processing."],
+        ["AOT Compiler (Ahead-of-Time)", "Compiles the intermediate Bytecode (IR) directly to native machine assembly (ARM64 / x86_64).", "Maximum absolute performance recommended for stable production."]
       ]
     }
   },
   {
     id: "diretivas-syscall-runtimes",
-    title: "12. Arquitetura de Runtime Mínimo",
-    category: "Arquitetura",
-    content: "O runtime de Dryad implementa em C++ um conjunto mínimo de aproximadamente 50 syscalls primitivas (intrinsics), viabilizando que a Standard Library seja quase 100% escrita em Dryad puro, facilitando o self-hosting e a depuração ampla.",
+    title: "12. Minimal Runtime Architecture",
+    category: "Architecture",
+    content: "Dryad's runtime implements in C++ a minimal set of approximately 50 primitive syscalls (intrinsics), enabling the Standard Library to be almost 100% written in pure Dryad, facilitating self-hosting and broad debugging.",
     codeSnippets: [
       {
-        title: "Uso do Sistema Intrínseco de Syscalls",
+        title: "Using the Intrinsic Syscall System",
         code: `// Declaração de syscall nativa interna do runtime
 @intrinsic("syscall.open")
 extern function __open(path: string, flags: i32): i32;
@@ -405,35 +405,35 @@ export class Arquivo {
     }
   }
 }`,
-        description: "Toda a biblioteca de sockets, virtual file system, HTTP client e JSON parse é montada em Dryad puro consumindo essas primitivas intrinsics."
+        description: "The entire socket library, virtual file system, HTTP client, and JSON parser are built in pure Dryad consuming these intrinsic primitives."
       }
     ],
     tableData: {
-      headers: ["Categoria", "Syscall Primitiva", "Descrição no Runtime"],
+      headers: ["Category", "Primitive Syscall", "Runtime Description"],
       rows: [
-        ["File I/O", "open, read, write, close, lseek, stat, unlink, mkdir", "Acesso aos descritores de arquivo diretos do sistema de arquivos."],
-        ["Networking", "socket, connect, bind, listen, accept, send, recv", "Configurações de rede multiplexadas."],
-        ["Memory", "malloc, free, realloc, memcpy, memset", "Alocação interna do runtime com contagem de referências."],
-        ["Async I/O", "epoll_create, epoll_wait (Linux), kqueue, kevent (macOS)", "Event loop em nível de S.O. sem thread-blocking."],
-        ["Process/Thread", "fork, exec, wait, pthread_create, pthread_join", "Sincronização de paralelismo do processador."]
+        ["File I/O", "open, read, write, close, lseek, stat, unlink, mkdir", "Access to direct file descriptors of the file system."],
+        ["Networking", "socket, connect, bind, listen, accept, send, recv", "Multiplexed network configurations."],
+        ["Memory", "malloc, free, realloc, memcpy, memset", "Internal runtime allocation with reference counting."],
+        ["Async I/O", "epoll_create, epoll_wait (Linux), kqueue, kevent (macOS)", "OS-level event loop without thread-blocking."],
+        ["Process/Thread", "fork, exec, wait, pthread_create, pthread_join", "Processor parallelism synchronization."]
       ]
     }
   },
   {
     id: "tabela-codigos-de-erro",
-    title: "9. Apêndice A - Tabela de Códigos de Erro",
-    category: "Sistema de Erros",
-    content: "O Dryad provê mensagens detalhadas com códigos únicos atribuídos de acordo com o sub-componente falho. Isso promove robustez no rastreamento de problemas.",
+    title: "9. Appendix A - Error Code Table",
+    category: "Error System",
+    content: "Dryad provides detailed messages with unique codes assigned according to the failing sub-component. This promotes robustness in problem tracking.",
     tableData: {
-      headers: ["Faixa de Erro", "Categoria", "Exemplo de Ocorrência"],
+      headers: ["Error Range", "Category", "Example Occurrence"],
       rows: [
-        ["1000-1999", "Lexer Errors", "Caractere inesperado, String não fechada, Número em formato inválido."],
-        ["2000-2999", "Parser Errors", "Token inesperado, Parênteses desbalanceados, Erro de sintaxe estrutural."],
-        ["3000-3999", "Runtime Errors", "Variável indefinida, Divisão por zero, Stack overflow de execução."],
-        ["4000-4999", "Type Errors", "Incompatibilidade estática de tipos, Assinatura incorreta de métodos."],
-        ["5000-5599", "I/O Errors", "Arquivo não encontrado, Falha de permissão no descritor físico."],
-        ["6000-6999", "Module Errors", "Falha de importação do FFI, Símbolo nativo desconhecido."],
-        ["7000-7999", "Syntax Errors", "Violação genérica de regras de gramática estritas."]
+        ["1000-1999", "Lexer Errors", "Unexpected character, Unterminated string, Invalid number format."],
+        ["2000-2999", "Parser Errors", "Unexpected token, Unbalanced parentheses, Structural syntax error."],
+        ["3000-3999", "Runtime Errors", "Undefined variable, Division by zero, Execution stack overflow."],
+        ["4000-4999", "Type Errors", "Static type incompatibility, Incorrect method signature."],
+        ["5000-5599", "I/O Errors", "File not found, Permission failure on physical descriptor."],
+        ["6000-6999", "Module Errors", "FFI import failure, Unknown native symbol."],
+        ["7000-7999", "Syntax Errors", "Generic violation of strict grammar rules."]
       ]
     }
   }

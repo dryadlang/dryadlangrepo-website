@@ -11,67 +11,66 @@ const benchmarks = [
   <h1 class="text-2xl font-extrabold text-gray-900 mb-3 tracking-tight">Dryad Programming Language</h1>
 
   <p class="text-sm text-gray-600 mb-6 leading-relaxed">
-    Uma linguagem multi-paradigma de tipagem dinâmica inspirada em JavaScript/TypeScript,
-    projetada para automação de infraestrutura rápida e binários nativos ultra-leves. Através
-    de uma arquitetura de execução híbrida exclusiva, o Dryad compila trechos estritamente
-    tipados diretamente para ARM64/x86_64, enquanto mantém um interpretador instantâneo para sandbox.
+    A multi-paradigm dynamically typed programming language inspired by JavaScript/TypeScript,
+    designed for rapid infrastructure automation and ultra-lightweight native binaries. Through
+    a unique hybrid execution architecture, Dryad compiles strictly typed code paths directly
+    to ARM64/x86_64, while maintaining an instant-on interpreter for sandboxed scripting.
   </p>
 
   <p class="text-sm mb-8">
-    <a href="/docs/introducao-e-filosofia" class="text-emerald-800 no-underline hover:underline font-semibold">Ler Especificação →</a>
+    <a href="/docs/introducao-e-filosofia" class="text-emerald-800 no-underline hover:underline font-semibold">Read the Spec →</a>
     <span class="text-gray-300 mx-2">·</span>
-    <a href="/docs/tabela-codigos-de-erro" class="text-emerald-800 no-underline hover:underline font-semibold">Códigos de Erro →</a>
+    <a href="/docs/tabela-codigos-de-erro" class="text-emerald-800 no-underline hover:underline font-semibold">Error Codes →</a>
   </p>
 
   <div class="mb-8">
-    <h2 class="text-sm font-bold text-gray-900 mb-3">Execução Tripla Dinâmica</h2>
+    <h2 class="text-sm font-bold text-gray-900 mb-3">Triple Execution Engine</h2>
     <p class="text-sm text-gray-600 mb-2">
-      Alterne instantaneamente entre o <strong>Tree-Walking Interpreter</strong> para scripting
-      imediato, o <strong>Stack-Based Bytecode VM</strong> de alta confiabilidade, e compilações
-      <strong>Nativas AOT</strong> livres de coletor de lixo periódico.
+      Instantly switch between a <strong>Tree-Walking Interpreter</strong> for immediate
+      scripting, a <strong>Stack-Based Bytecode VM</strong> for reliable intermediate
+      performance, and <strong>AOT Native Compilation</strong> with no periodic garbage collector.
     </p>
     <p class="text-sm">
-      <a href="/docs/modelo-de-execucao" class="text-emerald-800 no-underline hover:underline font-semibold">Como funciona a trilha de execução →</a>
+      <a href="/docs/modelo-de-execucao" class="text-emerald-800 no-underline hover:underline font-semibold">How the execution pipeline works →</a>
     </p>
   </div>
 
   <div class="mb-8">
-    <h2 class="text-sm font-bold text-gray-900 mb-3">Segurança Determinística</h2>
+    <h2 class="text-sm font-bold text-gray-900 mb-3">Deterministic Safety</h2>
     <p class="text-sm text-gray-600 mb-2">
-      Memory clean previsível implementado através de <strong>Reference Counting automático
-      livre de GC de tracing</strong>, acionado no exato momento que estruturas saem de
-      escopo ou threads encerram, com suporte a bounds-checking em arrays de baixo nível.
+      Predictable memory cleanup via <strong>automatic Reference Counting with no tracing GC</strong>,
+      triggered the moment structures go out of scope or threads terminate, with bounds-checking
+      support for low-level arrays.
     </p>
     <p class="text-sm">
-      <a href="/blog" class="text-emerald-800 no-underline hover:underline font-semibold">No-Nonsense Deep Dive no Blog →</a>
+      <a href="/blog" class="text-emerald-800 no-underline hover:underline font-semibold">No-Nonsense Deep Dive on the Blog →</a>
     </p>
   </div>
 
   <div class="mb-8">
-    <h2 class="text-sm font-bold text-gray-900 mb-3">Instalação Prática & Quick Start</h2>
+    <h2 class="text-sm font-bold text-gray-900 mb-3">Quick Start</h2>
     <p class="text-sm text-gray-600 mb-3">
-      O instalador oficial detecta sua arquitetura de CPU (x86_64 ou ARM64) e configura
-      de forma instantânea a ferramenta <code class="text-emerald-800 font-semibold">dryad</code>
-      em suas variáveis de ambiente:
+      The official installer detects your CPU architecture (x86_64 or ARM64) and instantly
+      sets up the <code class="text-emerald-800 font-semibold">dryad</code> CLI in your PATH:
     </p>
     <pre class="bg-gray-900 text-emerald-400 p-4 text-sm leading-snug overflow-x-auto select-text mb-3 font-mono">$ curl -fsSL https://dryad.dev/install | sh
-<span class="text-gray-500 italic"># Instalando Dryad Toolkit v1.0.0... Prontidão detectada.</span>
+<span class="text-gray-500 italic"># Installing Dryad Toolkit v1.0.0... Ready.</span>
 $ dryad run scripts/main.dy
-<span class="text-gray-500 italic"># Ola Mundo! Executado dinamicamente via AST Interpreter.</span>
+<span class="text-gray-500 italic"># Hello World! Running dynamically via AST Interpreter.</span>
 $ dryad build --aot scripts/main.dy -o output_bin
-<span class="text-gray-500 italic"># Convertido para IR, optimizado com Constant Folding & baixado nativo ELF.</span></pre>
+<span class="text-gray-500 italic"># Converted to IR, optimized with Constant Folding & native ELF output.</span></pre>
   </div>
 
   <div class="mb-8">
-    <h2 class="text-sm font-bold text-gray-900 mb-3">Quadro de Performance Comparativa</h2>
+    <h2 class="text-sm font-bold text-gray-900 mb-3">Comparative Performance</h2>
     <div class="text-sm leading-relaxed overflow-x-auto">
       <table class="w-full text-left text-sm border-collapse">
         <thead>
           <tr class="text-gray-500 text-xs border-b border-gray-200">
-            <th class="py-1.5 pr-3 font-semibold">Métrica</th>
-            <th class="py-1.5 px-3 font-semibold">Interpretador AST</th>
+            <th class="py-1.5 pr-3 font-semibold">Metric</th>
+            <th class="py-1.5 px-3 font-semibold">AST Interpreter</th>
             <th class="py-1.5 px-3 font-semibold">Bytecode VM</th>
-            <th class="py-1.5 px-3 font-semibold">Nativo AOT</th>
+            <th class="py-1.5 px-3 font-semibold">AOT Native</th>
           </tr>
         </thead>
         <tbody>
@@ -86,15 +85,14 @@ $ dryad build --aot scripts/main.dy -o output_bin
         </tbody>
       </table>
     </div>
-    <p class="text-xs text-gray-500 mt-2 italic">Dados coletados sob arquitetura Apple M2 ARM64.</p>
+    <p class="text-xs text-gray-500 mt-2 italic">Benchmarked on Apple M2 ARM64.</p>
   </div>
 
   <div class="mb-4">
-    <h2 class="text-sm font-bold text-gray-900 mb-2">FILOSOFIA DA LINGUAGEM</h2>
+    <h2 class="text-sm font-bold text-gray-900 mb-2">DESIGN PHILOSOPHY</h2>
     <blockquote class="text-sm text-gray-600 italic leading-relaxed">
-      "Clareza sobre performance: Prioriza-se de forma incondicional a legibilidade,
-      consistência de sintaxe e fornecimento de erros limpos com sugestões, antes de
-      otimizações de runtime obscuras."
+      "Clarity over performance: Legibility, syntactic consistency, and clean error messages
+      with suggestions are unconditionally prioritized over obscure runtime optimizations."
     </blockquote>
   </div>
 

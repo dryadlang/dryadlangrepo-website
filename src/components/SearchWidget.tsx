@@ -68,7 +68,7 @@ export default function SearchWidget() {
       <input
         ref={searchInputRef}
         type="text"
-        placeholder="buscar documentação..."
+        placeholder="search docs..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         onFocus={() => setIsFocused(true)}
@@ -94,7 +94,7 @@ export default function SearchWidget() {
 
       {isFocused && searchQuery.trim() && searchResults.length === 0 && (
         <div className="absolute left-0 right-0 top-8 bg-white border border-gray-300 p-3 text-center text-xs text-gray-400 z-50">
-          Nenhum resultado para "{searchQuery}".
+          No results for "{searchQuery}".
         </div>
       )}
     </div>

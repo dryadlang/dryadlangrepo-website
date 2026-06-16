@@ -15,10 +15,10 @@ const { article } = Astro.props;
 <BaseLayout title={article.title}>
   <article class="py-2">
     <p class="text-xs text-gray-500 mb-4">
-      <a href="/blog" class="text-emerald-800 no-underline hover:underline font-semibold">← Retornar ao DevLog</a>
+      <a href="/blog" class="text-emerald-800 no-underline hover:underline font-semibold">← Back to DevLog</a>
     </p>
 
-    <p class="text-xs text-gray-500 mb-2">{article.date} · Por {article.author} · {article.readTime}</p>
+    <p class="text-xs text-gray-500 mb-2">{article.date} · By {article.author} · {article.readTime}</p>
 
     <h1 class="text-lg font-bold text-gray-900 mb-6 leading-tight">{article.title}</h1>
 
