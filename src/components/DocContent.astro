@@ -27,13 +27,18 @@ function renderHighlightedCode(code: string): string {
       commentPart = line.substring(commentIdx);
     }
 
-    const rawHtml = content
-      .replace(/([0-9]+\.?[0-9]*|0x[0-9A-Fa-f]+|0b[01]+|0o[0-7]+)/g, '<span class="text-blue-400 font-medium">$1</span>')
-      .replace(/\b(let|const|function|fn|class|extends|constructor|super|this|static|public|private|protected|import|export|match|thread|mutex|try|catch|finally|throw|return|async|await)\b/g, '<span class="text-emerald-400 font-bold">$1</span>')
-      .replace(/\b(number|string|bool|null|any|void|extern)\b/g, '<span class="text-teal-400 font-semibold">$1</span>')
-      .replace(/\b(true|false)\b/g, '<span class="text-amber-400 font-bold">$1</span>')
-      .replace(/(#[a-zA-Z_]+)/g, '<span class="text-emerald-400 font-semibold">$1</span>')
-      .replace(/(::)/g, '<span class="text-orange-400 font-bold">$1</span>');
+    const rawHtml = content.replace(
+      /(\b(?:let|const|function|fn|class|extends|constructor|super|this|static|public|private|protected|import|export|match|thread|mutex|try|catch|finally|throw|return|async|await)\b)|(\b(?:number|string|bool|null|any|void|extern)\b)|(\b(?:true|false)\b)|(#[a-zA-Z_]+)|(::)|([0-9]+\.?[0-9]*|0x[0-9A-Fa-f]+|0b[01]+|0o[0-7]+)/g,
+      (match, keyword, typeKw, boolVal, nativeDir, namespace, number) => {
+        if (keyword) return `<span class="text-emerald-400 font-bold">${match}</span>`;
+        if (typeKw)  return `<span class="text-teal-400 font-semibold">${match}</span>`;
+        if (boolVal) return `<span class="text-amber-400 font-bold">${match}</span>`;
+        if (nativeDir) return `<span class="text-emerald-400 font-semibold">${match}</span>`;
+        if (namespace) return `<span class="text-orange-400 font-bold">${match}</span>`;
+        if (number) return `<span class="text-blue-400 font-medium">${match}</span>`;
+        return match;
+      }
+    );
 
     const lineNum = `<span class="text-gray-600 select-none">${String(idx + 1).padStart(2)}</span> `;
     const codeHtml = rawHtml + (commentPart ? `<span class="text-gray-500 italic">${commentPart}</span>` : "");
