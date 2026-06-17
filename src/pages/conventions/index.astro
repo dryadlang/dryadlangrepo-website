@@ -2,6 +2,8 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { conventionsData } from "../../data/conventionsData";
 import type { ConventionBlock } from "../../data/conventionsData";
+import type { PdfSection } from "../../components/DownloadPdfButton";
+import DownloadPdfButton from "../../components/DownloadPdfButton";
 
 function renderBlock(block: ConventionBlock, sectionNum: string): string {
   switch (block.type) {
@@ -57,6 +59,12 @@ function renderBlock(block: ConventionBlock, sectionNum: string): string {
       </div>`;
   }
 }
+
+const pdfSections: PdfSection[] = conventionsData.map((sec) => ({
+  number: sec.number,
+  title: sec.title,
+  html: sec.blocks.map((b) => renderBlock(b, sec.number)).join("\n"),
+}));
 ---
 
 <BaseLayout title="Dryad Conventions" description="The formal specification of the Dryad programming language — syntax, type system, execution model, concurrency, FFI, and runtime architecture. The authoritative reference for implementors.">
@@ -71,6 +79,18 @@ function renderBlock(block: ConventionBlock, sectionNum: string): string {
         It serves as the authoritative reference for language implementors and advanced users,
         analogous to the ECMAScript specification for JavaScript.
       </p>
+      <div class="mt-6 flex justify-center">
+        <DownloadPdfButton
+          client:visible
+          sections={pdfSections}
+          bookTitle="Dryad Conventions"
+          bookSubtitle="Language Specification and Theoretical Foundation"
+          version="1.0"
+          date="June 2026"
+          description="The formal specification of the Dryad programming language — syntax, type system, execution model, concurrency, FFI, runtime architecture, and proposed refinements. The authoritative reference for language implementors and advanced users."
+          filename="dryad-conventions.pdf"
+        />
+      </div>
     </div>
 
     <!-- Table of Contents -->

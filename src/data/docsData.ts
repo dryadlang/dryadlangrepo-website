@@ -155,7 +155,7 @@ let servidor = {
     id: "modo-estrito-futuro",
     title: "3.5 Strict Type Mode (AOT)",
     category: "Data Structures",
-    content: "'use strict types' activates the static validator at compile time. With this, the AOT compiler eliminates dynamic type checks at runtime, enables stack allocations for local references (Escape Analysis), resolves method devirtualizations statically, and converts collection loops directly into vectorized SIMD blocks.",
+    content: "'use strict types' activates the static validator at compile time. With this, the AOT compiler eliminates dynamic type checks at runtime, enables stack allocations for local references (Escape Analysis), resolves method devirtualizations statically, and converts collection loops directly into vectorized SIMD blocks. The compiler employs a three-level gradient inference strategy: static CFG analysis promotes monomorphic variables to native types; user annotations are treated as binding; and genuinely polymorphic bindings fall back to the Variant Enum. This 'Bind Once' approach means type specialization is final at compile time — there is no deoptimization or reoptimization, guaranteeing deterministic performance with zero warm-up.",
     codeSnippets: [
       {
         title: "Static Strict Mode (Optimizations)",
@@ -312,7 +312,7 @@ let resultado = await handle1;`,
     id: "sistema-de-modulos",
     title: "7. Module System & FFI",
     category: "Modularity",
-    content: "Dryad offers the ability to use file directives to invoke modules written purely in C or Rust through its optimized FFI, instantly without needing boilerplate wrappers.",
+    content: "Dryad offers the ability to use file directives to invoke modules written purely in C or Rust through its optimized FFI, instantly without needing boilerplate wrappers. When passing heap-allocated Dryad objects across the FFI boundary, the gc.pin() and gc.unpin() intrinsics prevent the garbage collector from moving or collecting objects during native calls, ensuring pointer validity for the duration of the operation. Every FFI crossing should follow the mandatory pin-call-unpin pattern to guarantee memory safety.",
     codeSnippets: [
       {
         title: "FFI Loading and Calling",
@@ -379,7 +379,7 @@ loopsMassivos();`,
     id: "diretivas-syscall-runtimes",
     title: "12. Minimal Runtime Architecture",
     category: "Architecture",
-    content: "Dryad's runtime implements in C++ a minimal set of approximately 50 primitive syscalls (intrinsics), enabling the Standard Library to be almost 100% written in pure Dryad, facilitating self-hosting and broad debugging.",
+    content: "Dryad's runtime implements in C++ a minimal set of approximately 50 primitive syscalls (intrinsics), enabling the Standard Library to be almost 100% written in pure Dryad, facilitating self-hosting and broad debugging. All raw intrinsic calls are wrapped in safe Dryad functions that validate inputs and manage cleanup — raw intrinsics may only be used within the standard library's boundary layer. The runtime includes a native Buffer type with bounds-checked access, zero-copy I/O operations, and a Hardware Abstraction Layer (HAL) that isolates platform-specific syscall differences behind a uniform interface.",
     codeSnippets: [
       {
         title: "Using the Intrinsic Syscall System",
@@ -479,7 +479,7 @@ RETURN_VALUE      // Pop result and return from function`,
     id: "compilacao-aot",
     title: "14. AOT Compilation Pipeline",
     category: "Architecture",
-    content: "The Ahead-of-Time (AOT) compiler transforms Dryad bytecode into native machine code. It is structured as a multi-stage pipeline: stack-based OpCodes are first converted to a register-based IR, optimized via classical compiler passes, then lowered to assembly for the target architecture, and finally linked into an executable object file (ELF or PE).",
+    content: "The Ahead-of-Time (AOT) compiler transforms Dryad bytecode into native machine code. It is structured as a multi-stage pipeline: stack-based OpCodes are first converted to a register-based IR, optimized via classical compiler passes, then lowered to assembly for the target architecture, and finally linked into an executable object file (ELF or PE). The compiler employs a 'Bind Once' strategy: gradient type inference promotes variables to native types at compile time, eliminating the Variant Enum for monomorphic code paths. Functions with dynamic parameters generate type-specialized stubs (monomorphization). Object property access uses Shapes (Hidden Classes) to resolve to direct memory loads. Escape analysis enables stack allocation for non-escaping objects. All type bindings are final at compile time — there is no deoptimization or JIT feedback loop, ensuring deterministic performance with zero warm-up.",
     codeSnippets: [
       {
         title: "Pipeline Overview",

@@ -156,6 +156,20 @@ export const conventionsData: ConventionSection[] = [
         content:
           "Dryad performs the following automatic conversions: <code>number + string</code> yields string concatenation; <code>bool</code> in arithmetic context becomes <code>1</code> (true) or <code>0</code> (false); <code>null</code> receives special treatment in comparisons; arrays and objects are compared by reference.",
       },
+      {
+        type: "definition",
+        id: "3.4",
+        title: "Gradient Type Inference for AOT",
+        content:
+          "The AOT compiler employs a three-level gradient approach to resolve types for code compiled under <code>\"use strict types\"</code> or when the compiler can statically prove type safety: (i) <strong>Static CFG Inference</strong> — the compiler traverses the Control Flow Graph and propagates type constraints forward, promoting variables to their most specific native type (e.g., <code>f64</code>, <code>i32</code>) whenever all paths produce the same type; (ii) <strong>Annotation-Guided Resolution</strong> — user-provided type annotations (e.g., <code>let x: i32</code>) are treated as authoritative binding directives, bypassing inference for the annotated variable; (iii) <strong>Dynamic Fallback</strong> — when the inference engine cannot determine a single type (genuine polymorphism, e.g., a variable receiving both <code>number</code> and <code>string</code> across paths), the Variant Enum is preserved for that variable alone. This fallback is scoped to the individual binding, not the entire function.",
+      },
+      {
+        type: "property",
+        id: "3.4",
+        title: "Bind Once — Compile-Time Type Specialization",
+        content:
+          "Unlike JIT-compiled languages (V8, SpiderMonkey) that may deoptimize and re-optimize as type profiles change, Dryad's AOT compiler performs a single, irreversible type binding at compile time. Once a variable is promoted to a native type via gradient inference, that binding is final. This eliminates the complexity and runtime stutter of deoptimization/reoptimization cycles, at the cost of requiring the compiler to be conservative when types are genuinely ambiguous. The trade-off is deliberate: deterministic performance with no warm-up phase, aligning with Dryad's axiom of Zero Surprises.",
+      },
     ],
   },
   {
@@ -470,6 +484,46 @@ let r2 = await h2;  // 20`,
         description:
           "Multiple OS threads execute in parallel, synchronized via the built-in mutex primitive. Return values are retrieved via await on thread handles.",
       },
+      {
+        type: "definition",
+        id: "10.4",
+        title: "Mutex with Timeout",
+        content:
+          "The <code>mu.lock(timeout_ms: number): bool</code> variant attempts to acquire the lock within the specified timeout in milliseconds. Returns <code>true</code> if the lock was acquired, <code>false</code> if the timeout expired. This enables non-blocking synchronization patterns and guards against deadlock scenarios where a thread fails to release its lock. The blocking variant <code>mu.lock()</code> is equivalent to <code>mu.lock(Infinity)</code>.",
+      },
+      {
+        type: "code",
+        title: "Mutex with Timeout — Deadlock-Safe Pattern",
+        code: `let mu = mutex();
+let shared: any[] = [];
+
+thread function producer() {
+  for (let i = 0; i < 100; i++) {
+    // Attempt to acquire within 50 ms
+    if (mu.lock(50)) {
+      shared.push(i);
+      mu.unlock();
+    } else {
+      // Timeout — resource contested; retry or log
+      io_write("warn", "producer: lock timeout on iteration " ++ i);
+    }
+  }
+}
+
+thread function consumer() {
+  for (let i = 0; i < 100; i++) {
+    if (mu.lock(50)) {
+      if (shared.len() > 0) {
+        let val = shared.pop();
+        io_write("data", "consumed: " ++ val);
+      }
+      mu.unlock();
+    }
+  }
+}`,
+        description:
+          "Timeout-based locking prevents indefinite blocking. The pattern is particularly important for producer-consumer workloads and for guarding against deadlock from uncoordinated thread termination.",
+      },
     ],
   },
   {
@@ -501,6 +555,32 @@ let r2 = await h2;  // 20`,
         title: "FFI Calling Convention",
         content:
           "FFI calls follow the C calling convention: parameters are passed left-to-right; on x86-64, return values are placed in the <code>rax</code> register; the caller cleans the stack (cdecl convention). Complex types are passed as opaque pointers — only primitive types have direct conversion. Conversion responsibility lies with the native implementation.",
+      },
+      {
+        type: "definition",
+        id: "11.2",
+        title: "Pinned Objects for FFI Safety",
+        content:
+          "When a Dryad object reference crosses the FFI boundary into native code, the garbage collector may move or reclaim the object during the call, producing a dangling pointer. The <code>gc.pin(obj)</code> intrinsic prevents the GC from moving or collecting the object for the duration of the FFI call. It returns a raw pointer (<code>ptr&lt;u8&gt;</code>) valid for the pinned scope. <code>gc.unpin(obj)</code> releases the pin, allowing the GC to resume normal management. Pins are reference-counted: nested pin calls require an equal number of unpin calls.",
+      },
+      {
+        type: "code",
+        title: "Pinning Objects for FFI Calls",
+        code: `@intrinsic("gc.pin")
+extern function __gc_pin(obj: any): ptr<u8>;
+
+@intrinsic("gc.unpin")
+extern function __gc_unpin(obj: any): void;
+
+// Safe FFI wrapper: pin → call → unpin
+function writeBuffer(fd: i32, buf: Buffer) {
+  let raw = __gc_pin(buf);       // prevent GC from moving buf
+  let written = __write(fd, raw, buf.len);
+  __gc_unpin(buf);               // release pin
+  return written;
+}`,
+        description:
+          "Every FFI call that passes a heap-allocated object must pin the object first. The runtime asserts that all pins are released before a thread terminates; leaked pins produce a runtime diagnostic (9000+ System Error).",
       },
     ],
   },
@@ -565,6 +645,85 @@ extern function __write(fd: i32, buf: ptr<u8>, len: usize): isize;
           ["Core I/O", "FileSystem, Buffer, Socket, TCP/UDP", "Dryad + Intrinsics"],
           ["Runtime Layer", "~50 syscalls: open, read, write, socket, epoll, malloc, ...", "C++"],
         ],
+      },
+      {
+        type: "property",
+        id: "12.2",
+        title: "Boundary Safety — Mandatory Wrapper Pattern",
+        content:
+          "All intrinsics with side effects or raw pointer arguments MUST be wrapped in a safe Dryad function that validates inputs and manages cleanup. Raw intrinsic calls in application code are prohibited outside of the standard library wrapper layer. This boundary guarantees that type invariants (non-null, valid range, correct lifetime) are enforced before control reaches native code. Violations produce Runtime Error 4000-4999 at the wrapper boundary.",
+      },
+      {
+        type: "definition",
+        id: "12.3",
+        title: "Intrinsic Dispatcher — Lookup Table Optimization",
+        content:
+          "The VM dispatches intrinsics via a flat lookup table of function pointers indexed by syscall ID, replacing the traditional switch-based dispatch. The lookup table is a <code>const fn_ptr[N]</code> array populated at compile time. Dispatch cost: two loads (base + offset) plus an indirect call — constant time regardless of N. For the bytecode VM, the <code>INTRINSIC_SYSCALL</code> opcode carries the syscall ID directly; for AOT-compiled code, the syscall ID is resolved to an absolute address at link time. Future work includes direct-threaded dispatch, where each syscall handler appends its own successor address, eliminating the central dispatch loop entirely.",
+      },
+      {
+        type: "definition",
+        id: "12.4",
+        title: "Traceable Intrinsics — Debug Mode",
+        content:
+          "When the runtime is compiled with <code>DRYAD_DEBUG_INTRINSICS=1</code>, every intrinsic call emits a structured trace record containing: timestamp (monotonic ns), thread ID, syscall ID, argument values (truncated to 64 bytes), return value, and elapsed time (ns). Traces are written to a ring buffer (configurable size, default 4096 entries) accessible at runtime via <code>#&lt;debug&gt;.dump_trace()</code>. The ring buffer is lock-free (single producer per thread). Production builds compile out all tracing code with zero overhead.",
+      },
+      {
+        type: "definition",
+        id: "12.5",
+        title: "Safe Bounds Checking — Buffer Type",
+        content:
+          "The native <code>Buffer</code> type represents a contiguous byte region with an embedded length and capacity. Every read and write operation validates the offset and extent against the buffer's length: out-of-bounds access raises Runtime Error 3000-3999 with the attempted range and buffer capacity. The bounds check compiles to a single <code>cmp</code> + <code>jae</code> (ARM64: <code>cmp</code> + <code>b.cs</code>) and is elided only when the AOT optimizer can statically prove the access is within bounds via range analysis.",
+      },
+      {
+        type: "property",
+        id: "12.3",
+        title: "Zero-Copy I/O via Native Buffer",
+        content:
+          "The <code>Buffer</code> type supports zero-copy I/O operations: <code>read_into(buf)</code> fills a pre-allocated buffer directly from a file descriptor or socket without intermediate copying. <code>write_from(buf)</code> transmits the buffer contents directly. The <code>slice(offset, len)</code> operation produces a view into an existing buffer without copying — the view shares the same backing memory and is reference-counted via the GC. This eliminates all unnecessary data movement between Dryad and the kernel for I/O-bound workloads.",
+      },
+      {
+        type: "note",
+        content:
+          "Intrinsic declarations carry a JSON metadata descriptor (<code>intrinsics.json</code>) that specifies each parameter's expected type, direction (in/out/inout), nullable flag, and safety constraint. The runtime validates calls against this schema in debug mode. Example: <code>{ \"syscall.read\": { \"params\": [{\"name\":\"fd\",\"type\":\"i32\",\"dir\":\"in\"}, {\"name\":\"buf\",\"type\":\"ptr<u8>\",\"dir\":\"out\",\"nullable\":false}, {\"name\":\"len\",\"type\":\"usize\",\"dir\":\"in\"}], \"returns\": \"isize\" } }</code>. This schema is used by the AOT compiler to generate type-safe call sites and by IDE tooling for inline documentation.",
+      },
+      {
+        type: "definition",
+        id: "12.6",
+        title: "Hardware Abstraction Layer (HAL)",
+        content:
+          "The intrinsic set is partitioned into a portable HAL that abstracts OS-specific syscall differences. The HAL exposes uniform operations: <code>hal_open(path, flags, mode)</code> — maps to <code>open(2)</code> (POSIX) or <code>CreateFileW</code> (Windows); <code>hal_mmap(addr, len, prot, flags, fd, offset)</code> — maps to <code>mmap(2)</code> (POSIX) or <code>MapViewOfFile</code> (Windows); <code>hal_spawn(path, args)</code> — maps to <code>fork+exec</code> (POSIX) or <code>CreateProcessW</code> (Windows). Only the HAL layer contains platform-specific code; all intrinsics above the HAL are pure abstract syscalls. This limits porting effort to approximately 10-15 HAL primitives.",
+      },
+      {
+        type: "property",
+        id: "12.4",
+        title: "Pure Syscall Calling Convention",
+        content:
+          "Intrinsics that translate directly to a kernel syscall (e.g., <code>__read</code>, <code>__write</code>, <code>__mmap</code>) use a pure syscall calling convention that eliminates the C runtime wrapper. Arguments are passed in the architecture's syscall registers (x0-x5 on ARM64, rdi-rsi-rdx-r10-r8-r9 on x86_64) and the syscall instruction (<code>svc #0</code> / <code>syscall</code>) is emitted inline with no libc trampoline. This convention applies only to intrinsics annotated <code>@intrinsic(\"syscall.*\")</code>; complex operations requiring libc still use the standard C ABI wrapper.",
+      },
+      {
+        type: "definition",
+        id: "12.7",
+        title: "Memory Intrinsics — mmap and munmap",
+        content:
+          "The <code>@intrinsic(\"syscall.mmap\")</code> and <code>@intrinsic(\"syscall.munmap\")</code> intrinsics expose virtual memory management directly. <code>__mmap(addr, len, prot, flags, fd, offset): ptr&lt;u8&gt;</code> maps a file or anonymous region into the process address space. <code>__munmap(addr, len): void</code> unmaps the region. These enable efficient memory-mapped file I/O and custom allocator construction in pure Dryad. The <code>Buffer</code> type may optionally back its storage with <code>mmap</code> for large regions (>64 KB), falling back to <code>malloc</code> for smaller allocations.",
+      },
+      {
+        type: "code",
+        title: "Memory-Mapped File I/O in Pure Dryad",
+        code: `// Memory-map a file for zero-copy read
+function readFileMmap(path: string): Buffer {
+  let fd = __open(path, 0);            // O_RDONLY
+  if (fd < 0) throw "Failed to open";
+  let len = __lseek(fd, 0, 2);         // SEEK_END
+  __lseek(fd, 0, 0);                    // SEEK_SET
+  let prot = 3;                         // PROT_READ | PROT_WRITE
+  let flags = 2;                        // MAP_PRIVATE
+  let mapped = __mmap(null, len, prot, flags, fd, 0);
+  __close(fd);
+  return Buffer.fromPtr(mapped, len);   // Wrap in Buffer (no copy)
+}`,
+        description:
+          "Memory-mapped I/O eliminates double-copy between kernel and userspace. The Buffer wraps the mmap'd region directly; the region is unmapped when the Buffer is GC'd via a registered finalizer.",
       },
     ],
   },
@@ -632,6 +791,108 @@ extern function __write(fd: i32, buf: ptr<u8>, len: usize): isize;
         type: "note",
         content:
           "The AOT compiler is currently experimental. Not all language features are supported in AOT mode. The interpreter and bytecode VM are the recommended execution modes for development. AOT should be used for stable hot paths and production builds where maximum performance is required.",
+      },
+      {
+        type: "definition",
+        id: "14.3",
+        title: "Static Dispatching via Linker Symbols",
+        content:
+          "The AOT backend resolves function calls through statically-defined linker symbols rather than dynamic dispatch tables. Each function in the compiled IR is assigned a unique, deterministic symbol name following the scheme <code>_D&lt;module_hash&gt;_&lt;function_name&gt;</code>. The linker resolves cross-module references at link time, eliminating all runtime dispatch overhead. Virtual method calls on classes with a single known implementation (monomorphic sites) are devirtualized during IR optimization and replaced with direct static calls. Polymorphic sites fall back to a <code>call *rax</code> indirect dispatch through a vtable, but the vtable is populated at link time and resides in <code>.rodata</code>.",
+      },
+      {
+        type: "code",
+        title: "AOT Symbol Resolution and Devirtualization",
+        code: `// Dryad source
+class Logger {
+  function write(msg: string) { ... }
+}
+let log = new Logger();
+log.write("hello");
+
+// AOT-compiled symbol: _Da1b2_write
+// Callsite after devirtualization:
+//   lea rdi, [rip + .Lstr_hello]   ; string argument
+//   call _Da1b2_write              ; direct call — zero dispatch overhead
+
+// With dynamic dispatch (polymorphic site):
+//   mov rax, [rdi]                 ; load vtable pointer
+//   call [rax + 16]               ; indirect call via vtable slot`,
+        description:
+          "Static dispatch produces a <code>call</code> instruction with a fixed target address resolved by the linker. This is the fastest possible calling mechanism — the CPU's branch predictor learns the target permanently and the instruction pipeline is not disrupted by an indirect branch.",
+      },
+      {
+        type: "definition",
+        id: "14.4",
+        title: "Bind Once — Type-Specialized Stubs",
+        content:
+          "For each function with dynamic parameters, the AOT compiler generates monomorphized variants based on the types inferred at compile time. A function <code>function add(a, b) { return a + b; }</code> produces <code>add_f64(f64 a, f64 b) -&gt; f64</code> and <code>add_str(string a, string b) -&gt; string</code> stubs. Each variant eliminates the Variant Enum discriminant check for all operations within the function body. The binding is performed once at compile time — there is no deoptimization or reoptimization (no JIT feedback loop). This avoids the runtime stutter and complexity of adaptive optimization systems (V8's TurboFan, SpiderMonkey's Warp), replacing it with a deterministic compilation that always produces the same binary for the same source.",
+      },
+      {
+        type: "definition",
+        id: "14.5",
+        title: "Shapes / Hidden Classes for Object Property Access",
+        content:
+          "When the AOT compiler encounters object literal construction or class instantiation, it infers a Shape (also called Hidden Class or Map) that describes the layout of properties in memory. Each Shape encodes property names and their byte offsets relative to the object base pointer. Objects sharing the same Shape access properties via <code>load [obj + offset]</code> instead of a HashMap lookup. Shape transitions occur when properties are added or removed; the compiler generates fast-path inline cache checks for the common Shape and a slow-path fallback. For monomorphic sites (a single Shape throughout the program), the compiler eliminates all Shape checks, producing a direct memory load identical to C++ struct member access.",
+      },
+      {
+        type: "property",
+        id: "14.2",
+        title: "Type Promotion via Control Flow Analysis",
+        content:
+          "The AOT optimizer traverses the Control Flow Graph (CFG) to propagate type constraints across basic blocks. If a variable <code>x</code> is used exclusively as <code>number</code> on all reachable paths within a function, the compiler promotes <code>x</code> to a native <code>f64</code> (or <code>i32</code> when range analysis permits). The promotion is scoped: a variable may be promoted to native types inside hot loops while retaining the Variant Enum representation outside the loop. This per-block promotion is the key difference from whole-function type inference — it permits fine-grained optimization without requiring the entire function to be monomorphic.",
+      },
+      {
+        type: "property",
+        id: "14.3",
+        title: "Escape Analysis and Stack Allocation",
+        content:
+          "The AOT compiler performs escape analysis on all allocated objects. If an object is determined to not escape its allocating function (no return, no store to global, no capture by closure), the object is allocated on the stack rather than the heap. Stack allocation eliminates: (i) the <code>malloc</code>/<code>free</code> call overhead; (ii) reference counting operations (the object's lifetime is tied to the stack frame); and (iii) GC pressure. Combined with Shape-based property access, a non-escaping object becomes indistinguishable from a C++ stack-allocated struct in the generated assembly — zero runtime overhead for allocation, access, and deallocation.",
+      },
+      {
+        type: "note",
+        content:
+          "The gradient inference strategy resolves types at three levels: Level 1 (Static CFG Inference) promotes variables when all paths agree; Level 2 (Annotation-Guided) respects user type annotations as binding; Level 3 (Dynamic Fallback) preserves the Variant Enum only for genuinely polymorphic bindings. This design ensures that correctly typed programs compile to 100% native code with zero runtime type checks, while genuinely dynamic programs remain correct — they simply run in the slower Variant Enum path where needed.",
+      },
+      {
+        type: "code",
+        title: "AOT Monomorphization Example",
+        code: `// Dryad source (dynamic types)
+function scale(arr, factor) {
+  let result = [];
+  for (let i = 0; i < arr.len(); i++) {
+    result.push(arr[i] * factor);
+  }
+  return result;
+}
+let doubled = scale([1, 2, 3], 2);
+
+// AOT-compiled result (after type inference):
+// CFG inference determines: arr -> f64[], factor -> f64, result -> f64[]
+// Generated monomorphized version:
+//   function scale_f64_arr(arr: f64[], factor: f64) -> f64[] {
+//     let result: f64[] = allocate_array(0);
+//     for (let i: i32 = 0; i < arr.len; i32++) {
+//       // No type check: arr[i] and factor are both f64
+//       result.push(arr[i] * factor);  // f64 * f64 = native FMUL
+//     }
+//     return result;
+//   }
+//
+// Generated assembly (ARM64, simplified):
+//   scale_f64_arr:
+//     stp x29, x30, [sp, #-16]!
+//     mov x29, sp
+//     ...loop:
+//     ldr d0, [x0, x1, lsl #3]  // arr[i] as f64
+//     fmul d0, d0, d1            // d1 = factor
+//     str d0, [x2, x3, lsl #3]  // result.push
+//     add x3, x3, #1
+//     cmp x3, x4                // x4 = arr.len
+//     b.lt ...loop
+//     ldp x29, x30, [sp], #16
+//     ret`,
+        description:
+          "After gradient inference, the generated code contains zero type checks. The loop body compiles to a single FMUL instruction and a store — identical to what a C++ compiler would produce for <code>std::vector&lt;double&gt;</code>. The Variant Enum is entirely eliminated for this function.",
       },
     ],
   },
@@ -792,6 +1053,78 @@ console.log(new Dog("Rex").speak());  // Rex says woof!`,
         title: "Applicability Domains",
         content:
           "Dryad is suitable for: scripting, automation, prototyping, and small-to-medium applications. It is unsuitable for: computationally intensive workloads, hard real-time systems, and performance-critical production pipelines — at least until the AOT compiler matures. Identified bottlenecks include deep call stacks, large array operations, and frequent garbage collection.",
+      },
+    ],
+  },
+  {
+    number: "18",
+    title: "Proposed Architectural Refinements",
+    blocks: [
+      {
+        type: "paragraph",
+        content:
+          "The following refinements are proposed for future versions of Dryad. They represent architectural decisions that have been researched but not yet implemented. Each entry describes the motivation, approach, and expected impact.",
+      },
+      {
+        type: "table",
+        headers: ["Refinement", "Motivation", "Approach", "Expected Impact"],
+        rows: [
+          [
+            "Direct-Threaded Bytecode VM",
+            "Central dispatch loop is a predictable bottleneck — each opcode incurs fetch, decode, and jump-back overhead.",
+            "Each opcode handler appends the address of the next handler; dispatch becomes a single <code>jmp *next</code>. Eliminates the decode step entirely.",
+            "~40% reduction in dispatch overhead; 15-25% overall VM speedup on control-flow-heavy code.",
+          ],
+          [
+            "Generational GC",
+            "Reference counting alone cannot reclaim cycles. A full mark-and-sweep pause scales with live heap size.",
+            "Add a young generation (nursery) with bump allocation and fast scavenge. Tenured objects remain RC-managed. Cycle detection runs only on the old generation.",
+            "Eliminates unbounded pause times. Throughput improvement proportional to allocation rate.",
+          ],
+          [
+            "JIT Compilation for Hot Paths",
+            "Bytecode VM is ~10x slower than native for tight loops. Entire-program AOT loses the interactive development loop.",
+            "Add a lightweight JIT tier: count loop back-edges; after a threshold (e.g., 1000 iterations), compile the loop body to native and patch the bytecode stream with a jump to the compiled fragment.",
+            "Up to 100x speedup on hot loops (matching AOT) while preserving interactive edit-run turnaround.",
+          ],
+          [
+            "WASM Backend",
+            "Dryad cannot currently run in the browser or in WASM-hosted environments.",
+            "Lower the IR to WebAssembly (MVP + sign extension + mutable globals). The AOT compiler gains a third backend emitting <code>.wasm</code> binaries. The runtime's intrinsics are mapped to WASI equivalents.",
+            "Enables browser-based Dryad playground, serverless deployments, and plugin systems.",
+          ],
+          [
+            "Algebraic Data Types",
+            "Current class system provides no discriminated unions or exhaustiveness checking.",
+            "Add syntax: <code>type Option&lt;T&gt; = Some(T) | None</code>. Pattern matching gains exhaustiveness verification. The AOT compiler can represent ADTs as tagged unions with optimal layout.",
+            "Safer error handling (no null pointer patterns), compiler-verified match coverage, smaller memory footprint for sum types.",
+          ],
+          [
+            "Linear Types for Resource Management",
+            "File handles, sockets, and buffers rely on GC finalization for cleanup, producing non-deterministic release.",
+            "Add <code>linear</code> type qualifier. Linear values must be consumed exactly once. The compiler inserts release calls at each consumption point. Runtime asserts track violations in debug mode.",
+            "Deterministic resource cleanup. Zero overhead in AOT mode. Enables safe manual memory management without a borrow checker.",
+          ],
+          [
+            "Trait / Interface System",
+            "Structural typing for classes is ad-hoc; there is no way to express interface contracts polymorphically.",
+            "Introduce <code>trait</code> declarations with required method signatures. Classes declare <code>impl Trait for Class</code>. The compiler generates vtable-based dispatch for trait objects; monomorphization for concrete implementations.",
+            "Enables generic programming with compile-time safety. Eliminates runtime type checks for interface dispatch in AOT mode.",
+          ],
+          [
+            "Package Manager and Registry",
+            "No built-in dependency resolution — users manually copy files or use ad-hoc scripts.",
+            "Implement <code>dryad pkg</code> subcommand with <code>dryad.toml</code> manifest. Registry supports versioned publishing with semantic versioning. Lockfile provides reproducible builds.",
+            "Ecosystem enabler. Reduces friction for third-party library adoption. Enables <code>dryad init</code> and <code>dryad test</code> workflows.",
+          ],
+        ],
+      },
+      {
+        type: "property",
+        id: "18.1",
+        title: "Decision Criteria for Refinements",
+        content:
+          "Each proposed refinement is evaluated against the following criteria: (i) backward compatibility — must not break existing Dryad code; (ii) implementation cost — estimated person-weeks for a production-quality implementation; (iii) risk — potential for destabilizing existing subsystems; (iv) ecosystem impact — how many users benefit. Refinements with high ecosystem impact and low risk are prioritized. The table above is ordered approximately by ascending complexity.",
       },
     ],
   },

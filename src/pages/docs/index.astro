@@ -2,6 +2,8 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { docsData } from "../../data/docsData";
 import type { DocSection } from "../../types";
+import type { PdfSection } from "../../components/DownloadPdfButton";
+import DownloadPdfButton from "../../components/DownloadPdfButton";
 
 const categories = docsData.reduce((acc: Record<string, DocSection[]>, doc) => {
   if (!acc[doc.category]) {
@@ -10,6 +12,46 @@ const categories = docsData.reduce((acc: Record<string, DocSection[]>, doc) => {
   acc[doc.category].push(doc);
   return acc;
 }, {} as Record<string, DocSection[]>);
+
+function renderDocSection(doc: DocSection): string {
+  let html = `<p>${doc.content}</p>`;
+
+  if (doc.codeSnippets && doc.codeSnippets.length > 0) {
+    for (const snippet of doc.codeSnippets) {
+      html += `<div class="latex-code">
+        <div class="code-title">${snippet.title}</div>
+        <pre><code>${snippet.code}</code></pre>
+        ${snippet.description ? `<p class="code-desc">${snippet.description}</p>` : ""}
+      </div>`;
+    }
+  }
+
+  if (doc.tableData) {
+    html += `<div class="latex-table">
+      <table>
+        <thead>
+          <tr>${doc.tableData.headers.map((h) => `<th>${h}</th>`).join("")}</tr>
+        </thead>
+        <tbody>
+          ${doc.tableData.rows
+            .map(
+              (row) =>
+                `<tr>${row.map((cell) => `<td>${cell}</td>`).join("")}</tr>`
+            )
+            .join("")}
+        </tbody>
+      </table>
+    </div>`;
+  }
+
+  return html;
+}
+
+const pdfSections: PdfSection[] = docsData.map((doc, i) => ({
+  number: String(i + 1),
+  title: doc.title,
+  html: `<span class="doc-category">${doc.category}</span>\n${renderDocSection(doc)}`,
+}));
 ---
 
 <BaseLayout title="Documentation" description="Complete documentation for the Dryad programming language — type system, execution model, module system, concurrency, FFI, and more.">
@@ -19,6 +61,18 @@ const categories = docsData.reduce((acc: Record<string, DocSection[]>, doc) => {
       The official Dryad language documentation. Browse by category or use the sidebar
       on individual pages for quick navigation between sections.
     </p>
+    <div class="mb-8 flex justify-center">
+      <DownloadPdfButton
+        client:visible
+        sections={pdfSections}
+        bookTitle="Dryad Documentation"
+        bookSubtitle="Complete Language Reference"
+        version="1.0"
+        date="June 2026"
+        description="The complete Dryad programming language documentation — introduction, lexical structure, type system, operators, control flow, functions and classes, module system, execution model, runtime architecture, error codes, bytecode, AOT compilation, paradigms, formal grammar, and performance considerations."
+        filename="dryad-documentation.pdf"
+      />
+    </div>
 
     {Object.entries(categories).map(([category, sections]) => (
       <div class="mb-8">
