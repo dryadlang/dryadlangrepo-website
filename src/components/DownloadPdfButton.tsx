@@ -27,15 +27,15 @@ function generateBookHtml(
 ): string {
   const tocItems = sections
     .map(
-      (s, i) =>
-        `<li><a href="#section-${i}"><span class="toc-num">§${s.number}</span> ${s.title}</a></li>`
+      (s) =>
+        `<li><a href="#sec-${s.number}"><span class="toc-num">§${s.number}</span> ${s.title}</a></li>`
     )
     .join("\n");
 
   const body = sections
     .map(
-      (s, i) => `
-    <article class="section" id="section-${i}">
+      (s) => `
+    <article class="section" id="sec-${s.number}">
       <div class="section-header">
         <span class="section-number">§${s.number}</span>
         <h2>${s.title}</h2>
@@ -50,6 +50,7 @@ function generateBookHtml(
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${title}</title>
 <style>
   /* ── Reset & Base ── */
@@ -66,12 +67,6 @@ function generateBookHtml(
   @page {
     size: A4;
     margin: 2cm 2.5cm;
-    @top-center {
-      content: element(header);
-      font-size: 8pt;
-      color: #888;
-      font-family: "Helvetica Neue", "Segoe UI", sans-serif;
-    }
     @bottom-center {
       content: counter(page);
       font-size: 8pt;
@@ -79,8 +74,58 @@ function generateBookHtml(
       font-family: "Helvetica Neue", "Segoe UI", sans-serif;
     }
   }
-  @page cover { margin: 0; @top-center { content: none; } @bottom-center { content: none; } }
-  @page toc { @top-center { content: "Table of Contents"; } }
+  @page cover { margin: 0; @bottom-center { content: none; } }
+
+  /* ── Print toolbar (screen only) ── */
+  .print-toolbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+    padding: 0.6em 1em;
+    background: #065f46;
+    color: white;
+    font-family: "Helvetica Neue", "Segoe UI", sans-serif;
+    font-size: 9pt;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  }
+  .print-toolbar .toolbar-title {
+    font-weight: 600;
+    margin-right: auto;
+  }
+  .print-toolbar .toolbar-hint {
+    opacity: 0.7;
+    font-size: 8pt;
+  }
+  .print-toolbar button {
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+    padding: 0.4em 1em;
+    background: white;
+    color: #065f46;
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 9pt;
+    cursor: pointer;
+    transition: background 0.15s;
+    font-family: inherit;
+  }
+  .print-toolbar button:hover {
+    background: #e2e8f0;
+  }
+  .print-toolbar button:active {
+    transform: scale(0.97);
+  }
+  @media print {
+    .print-toolbar { display: none; }
+  }
 
   /* ── Cover page ── */
   .cover {
@@ -91,11 +136,12 @@ function generateBookHtml(
     justify-content: center;
     align-items: center;
     text-align: center;
-    height: 100vh;
+    min-height: 100vh;
     padding: 4cm 3cm;
     background: linear-gradient(135deg, #065f46 0%, #047857 40%, #059669 100%);
     color: white;
     page-break-after: always;
+    margin-top: 0;
   }
   .cover h1 {
     font-size: 32pt;
@@ -133,10 +179,9 @@ function generateBookHtml(
 
   /* ── Table of Contents ── */
   .toc {
-    page: toc;
     break-after: page;
     page-break-after: always;
-    padding: 1cm 0;
+    padding: 2cm 0 1cm 0;
   }
   .toc h2 {
     font-size: 18pt;
@@ -153,14 +198,20 @@ function generateBookHtml(
   .toc li {
     margin-bottom: 0.35em;
     break-inside: avoid;
+    page-break-inside: avoid;
   }
   .toc a {
     text-decoration: none;
     color: inherit;
     font-size: 10pt;
     line-height: 1.4;
+    display: block;
+    padding: 0.15em 0.3em;
+    border-radius: 2px;
+    transition: background 0.15s;
   }
   .toc a:hover, .toc a:focus {
+    background: #f0fdf4;
     color: #065f46;
   }
   .toc .toc-num {
@@ -180,6 +231,7 @@ function generateBookHtml(
     margin-bottom: 0.8em;
     border-bottom: 2px solid #065f46;
     padding-bottom: 0.3em;
+    page-break-after: avoid;
   }
   .section-number {
     font-size: 9pt;
@@ -205,8 +257,12 @@ function generateBookHtml(
   }
 
   /* ── Content blocks ── */
-  p { margin-bottom: 0.7em; text-align: justify; }
-  p + p { text-indent: 0; }
+  p {
+    margin-bottom: 0.7em;
+    text-align: justify;
+    orphans: 3;
+    widows: 3;
+  }
   code {
     font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", "Consolas", monospace;
     font-size: 9pt;
@@ -228,6 +284,8 @@ function generateBookHtml(
     overflow-x: auto;
     white-space: pre-wrap;
     word-break: break-word;
+    page-break-inside: avoid;
+    break-inside: avoid;
   }
   .code-title {
     font-size: 8pt;
@@ -237,12 +295,18 @@ function generateBookHtml(
     margin-bottom: 0.3em;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    page-break-after: avoid;
   }
   .code-desc {
     font-size: 9pt;
     color: #555;
     font-style: italic;
     margin-top: 0.4em;
+  }
+  .latex-code {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    margin: 0.6em 0;
   }
 
   /* ── Definition / Axiom / Property / Note boxes ── */
@@ -253,8 +317,8 @@ function generateBookHtml(
     margin: 0.6em 0;
     padding: 0.5em 0.8em;
     border-left: 3px solid;
-    break-inside: avoid;
     page-break-inside: avoid;
+    break-inside: avoid;
   }
   .latex-definition {
     background: #f0fdf4;
@@ -304,6 +368,8 @@ function generateBookHtml(
   .latex-table {
     margin: 0.6em 0;
     overflow-x: auto;
+    page-break-inside: avoid;
+    break-inside: avoid;
   }
   table {
     width: 100%;
@@ -329,8 +395,6 @@ function generateBookHtml(
   tr:nth-child(even) td {
     background: #f8fafc;
   }
-
-  /* ── Inline code in tables ── */
   td code, th code {
     font-size: 8pt;
   }
@@ -350,19 +414,26 @@ function generateBookHtml(
     margin-bottom: 0.2em;
   }
 
+  /* ── Smooth scroll for TOC navigation ── */
+  html { scroll-behavior: smooth; }
+
   /* ── Print-only adjustments ── */
   @media print {
     html { font-size: 10.5pt; }
+    body { padding-top: 0 !important; }
     a { color: inherit; }
     .section { break-before: page; }
     pre { white-space: pre-wrap; word-break: break-word; }
+    h1, h2, h3, h4 { page-break-after: avoid; }
+    .section-header { page-break-after: avoid; }
   }
 
   /* ── Screen preview ── */
   @media screen {
     body {
       background: #f1f5f9;
-      padding: 2em 1em;
+      padding: 0.5em 1em;
+      padding-top: 3.2em;
     }
     .book-page {
       max-width: 210mm;
@@ -371,10 +442,27 @@ function generateBookHtml(
       box-shadow: 0 4px 20px rgba(0,0,0,0.1);
       padding: 2cm 2.5cm;
     }
+    pre {
+      max-height: 30em;
+      overflow: auto;
+    }
+    .latex-table {
+      max-width: 100%;
+      overflow-x: auto;
+    }
   }
 </style>
 </head>
 <body>
+  <!-- Print toolbar (screen only, hidden in print) -->
+  <div class="print-toolbar">
+    <span class="toolbar-title">${title}</span>
+    <span class="toolbar-hint">Use the button below to save as PDF</span>
+    <button onclick="window.print()">
+      🖨️ Save as PDF
+    </button>
+  </div>
+
 <div class="book-page">
   <!-- Cover -->
   <section class="cover">
@@ -394,11 +482,6 @@ function generateBookHtml(
   <!-- Sections -->
   ${body}
 </div>
-<script>
-window.onload = function() {
-  window.print();
-};
-</script>
 </body>
 </html>`;
 }
@@ -417,7 +500,6 @@ export default function DownloadPdfButton({
   const handleDownload = () => {
     setLoading(true);
 
-    // Use setTimeout to allow the loading state to render
     setTimeout(() => {
       const html = generateBookHtml(
         sections,
@@ -430,7 +512,6 @@ export default function DownloadPdfButton({
 
       const win = window.open("", "_blank");
       if (!win) {
-        // Popup blocked — fallback: create a blob and trigger download
         const blob = new Blob([html], { type: "text/html" });
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
@@ -446,7 +527,6 @@ export default function DownloadPdfButton({
       win.document.close();
       win.focus();
 
-      // After print dialog closes, reset loading
       const checkClosed = setInterval(() => {
         if (win.closed) {
           clearInterval(checkClosed);
@@ -461,14 +541,14 @@ export default function DownloadPdfButton({
       onClick={handleDownload}
       disabled={loading}
       className="flex items-center gap-2 text-sm font-semibold text-white bg-emerald-800 hover:bg-emerald-700 disabled:bg-emerald-800/60 disabled:cursor-not-allowed border-none px-4 py-2.5 rounded-lg cursor-pointer select-none transition-colors shadow-sm"
-      title={`Download ${bookTitle} as PDF (book format)`}
+      title={`Open ${bookTitle} in book format — then save as PDF`}
     >
       {loading ? (
         <Loader className="w-4 h-4 animate-spin shrink-0" />
       ) : (
         <FileText className="w-4 h-4 shrink-0" />
       )}
-      <span>{loading ? "Preparing..." : `Download PDF (${filename})`}</span>
+      <span>{loading ? "Opening..." : `Open Book (${filename})`}</span>
     </button>
   );
 }
