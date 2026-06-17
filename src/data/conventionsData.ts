@@ -728,10 +728,10 @@ extern function __write(fd: i32, buf: ptr<u8>, len: usize): isize;
         content:
           "The <code>@intrinsic(\"syscall.mmap\")</code> and <code>@intrinsic(\"syscall.munmap\")</code> intrinsics expose virtual memory management directly. <code>__mmap(addr, len, prot, flags, fd, offset): ptr&lt;u8&gt;</code> maps a file or anonymous region into the process address space. <code>__munmap(addr, len): void</code> unmaps the region. These enable efficient memory-mapped file I/O and custom allocator construction in pure Dryad. The <code>Buffer</code> type may optionally back its storage with <code>mmap</code> for large regions (>64 KB), falling back to <code>malloc</code> for smaller allocations.",
       },
-      {
-        type: "code",
-        title: "Memory-Mapped File I/O in Pure Dryad",
-        code: `// Memory-map a file for zero-copy read
+    {
+      type: "code",
+      title: "Memory-Mapped File I/O in Pure Dryad",
+      code: `// Memory-map a file for zero-copy read
 function readFileMmap(path: string): Buffer {
   let fd = __open(path, 0);            // O_RDONLY
   if (fd < 0) throw "Failed to open";
@@ -743,10 +743,76 @@ function readFileMmap(path: string): Buffer {
   __close(fd);
   return Buffer.fromPtr(mapped, len);   // Wrap in Buffer (no copy)
 }`,
-        description:
-          "Memory-mapped I/O eliminates double-copy between kernel and userspace. The Buffer wraps the mmap'd region directly; the region is unmapped when the Buffer is GC'd via a registered finalizer.",
-      },
-    ],
+      description:
+        "Memory-mapped I/O eliminates double-copy between kernel and userspace. The Buffer wraps the mmap'd region directly; the region is unmapped when the Buffer is GC'd via a registered finalizer.",
+    },
+    {
+      type: "definition",
+      id: "12.8",
+      title: "Cross-Platform I/O Event Loop — io.wait()",
+      content:
+        "The HAL exposes a unified <code>io.wait(event_loop, timeout_ms): Event</code> primitive that abstracts the OS-specific I/O multiplexing mechanism. On Linux, <code>io.wait</code> maps to <code>epoll_wait(2)</code>; on macOS/BSD, to <code>kevent(2)</code> (kqueue); on Windows, to <code>WaitForMultipleObjects</code> (IOCP completion port). The event loop is created via <code>hal_event_loop_create(): ptr&lt;void&gt;</code> and returns an opaque handle. File descriptors or sockets are registered with the loop via <code>hal_event_loop_add(loop, fd, flags)</code> where flags indicate interest in <code>EV_READ</code> (1), <code>EV_WRITE</code> (2), or both. The returned <code>Event</code> object contains: (i) <code>fd</code> — the ready file descriptor; (ii) <code>flags</code> — which events are ready; (iii) <code>error</code> — whether an error occurred on this fd. This single abstraction allows the Dryad STDLIB to implement async I/O, network servers, and file watchers entirely in portable Dryad code, with zero platform-specific branches in the user's source.",
+    },
+    {
+      type: "table",
+      headers: ["HAL Primitive", "Linux (epoll)", "macOS/BSD (kqueue)", "Windows (IOCP)"],
+      rows: [
+        ["io.wait()", "epoll_wait(2)", "kevent(2)", "GetQueuedCompletionStatus"],
+        ["io.create_loop()", "epoll_create1(2)", "kqueue(2)", "CreateIoCompletionPort"],
+        ["io.add_fd(loop, fd, flags)", "epoll_ctl(EPOLL_CTL_ADD)", "EV_SET(udata, ident, filter, flags)", "PostQueuedCompletionStatus + CreateIoCompletionPort"],
+        ["io.remove_fd(loop, fd)", "epoll_ctl(EPOLL_CTL_DEL)", "EV_SET(udata, ident, EV_DELETE, 0)", "CloseHandle (deferred)"],
+        ["io.now_ms()", "clock_gettime(CLOCK_MONOTONIC)", "clock_gettime(CLOCK_MONOTONIC)", "QueryPerformanceCounter"],
+        ["io.sleep(ms)", "nanosleep(2)", "nanosleep(2)", "SleepEx"],
+      ],
+    },
+    {
+      type: "code",
+      title: "Portable Async I/O via HAL — Single-Threaded Event Loop",
+      code: `// Pure Dryad — no platform-specific code
+// The same source runs on Linux, macOS, and Windows.
+
+function runServer(port: number) {
+  let loop = hal_event_loop_create();
+  let server = net_listen("0.0.0.0", port);
+  hal_event_loop_add(loop, server.fd(), EV_READ);
+
+  while (true) {
+    let event = io.wait(loop, 1000);  // 1s timeout
+    if (event == null) {
+      // Timeout — no events; can run periodic tasks
+      continue;
+    }
+
+    if (event.flags & EV_READ) {
+      let client = server.accept();
+      @compile("AOT") {
+        handleClient(client);  // AOT-compiled for speed
+      }
+    }
+  }
+}
+
+// On Linux, io.wait compiles to:
+//   struct epoll_event ev;
+//   epoll_wait(loop.fd, &ev, 1, 1000);
+//
+// On macOS, io.wait compiles to:
+//   struct kevent ev;
+//   kevent(loop.fd, NULL, 0, &ev, 1, &timeout);
+//
+// On Windows, io.wait compiles to:
+//   GetQueuedCompletionStatus(loop.handle, ...);`,
+      description:
+        "The HAL abstraction ensures that a single Dryad source compiles to the correct OS-specific syscall on each platform. Only the C++ runtime's HAL layer (10-15 primitives) contains platform #ifdefs — zero in Dryad code.",
+    },
+    {
+      type: "property",
+      id: "12.5",
+      title: "Event Loop Determinism and Porting Guarantee",
+      content:
+        "The HAL event loop guarantees identical semantics across all three platforms: (i) edge-triggered notification — epoll uses EPOLLET; kqueue uses EV_CLEAR; IOCP is inherently edge-triggered; (ii) level-triggered fallback — available as <code>io.wait(loop, timeout, LEVEL)</code> for compatibility; (iii) maximum 1µs precision for timeouts across all platforms; (iv) the number of events returned per call is bounded by the loop's capacity (default 64, configurable via <code>hal_event_loop_create(capacity)</code>). Porting Dryad to a new OS (e.g., FreeBSD, a bare-metal RTOS) requires implementing exactly 6 HAL primitives for the event loop: create, destroy, add_fd, remove_fd, wait, and now_ms. These 6 primitives, plus the ~10 existing HAL primitives for file/memory/process operations, represent the total porting surface — approximately 200-400 lines of C++ per platform.",
+    },
+  ],
   },
   {
     number: "12.5",
