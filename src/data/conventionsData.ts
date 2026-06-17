@@ -728,6 +728,104 @@ function readFileMmap(path: string): Buffer {
     ],
   },
   {
+    number: "12.5",
+    title: "Standard Library",
+    blocks: [
+      {
+        type: "paragraph",
+        content:
+          "The Standard Library (STDLIB) is the collection of modules, types, and functions provided with every Dryad installation. It is implemented entirely in pure Dryad atop the ~50 intrinsic syscalls exposed by the runtime layer. The STDLIB provides high-level abstractions for file I/O, networking, JSON processing, cryptography, mathematics, date/time, operating system interaction, collections, and debugging.",
+      },
+      {
+        type: "axiom",
+        id: "15.1",
+        title: "Self-Hosting Mandate",
+        content:
+          "All STDLIB modules MUST be implemented in 100% pure Dryad code with zero FFI dependencies. The intrinsic syscall layer (~50 primitives) is the sole bridge to native code. This guarantees: (i) the STDLIB is fully portable across all platforms supported by the runtime; (ii) every STDLIB function is debuggable and inspectable in Dryad; (iii) the STDLIB serves as the canonical example of idiomatic Dryad code; and (iv) users can read, modify, and extend any STDLIB module without touching C++.",
+      },
+      {
+        type: "axiom",
+        id: "15.2",
+        title: "Naming Conventions",
+        content:
+          "STDLIB identifiers follow these conventions: (i) functions use snake_case (e.g., `read_file`, `parse_json`); (ii) types and classes use PascalCase (e.g., `TcpSocket`, `FileStat`); (iii) constants use SCREAMING_SNAKE (e.g., `O_RDONLY`, `PROT_READ`); (iv) modules are single lowercase words with no separators (e.g., `io`, `fs`, `http`); (v) internal (non-exported) functions are prefixed with a single underscore (e.g., `_validate_path`). These conventions are enforced by the STDLIB build pipeline and should be followed by all user libraries.",
+      },
+      {
+        type: "definition",
+        id: "15.3",
+        title: "Error Handling Conventions",
+        content:
+          "STDLIB functions follow a consistent error handling protocol: (i) functions that can fail due to external conditions (I/O, network, OS) return a Result type: `Result<T, E>` where `E` is an error type carrying a numeric code and message. The caller MUST handle both variants. (ii) Functions that can fail due to programmer error (invalid arguments, precondition violations) throw a typed exception that propagates up the call stack. (iii) Every exported function documents its error conditions and the error codes it may produce. (iv) Error codes follow the module prefix convention: I/O errors use 5000-5999, networking uses 6000-6099, JSON uses 6100-6199, crypto uses 6200-6299, OS uses 6300-6399.",
+      },
+      {
+        type: "definition",
+        id: "15.4",
+        title: "Module Structure",
+        content:
+          "Each STDLIB module is a single `.dryad` file placed in the `lib/` directory. Every module follows this structure: (i) a module-level comment block describing the module's purpose and error codes; (ii) intrinsic and FFI declarations (wrapped in safe functions); (iii) type and class definitions; (iv) public function declarations, each with a documentation comment; (v) a consistent `export` block at the end. Public API functions are explicitly listed in the export statement; all other identifiers are module-private. Breaking changes to exported APIs require a major version bump.",
+      },
+      {
+        type: "definition",
+        id: "15.5",
+        title: "Buffer Type Specification",
+        content:
+          "The Buffer type (`Buffer`) represents a contiguous byte region with embedded length and capacity. API contract: (i) `Buffer.new(capacity: number): Buffer` — allocates a new buffer with the given initial capacity (zero-filled). (ii) `buf.len(): number` — returns the current length of valid data. (iii) `buf.capacity(): number` — returns the total allocated capacity. (iv) `buf.read(offset: number, len: number): Buffer` — returns a copy of the byte range [offset, offset+len). Raises Runtime Error 3000-3999 if the range exceeds length. (v) `buf.write(offset: number, data: Buffer): void` — writes data at the given offset, growing the buffer if necessary. (vi) `buf.slice(offset: number, len: number): BufferView` — returns a zero-copy view into the buffer's memory (no allocation). The view shares the backing store and is reference-counted. Modifications to the view are visible in the parent buffer. (vii) `buf.resize(new_len: number): void` — changes the length. If new_len exceeds capacity, the buffer grows using a doubling strategy. (viii) `buf.fromPtr(ptr: ptr<u8>, len: usize): Buffer` — wraps a raw pointer in a Buffer without copying (intended for use with mmap'd regions). The caller is responsible for ensuring the pointer remains valid for the Buffer's lifetime. (ix) Bounds checking: every read and write validates the offset and extent against `len`. Out-of-bounds access raises Runtime Error 3000-3999 with the attempted range and buffer capacity. The bounds check compiles to a single `cmp + jae` on both ARM64 and x86_64 and is elided only when the AOT optimizer can statically prove safety.",
+      },
+      {
+        type: "definition",
+        id: "15.6",
+        title: "Collection Interface Contracts",
+        content:
+          "The STDLIB provides three collection types with defined contracts: (i) **List** — ordered, dynamically-sized sequence. Contract: `add(item)`, `get(index): any`, `set(index, value)`, `remove(index): void`, `len(): number`, `isEmpty(): bool`, `contains(item): bool`, `indexOf(item): number`, `sort(comparator?)`, `map(fn): List`, `filter(fn): List`, `reduce(fn, initial): any`, `forEach(fn)`, `slice(start, end): List`, `concat(other): List`, `toArray(): any[]`. (ii) **Map** — key-value dictionary (hash-based). Contract: `set(key, value)`, `get(key): any`, `has(key): bool`, `delete(key): void`, `len(): number`, `keys(): any[]`, `values(): any[]`, `entries(): [any, any][]`, `forEach(fn)`. (iii) **Set** — unique value collection (hash-based). Contract: `add(item)`, `has(item): bool`, `delete(item): void`, `len(): number`, `values(): any[]`. All three collections support the Iterator protocol via `[Symbol.iterator]()` returning an object with `next(): { value, done }`.",
+      },
+      {
+        type: "table",
+        headers: ["Module", "Namespace", "Description"],
+        rows: [
+          ["io", "#io", "File I/O operations: read, write, list, delete, temp files, stdin/stdout"],
+          ["fs", "#fs", "High-level file system: copy, move, watch, stat"],
+          ["net", "#net", "TCP networking: connect, listen, sockets, DNS resolution"],
+          ["http", "#http", "HTTP client: GET, POST, request, response handling"],
+          ["json", "#json", "JSON parsing and serialization"],
+          ["crypto", "#crypto", "Cryptographic hashing, random generation, encryption"],
+          ["math", "#math", "Mathematical functions, constants, random number generation"],
+          ["time", "#time", "Date/time operations: now, sleep, format, parse"],
+          ["os", "#os", "Operating system: platform, environment, arguments, exit"],
+          ["debug", "#debug", "Debug utilities: assertions, logging, tracing, benchmarking"],
+          ["collections", "(built-in)", "List, Map, Set types with full collection interfaces"],
+        ],
+      },
+      {
+        type: "code",
+        title: "STDLIB Module Usage Pattern",
+        code: `// Import a native module
+#io
+
+// STDLIB functions are used directly
+function backup(file: string) {
+  let content = io_read_file(file);
+  let backup_name = file ++ \".bak\";
+  io_write_file(backup_name, content);
+  io_println(\"Backed up: \" ++ backup_name);
+}
+
+// Import multiple modules
+#net
+#json
+
+function fetchConfig(host: string, port: number) {
+  let socket = net_connect(host, port);
+  socket.write(\"GET /config HTTP/1.0\\r\\n\\r\\n\");
+  let response = socket.read();
+  socket.close();
+  return json_parse(response);
+}`,
+        description:
+          "Native modules are loaded via #module directives. Functions become available in the global scope. The STDLIB follows consistent naming and error handling conventions across all modules.",
+      },
+    ],
+  },
+  {
     number: "13",
     title: "Bytecode and Intermediate Representation",
     blocks: [

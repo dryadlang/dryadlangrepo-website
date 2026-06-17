@@ -419,6 +419,500 @@ export class Arquivo {
     }
   },
   {
+    id: "biblioteca-padrao",
+    title: "10. Standard Library Reference",
+    category: "Standard Library",
+    description: "Complete API reference for the Dryad standard library modules — io, fs, net, http, json, crypto, math, time, os, debug, and collections.",
+    content: "The Dryad Standard Library (STDLIB) provides a comprehensive set of modules for file I/O, networking, JSON processing, cryptography, mathematics, date/time operations, operating system interaction, debugging, and data structure collections. Every module is implemented in 100% pure Dryad atop the ~50 intrinsic syscalls exposed by the minimal C++ runtime. Native modules are loaded via #module directives and their functions become available in the global scope. The STDLIB follows consistent naming conventions (snake_case functions, PascalCase types) and error handling across all modules.",
+    codeSnippets: [
+      {
+        title: "Module Overview",
+        code: `// ── Dryad Standard Library — Module Index ──────────────────────
+//
+// Module     | Namespace    | Description
+// ───────────┼──────────────┼──────────────────────────────────────────
+// io         | #io          | File I/O: read, write, list, delete, temp
+// fs         | #fs          | High-level FS: copy, move, watch, stat
+// net        | #net         | TCP networking: connect, listen, sockets
+// http       | #http        | HTTP client: GET, POST, request
+// json       | #json        | JSON parse and stringify
+// crypto     | #crypto      | Hash, random bytes, UUID, encrypt/decrypt
+// math       | #math        | Math functions, constants, RNG
+// time       | #time        | Date/time: now, sleep, format, parse
+// os         | #os          | OS: platform, env, args, exit
+// debug      | #debug       | Assert, log, trace, benchmark
+// collections| built-in     | List, Map, Set data structures`,
+        description: "All modules are loaded via #module directives. Collections are built-in types available without import."
+      },
+      {
+        title: "io — File I/O",
+        code: `// ── io Module ──────────────────────────────────────────────
+// File and directory operations. Error codes: 5000-5099.
+
+// Read entire file as string
+function io_read_file(path: string): string
+
+// Write string to file (overwrites existing)
+function io_write_file(path: string, content: string): void
+
+// Append string to end of file
+function io_append_file(path: string, content: string): void
+
+// Check if file exists at path
+function io_file_exists(path: string): bool
+
+// Get file size in bytes
+function io_file_size(path: string): number
+
+// Delete file at path
+function io_delete_file(path: string): void
+
+// Create directory (including parents)
+function io_create_dir(path: string): void
+
+// Remove empty directory
+function io_remove_dir(path: string): void
+
+// List directory entries
+function io_list_dir(path: string): string[]
+
+// Get system temporary directory path
+function io_temp_dir(): string
+
+// Read one line from stdin
+function io_stdin(): string
+
+// Print string to stdout
+function io_print(value: any): void
+
+// Print string to stdout with newline
+function io_println(value: any): void`,
+        description: "The io module provides low-level file and directory operations. All paths use UTF-8 encoding. Functions throw I/O Error (5000-5099) on failure with the specific OS error code."
+      },
+      {
+        title: "fs — High-Level File System",
+        code: `// ── fs Module ───────────────────────────────────────────────
+// High-level file system operations. Error codes: 5100-5199.
+
+// Read file as Buffer
+function fs_read(path: string): Buffer
+
+// Write Buffer to file (overwrites)
+function fs_write(path: string, data: Buffer): void
+
+// Copy file from src to dst
+function fs_copy(src: string, dst: string): void
+
+// Move/rename file from src to dst
+function fs_move(src: string, dst: string): void
+
+// Get file metadata
+function fs_stat(path: string): FileStat
+
+// FileStat properties
+//   .size: number       — file size in bytes
+//   .created: number    — creation timestamp (ms since epoch)
+//   .modified: number   — last modification timestamp
+//   .is_dir: bool       — true if path is a directory
+//   .permissions: number — POSIX-style permission bits
+
+// Watch file/directory for changes (calls callback on change)
+function fs_watch(path: string, callback: fn(string)): Watcher
+
+// Watcher methods
+//   watcher.close(): void  — stop watching`,
+        description: "The fs module builds on io with higher-level abstractions. Buffer-based operations enable zero-copy I/O. The watch function uses the OS-native file notification system (inotify on Linux, FSEvents on macOS, ReadDirectoryChanges on Windows)."
+      },
+      {
+        title: "net — TCP Networking",
+        code: `// ── net Module ──────────────────────────────────────────────
+// TCP networking operations. Error codes: 6000-6099.
+
+// Connect to TCP server
+function net_connect(host: string, port: number): TcpSocket
+
+// Start TCP listener on address
+function net_listen(host: string, port: number): TcpListener
+
+// ── TcpSocket ──────────────────────────────────────
+// Represents an active TCP connection.
+
+// Read available data from socket (blocks until data arrives)
+//   socket.read(): Buffer
+// Read up to n bytes from socket
+//   socket.read(n: number): Buffer
+// Write data to socket
+//   socket.write(data: Buffer): void
+// Write string to socket
+//   socket.writeString(data: string): void
+// Close the connection
+//   socket.close(): void
+// Check if socket is still connected
+//   socket.isConnected(): bool
+// Set read timeout in milliseconds (0 = no timeout)
+//   socket.setTimeout(ms: number): void
+
+// ── TcpListener ────────────────────────────────────
+// Listens for incoming TCP connections.
+
+// Accept next incoming connection (blocks until one arrives)
+//   listener.accept(): TcpSocket
+// Close the listener
+//   listener.close(): void
+// Get the bound port number
+//   listener.port(): number
+
+// ── DNS ────────────────────────────────────────────
+// Resolve hostname to IPv4 address string
+function dns_resolve(hostname: string): string`,
+        description: "The net module provides blocking TCP sockets. The async/await execution model enables concurrent connection handling without threads. All socket operations are non-blocking at the kernel level when used with the event loop."
+      },
+      {
+        title: "http — HTTP Client",
+        code: `// ── http Module ─────────────────────────────────────────────
+// HTTP client operations. Error codes: 6100-6199.
+
+// Perform HTTP GET request
+function http_get(url: string): HttpResponse
+
+// Perform HTTP GET with custom headers
+function http_get(url: string, headers: Map): HttpResponse
+
+// Perform HTTP POST with body
+function http_post(url: string, body: string): HttpResponse
+
+// Perform HTTP POST with JSON body
+function http_post(url: string, body: any): HttpResponse
+
+// Perform arbitrary HTTP request
+function http_request(method: string, url: string, options: HttpOptions): HttpResponse
+
+// ── HttpResponse ───────────────────────────────────
+//   .status: number        — HTTP status code (200, 404, etc.)
+//   .headers: Map          — Response headers
+//   .body: string          — Response body as string
+//   .bodyBuffer: Buffer    — Response body as Buffer
+//   .json(): any           — Parse body as JSON
+
+// ── HttpOptions ────────────────────────────────────
+//   .headers: Map          — Request headers
+//   .body: string|Buffer   — Request body
+//   .timeout: number       — Request timeout in ms
+//   .followRedirects: bool — Auto-follow redirects (default: true)`,
+        description: "The http module wraps net sockets with HTTP protocol handling. JSON body support enables convenient API client usage. Response bodies are available as both string and Buffer."
+      },
+      {
+        title: "json — JSON Processing",
+        code: `// ── json Module ─────────────────────────────────────────────
+// JSON parsing and serialization. Error codes: 6200-6249.
+
+// Parse JSON string into Dryad value
+function json_parse(text: string): any
+
+// Serialize Dryad value to JSON string
+function json_stringify(value: any): string
+
+// Serialize with pretty-print (indented)
+function json_stringify(value: any, pretty: bool): string
+
+// Read JSON file and parse
+function json_parse_file(path: string): any
+
+// Serialize value and write to file
+function json_write_file(path: string, value: any): void
+
+// Validate JSON string (returns true if valid)
+function json_is_valid(text: string): bool`,
+        description: "JSON parsing supports all standard JSON types: objects, arrays, strings, numbers, booleans, and null. Circular references in stringify throw an error. File operations use the io module underneath."
+      },
+      {
+        title: "crypto — Cryptography",
+        code: `// ── crypto Module ──────────────────────────────────────────
+// Cryptographic operations. Error codes: 6250-6299.
+
+// Hash data with specified algorithm
+function crypto_hash(algorithm: string, data: Buffer): Buffer
+function crypto_hash(algorithm: string, data: string): string
+
+// Supported algorithms: "sha256", "sha512", "md5", "blake2b"
+
+// Generate cryptographically secure random bytes
+function crypto_random_bytes(n: number): Buffer
+
+// Generate a random UUID v4 string
+function crypto_random_uuid(): string
+
+// Encrypt data with symmetric key
+function crypto_encrypt(algorithm: string, key: Buffer, data: Buffer): Buffer
+
+// Decrypt data with symmetric key
+function crypto_decrypt(algorithm: string, key: Buffer, data: Buffer): Buffer
+
+// Supported encryption: "aes-256-gcm", "chacha20-poly1305"
+
+// Generate cryptographically secure random number in range [min, max]
+function crypto_random_int(min: number, max: number): number`,
+        description: "The crypto module wraps system-level cryptographic providers (OpenSSL on Linux, CNG on Windows, Security Framework on macOS). The hash and encrypt/decrypt functions accept both string and Buffer inputs."
+      },
+      {
+        title: "math — Mathematics",
+        code: `// ── math Module ─────────────────────────────────────────────
+// Mathematical functions and constants.
+
+// ── Constants ──────────────────────────────────────
+//   math.pi: number  — π (3.14159...)
+//   math.e: number   — Euler's number (2.71828...)
+//   math.tau: number — τ = 2π (6.28318...)
+//   math.inf: number — Positive infinity
+//   math.nan: number — Not-a-Number (NaN)
+
+// ── Basic Functions ────────────────────────────────
+function math_abs(x: number): number
+function math_floor(x: number): number
+function math_ceil(x: number): number
+function math_round(x: number): number
+function math_trunc(x: number): number          // integer truncation
+function math_min(a: number, b: number): number
+function math_max(a: number, b: number): number
+function math_clamp(x: number, lo: number, hi: number): number
+function math_sign(x: number): number            // -1, 0, or 1
+
+// ── Power and Root ────────────────────────────────
+function math_sqrt(x: number): number
+function math_cbrt(x: number): number
+function math_pow(base: number, exp: number): number
+function math_exp(x: number): number              // e^x
+function math_log(x: number): number              // natural log
+function math_log10(x: number): number
+function math_log2(x: number): number
+
+// ── Trigonometric ─────────────────────────────────
+function math_sin(x: number): number
+function math_cos(x: number): number
+function math_tan(x: number): number
+function math_asin(x: number): number
+function math_acos(x: number): number
+function math_atan(x: number): number
+function math_atan2(y: number, x: number): number
+
+// ── Random Numbers ────────────────────────────────
+function math_random(): number                    // [0.0, 1.0)
+function math_random_int(min: number, max: number): number`,
+        description: "All trigonometric functions operate in radians. The default RNG is a xoshiro256** PRNG seeded at program start from OS entropy. For cryptographic randomness, use crypto_random_bytes instead."
+      },
+      {
+        title: "time — Date and Time",
+        code: `// ── time Module ─────────────────────────────────────────────
+// Date and time operations.
+
+// Get current date/time
+function time_now(): DateTime
+
+// Sleep for specified milliseconds (blocks thread)
+function time_sleep(ms: number): void
+
+// Format DateTime to string using format specifier
+function time_format(dt: DateTime, format: string): string
+
+// Parse string to DateTime using format specifier
+function time_parse(format: string, text: string): DateTime
+
+// Get current Unix timestamp (ms since epoch)
+function time_timestamp(): number
+
+// Measure elapsed time in ms since start
+function time_elapsed(start: number): number
+
+// ── DateTime ───────────────────────────────────────
+// Properties:
+//   dt.year: number      — 4-digit year
+//   dt.month: number     — 1-12
+//   dt.day: number       — 1-31
+//   dt.hour: number      — 0-23
+//   dt.minute: number    — 0-59
+//   dt.second: number    — 0-59
+//   dt.millisecond: number — 0-999
+//   dt.timestamp: number — Unix timestamp in ms
+//   dt.weekday: number   — 0=Sunday, 6=Saturday
+//   dt.timezone: string  — e.g. "UTC", "America/New_York"
+
+// Methods:
+//   dt.addDays(n: number): DateTime
+//   dt.addHours(n: number): DateTime
+//   dt.addMinutes(n: number): DateTime
+//   dt.addSeconds(n: number): DateTime
+//   dt.toISOString(): string   — ISO 8601 format
+//   dt.toDateString(): string  — locale date
+//   dt.toTimeString(): string  — locale time
+
+// Common format specifiers (strftime-style):
+//   %Y — 4-digit year    %m — month (01-12)
+//   %d — day (01-31)     %H — hour (00-23)
+//   %M — minute (00-59)  %S — second (00-59)`,
+        description: "The time module provides platform-level date/time support. DateTime objects are immutable — all add* methods return a new instance. Format strings follow strftime conventions."
+      },
+      {
+        title: "os — Operating System",
+        code: `// ── os Module ───────────────────────────────────────────────
+// Operating system interface.
+
+// Get platform identifier
+function os_platform(): string
+// Returns: "linux", "macos", "windows", "freebsd", etc.
+
+// Get CPU architecture
+function os_arch(): string
+// Returns: "x86_64", "aarch64", "arm64", etc.
+
+// Get number of logical CPUs
+function os_cpus(): number
+
+// Get total and available system memory (bytes)
+function os_memory(): MemoryInfo
+// MemoryInfo: { total: number, available: number, used: number }
+
+// Get environment variable value
+function os_env(name: string): string  // returns "" if unset
+
+// Get current working directory
+function os_cwd(): string
+
+// Get command-line arguments
+function os_args(): string[]
+
+// Exit process with code (0 = success)
+function os_exit(code: number): void
+
+// Get process ID
+function os_pid(): number
+
+// Get system hostname
+function os_hostname(): string
+
+// Get OS user's home directory
+function os_home(): string`,
+        description: "The os module provides direct access to the operating system environment. It is primarily used for configuration, diagnostics, and process lifecycle management."
+      },
+      {
+        title: "debug — Debugging Utilities",
+        code: `// ── debug Module ───────────────────────────────────────────
+// Debug and diagnostic utilities.
+
+// Assert condition; throw AssertionError if false
+function debug_assert(condition: bool, message: string): void
+
+// Log value to stderr (for debugging)
+function debug_log(value: any): void
+
+// Log with label prefix
+function debug_log(label: string, value: any): void
+
+// Get current call stack trace as string
+function debug_trace(): string
+
+// Benchmark a function: returns elapsed time in ms
+function debug_benchmark(fn: fn() -> void, iterations: number): number
+
+// Dump intrinsic syscall trace (requires debug runtime)
+function debug_dump_syscall_trace(): string
+
+// Enable/disable debug logging globally
+function debug_set_logging(enabled: bool): void`,
+        description: "Debug functions are no-ops in production builds (when compiled with --release or --aot). The dump_syscall_trace function only works when the runtime is compiled with DRYAD_DEBUG_INTRINSICS=1."
+      },
+      {
+        title: "collections — List, Map, Set",
+        code: `// ── Collections ───────────────────────────────────────────
+// Built-in data structure types.
+
+// ── List ───────────────────────────────────────────
+// Ordered, dynamically-sized sequence.
+
+//   let list = List.new()
+//   let list = List.fromArray([1, 2, 3])
+//
+//   list.add(item): void              — append to end
+//   list.get(index): any              — get by index
+//   list.set(index, value): void      — set by index
+//   list.insert(index, item): void    — insert at position
+//   list.remove(index): void          — remove at index
+//   list.removeItem(item): bool       — remove first match, returns true if found
+//   list.clear(): void                — remove all elements
+//   list.len(): number                — number of elements
+//   list.isEmpty(): bool              — true if empty
+//   list.contains(item): bool         — linear search
+//   list.indexOf(item): number        — first index, -1 if not found
+//   list.sort(comparator?): void      — sort in place (stable sort)
+//   list.map(fn): List                — transform each element
+//   list.filter(fn): List             — keep elements matching predicate
+//   list.reduce(fn, initial): any     — accumulate left-to-right
+//   list.forEach(fn): void            — side-effect iteration
+//   list.slice(start, end): List      — sub-list (shallow copy)
+//   list.concat(other): List          — concatenate two lists
+//   list.toArray(): any[]             — convert to native array
+//   list.join(separator): string      — join elements as string
+//   list.reverse(): List              — reversed copy
+
+// ── Map ────────────────────────────────────────────
+// Key-value dictionary (hash-based, insertion-order iteration).
+
+//   let map = Map.new()
+//
+//   map.set(key, value): void         — insert/update key
+//   map.get(key): any                 — get value (null if missing)
+//   map.has(key): bool                — key exists
+//   map.delete(key): void             — remove key
+//   map.clear(): void                 — remove all entries
+//   map.len(): number                 — entry count
+//   map.keys(): any[]                 — all keys
+//   map.values(): any[]               — all values
+//   map.entries(): [any, any][]       — key-value pairs
+//   map.forEach(fn): void             — iterate (key, value)
+//   map.toObject(): any               — convert to Dryad object
+
+// ── Set ────────────────────────────────────────────
+// Unique value collection (hash-based).
+
+//   let set = Set.new()
+//   let set = Set.fromArray([1, 2, 3])
+//
+//   set.add(item): void               — insert (no-op if exists)
+//   set.has(item): bool               — membership test
+//   set.delete(item): void            — remove item
+//   set.clear(): void                 — remove all items
+//   set.len(): number                 — element count
+//   set.values(): any[]               — all unique values
+//   set.forEach(fn): void             — iterate elements
+//   set.union(other): Set             — set union
+//   set.intersection(other): Set      — set intersection
+//   set.difference(other): Set      — set difference
+
+// ── Iterator Protocol ──────────────────────────────
+// List, Map, and Set all support iteration:
+//   for (item in list) { ... }
+//   for (entry in map) { ... }        // entry = [key, value]
+//   for (item in set) { ... }`,
+        description: "Collections are the only STDLIB modules available without an explicit import — List, Map, and Set are built-in types. All three support the for-in iteration protocol. List.sort uses a stable merge sort. Map and Set use hash-based storage with O(1) average-case lookup."
+      }
+    ],
+    tableData: {
+      headers: ["Module", "Namespace", "Category", "Error Range"],
+      rows: [
+        ["io", "#io", "File I/O", "5000-5099"],
+        ["fs", "#fs", "File System", "5100-5199"],
+        ["net", "#net", "Networking", "6000-6099"],
+        ["http", "#http", "HTTP", "6100-6199"],
+        ["json", "#json", "JSON", "6200-6249"],
+        ["crypto", "#crypto", "Cryptography", "6250-6299"],
+        ["math", "#math", "Mathematics", "—"],
+        ["time", "#time", "Date/Time", "—"],
+        ["os", "#os", "Operating System", "6300-6399"],
+        ["debug", "#debug", "Debugging", "—"],
+        ["collections", "built-in", "Data Structures", "—"]
+      ]
+    }
+  },
+  {
     id: "tabela-codigos-de-erro",
     title: "9. Appendix A - Error Code Table",
     category: "Error System",
