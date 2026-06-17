@@ -1,6 +1,7 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import { blogData } from '../../data/blogData';
+import { marked } from "marked";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { blogData } from "../../data/blogData";
 
 export async function getStaticPaths() {
   return blogData.map((article) => ({
@@ -10,6 +11,7 @@ export async function getStaticPaths() {
 }
 
 const { article } = Astro.props;
+const renderedContent = marked.parse(article.content.join("\n\n"));
 ---
 
 <BaseLayout
@@ -19,23 +21,119 @@ const { article } = Astro.props;
 >
   <article class="py-2">
     <p class="text-xs text-gray-500 mb-4">
-      <a href="/blog" class="text-emerald-800 no-underline hover:underline font-semibold">← Back to DevLog</a>
+      <a href="/blog" class="text-emerald-800 no-underline hover:underline font-semibold"
+        >← Back to DevLog</a
+      >
     </p>
 
-    <p class="text-xs text-gray-500 mb-2">{article.date} · By {article.author} · {article.readTime}</p>
+    <p class="text-xs text-gray-500 mb-2">
+      {article.date} · By {article.author} · {article.readTime}
+    </p>
 
     <h1 class="text-lg font-bold text-gray-900 mb-6 leading-tight">{article.title}</h1>
 
-    <div class="flex flex-col gap-4 text-sm text-gray-700 leading-relaxed mb-8">
-      {article.content.map((paragraph) => (
-        <p class="leading-relaxed">{paragraph}</p>
-      ))}
-    </div>
+    <div
+      class="blog-content flex flex-col text-sm text-gray-700 leading-relaxed mb-8"
+      set:html={renderedContent}
+    />
 
     <p class="text-xs text-gray-500">
       {article.tags.map((tag, i) => (
-        <span>{i > 0 && <span class="text-gray-300 mx-0.5">·</span>}<span>{tag}</span></span>
+        <span
+          >{i > 0 && <span class="text-gray-300 mx-0.5">·</span>}<span>{tag}</span></span
+        >
       ))}
     </p>
   </article>
 </BaseLayout>
+
+<style>
+  .blog-content > :first-child {
+    margin-top: 0;
+  }
+  .blog-content h2 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 1.5em 0 0.6em 0;
+    line-height: 1.4;
+  }
+  .blog-content h3 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 1.2em 0 0.5em 0;
+    line-height: 1.4;
+  }
+  .blog-content hr {
+    border: none;
+    border-top: 1px solid #e5e7eb;
+    margin: 1.5em 0;
+  }
+  .blog-content p {
+    margin-bottom: 0.7em;
+    line-height: 1.7;
+  }
+  .blog-content p:last-child {
+    margin-bottom: 0;
+  }
+  .blog-content pre {
+    font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", "Consolas", monospace;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-left: 3px solid #065f46;
+    border-radius: 4px;
+    padding: 0.75em 1em;
+    margin: 0.6em 0;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .blog-content code {
+    font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", "Consolas", monospace;
+    font-size: 0.75rem;
+    background: #f1f5f9;
+    padding: 0.1em 0.3em;
+    border-radius: 2px;
+    color: #0f172a;
+  }
+  .blog-content pre code {
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    font-size: inherit;
+  }
+  .blog-content ul,
+  .blog-content ol {
+    padding-left: 1.5em;
+    margin: 0.5em 0;
+  }
+  .blog-content li {
+    margin-bottom: 0.3em;
+    line-height: 1.6;
+  }
+  .blog-content strong {
+    font-weight: 700;
+    color: #111827;
+  }
+  .blog-content em {
+    font-style: italic;
+  }
+  .blog-content blockquote {
+    border-left: 3px solid #065f46;
+    padding: 0.5em 1em;
+    margin: 0.6em 0;
+    background: #f0fdf4;
+    color: #374151;
+    font-style: italic;
+  }
+  .blog-content a {
+    color: #065f46;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .blog-content a:hover {
+    color: #047857;
+  }
+</style>
