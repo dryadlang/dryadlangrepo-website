@@ -12,7 +12,11 @@ export async function getStaticPaths() {
 const { article } = Astro.props;
 ---
 
-<BaseLayout title={article.title}>
+<BaseLayout
+  title={article.title}
+  description={article.description ?? article.summary}
+  type="article"
+>
   <article class="py-2">
     <p class="text-xs text-gray-500 mb-4">
       <a href="/blog" class="text-emerald-800 no-underline hover:underline font-semibold">← Back to DevLog</a>

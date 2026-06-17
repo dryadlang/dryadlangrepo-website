@@ -1,10 +1,4 @@
----
-const benchmarks = [
-  { metric: "Startup Latency (Cold execution)", interpreter: "1.2ms (Zero compile)", VM: "5.4ms", rustC: "120ms (Compilation block)" },
-  { metric: "Fibonacci(35) Arithmetic speed", interpreter: "244ms (AST traversing)", VM: "42ms (Bytecode VM)", rustC: "2.1ms (Nativo AOT)" },
-  { metric: "Memory Overhead (Base runtime memory)", interpreter: "1.8MB", VM: "2.4MB", rustC: "450KB" }
-];
----
+
 
 <div class="text-gray-800 leading-relaxed">
 
@@ -26,9 +20,11 @@ const benchmarks = [
   <div class="mb-8">
     <h2 class="text-sm font-bold text-gray-900 mb-3">Triple Execution Engine</h2>
     <p class="text-sm text-gray-600 mb-2">
-      Instantly switch between a <strong>Tree-Walking Interpreter</strong> for immediate
-      scripting, a <strong>Stack-Based Bytecode VM</strong> for reliable intermediate
-      performance, and <strong>AOT Native Compilation</strong> with no periodic garbage collector.
+      Dryad is engineered with three execution strategies: a <strong>Tree-Walking Interpreter</strong>
+      for rapid prototyping, a <strong>Stack-Based Bytecode VM</strong> for intermediate
+      performance, and an <strong>AOT Native Compilation</strong> pipeline for maximum
+      throughput. The interpreter is operational today; the VM and AOT backends are
+      being built according to the published specification.
     </p>
     <p class="text-sm">
       <a href="/docs/modelo-de-execucao" class="text-emerald-800 no-underline hover:underline font-semibold">How the execution pipeline works →</a>
@@ -62,30 +58,25 @@ $ dryad build --aot scripts/main.dy -o output_bin
   </div>
 
   <div class="mb-8">
-    <h2 class="text-sm font-bold text-gray-900 mb-3">Comparative Performance</h2>
-    <div class="text-sm leading-relaxed overflow-x-auto">
-      <table class="w-full text-left text-sm border-collapse">
-        <thead>
-          <tr class="text-gray-500 text-xs border-b border-gray-200">
-            <th class="py-1.5 pr-3 font-semibold">Metric</th>
-            <th class="py-1.5 px-3 font-semibold">AST Interpreter</th>
-            <th class="py-1.5 px-3 font-semibold">Bytecode VM</th>
-            <th class="py-1.5 px-3 font-semibold">AOT Native</th>
-          </tr>
-        </thead>
-        <tbody>
-          {benchmarks.map((bch) => (
-            <tr class="border-b border-gray-100">
-              <td class="py-1.5 pr-3 text-gray-800">{bch.metric}</td>
-              <td class="py-1.5 px-3 text-gray-600">{bch.interpreter}</td>
-              <td class="py-1.5 px-3 text-gray-600">{bch.VM}</td>
-              <td class="py-1.5 px-3 text-gray-600">{bch.rustC}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-    <p class="text-xs text-gray-500 mt-2 italic">Benchmarked on Apple M2 ARM64.</p>
+    <h2 class="text-sm font-bold text-gray-900 mb-3">Project Status</h2>
+    <p class="text-sm text-gray-600 mb-2">
+      Dryad is currently in <strong>active development</strong> — the language specification
+      is stable, and the <strong>AST interpreter</strong> proof-of-concept is functional.
+      The Bytecode VM and AOT compiler backends are under implementation as specified in
+      the theoretical foundation.
+    </p>
+    <p class="text-sm text-gray-600 mb-2">
+      <strong>What's ready:</strong> Lexer, parser, AST interpreter, type system, module
+      resolution, native directive FFI, and the full error infrastructure.
+    </p>
+    <p class="text-sm text-gray-600 mb-2">
+      <strong>In progress:</strong> Stack-based Bytecode VM, IR optimizer, AOT compiler
+      pipeline (ARM64/x86_64), self-hosted standard library, and package manager.
+    </p>
+    <p class="text-sm text-gray-600">
+      Performance benchmarks will be published once the Bytecode VM and AOT backends
+      reach their first stable release. Watch the <a href="/blog" class="text-emerald-800 no-underline hover:underline font-semibold">blog</a> for updates.
+    </p>
   </div>
 
   <div class="mb-4">

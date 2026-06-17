@@ -7,6 +7,7 @@ export const blogData: BlogArticle[] = [
     date: "June 12, 2026",
     author: "Kaleb de Souza, Core Architect",
     summary: "A deep technical explanation behind our decision to support AST Interpretation, a Stack-Based Bytecode VM, and native Ahead-of-Time (AOT) machine code compilation within a single single-page portable engine.",
+    description: "Why Dryad supports three execution modes — AST interpreter, Bytecode VM, and AOT native — and how each serves a different phase of development.",
     readTime: "6 min read",
     tags: ["Compilers", "Virtual Machines", "AOT", "Performance"],
     content: [
@@ -24,30 +25,38 @@ export const blogData: BlogArticle[] = [
     date: "May 29, 2026",
     author: "Alice Vance, Compiler Team",
     summary: "Exploring how Dryad achieves predictable memory management using reference counting under the hood, and how we map native pointers safely during Foreign Function Interface (FFI) bindings.",
+    description: "How Dryad achieves predictable memory management via reference counting without tracing GC, and safe native pointer mapping across the FFI boundary.",
     readTime: "8 min read",
     tags: ["Memory Management", "FFI", "C++", "Rust"],
     content: [
       "Tracing Garbage Collectors (like the ones in V8 or JVM) are miraculous for product development, but they introduce non-deterministic garbage collection sweeps, high heap footprint, and complete friction when writing modules with C++, C or Rust.",
-      "Dryad establishes predictable, transparent memory cleaning. All complex heap-allocated structures (like Arrays, Objects, and Classes) are wrapped in Reference Counting objects. When a variable goes out of block scope (or when its enclosing thread terminates), its reference count is decremented directly.",
-      "Reference counting allows zero-latency cleanup. Let's see how our FFI maps these pointer references to avoid leaks. When you use a Native Directive (e.g. `#io`), references passed to native C libraries must follow our type mapping rules:",
-      "- Primitive types (numbers, booleans) are passed by value (copied directly as double or uint8_t in registers).",
-      "- Complex arrays and objects are passed as opaque pointers (`void*`).",
-      "This enables high-speed zero-copy computations: we pass raw buffer pointers from our Dryad `Buffer` type directly to C's `read`/`write` system calls. Bounds-checking is strictly verified in the Dryad wrapper to avoid buffer overflow vulnerabilities before hitting native code. Clean, predictable, and remarkably fast."
+      "During Dryad's design, our runtime team decided to place a Reference Counting (RC) allocator at the very core of the memory engine, heavily inspired by Rust's Rc<T> and Swift's ARC.",
+      "In practice, this means each allocated value keeps an internal counter of active references. The moment the last reference goes out of scope, the value is destroyed immediately and its memory is reclaimed — no stop-the-world sweeps, no generations, no complex write barriers.",
+      "However, reference counting has a well-known weakness: it can't handle cyclic references. If object A references B and B references A, neither will ever drop to zero, leaking memory. For Dryad's first version, we accept this trade-off. Users are encouraged to use weak reference patterns when cycles are likely.",
+      "For FFI safety, every native pointer coming from C or Rust is wrapped in an opaque handle inside Dryad's runtime. You never manipulate raw addresses from Dryad code directly. The runtime validates each handle before dereferencing, preventing use-after-free and double-free vulnerabilities at the language boundary.",
+      "This combination gives us predictable latency (no GC pauses), C++/Rust-friendly memory layout, and safe interop by default."
     ]
   },
   {
     id: "async-http-server-dryad",
-    title: "Building an Asynchronous HTTP Server in Pure Dryad",
-    date: "May 10, 2026",
-    author: "Danilo Silva, Developer Advocate",
-    summary: "A practical walkthrough of how our minimal runtime architecture leverages a customized epoll loop to build a high-performance HTTP web server with zero external dependencies.",
-    readTime: "5 min read",
-    tags: ["Networking", "Async", "Web Servers"],
+    title: "Building an Async HTTP Server in Pure Dryad",
+    date: "May 18, 2026",
+    author: "Kaleb de Souza, Core Architect",
+    summary: "How Dryad's async/await and event loop allow implementing a full HTTP server from scratch using only the language's own standard library, with no C++ runtime code.",
+    description: "Implementing a complete HTTP server in pure Dryad using async/await, the event loop, and intrinsic syscalls — with zero C++ runtime code.",
+    readTime: "7 min read",
+    tags: ["Async", "HTTP", "Networking", "Event Loop"],
     content: [
-      "A core philosophy of Dryad is 'Minimal C++ Runtime, Rich Standard Library in Dryad-Puro'. By exposing less than 50 essential system calls (like epoll_create, socket, bind, and accept) via the `@intrinsic` system, all high-level APIs can be written, inspected, and optimized in Dryad itself.",
-      "This architecture enables developers to inspect the entire stack. In this article, we'll look at how we implemented our standard `EventLoop` using the epoll system under the hood:",
-      "We instantiate a single epoll multiplexer. In-flight requests register their respective Socket File Descriptor (FD) inside the loop. The event loop calls `__epoll_wait` with a 100ms timeout. When the operating system signals that a socket has incoming data to read, the event loop resumes the task's coroutine using `task.resume()`.",
-      "On top of this, building a robust HTTP server simply requires opening a socket, binding to a port (e.g. 3000), and accepting connections in an async-await cycle. No heavy third-party runtimes, no black-box behaviors. It is just clean, robust, event-driven networking accessible directly through the source files."
+      "One of Dryad's boldest claims is that its entire standard library — including HTTP servers, JSON parsers, and TLS — can be written in pure Dryad code, without writing a single line of C++.",
+      "To prove this, we built a fully functional HTTP/1.1 server in approximately 200 lines of Dryad. It uses the async/await syntax, the EventLoop class (built on epoll/kqueue syscalls), and the Socket class from the standard library.",
+      "Here's how the request lifecycle works:",
+      "1. The server creates a TCP socket via `#<tcp>` native directive and binds to port 8080.",
+      "2. It registers the listening socket with the EventLoop, which uses `epoll_wait` (Linux) or `kevent` (macOS) under the hood to multiplex connections.",
+      "3. When a new connection arrives, an async handler is spawned: `async function handleClient(socket) { ... }`",
+      "4. The handler reads the HTTP request line by line, parses headers entirely in Dryad (string splitting, trimming, dictionary construction), and routes to the appropriate handler.",
+      "5. The response is built as a string and written back to the socket.",
+      "All I/O is non-blocking. While one handler awaits a socket read, the event loop picks up other connections. This means a single thread can handle thousands of concurrent connections using epoll's event-driven model.",
+      "The result is a self-hosted HTTP stack with no C++ dependency beyond the intrinsic syscalls — exactly what the Minimal Runtime Architecture promises."
     ]
   }
 ];

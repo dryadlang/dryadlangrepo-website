@@ -1,0 +1,113 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { conventionsData } from "../../data/conventionsData";
+import type { ConventionBlock } from "../../data/conventionsData";
+
+function renderBlock(block: ConventionBlock, sectionNum: string): string {
+  switch (block.type) {
+    case "paragraph":
+      return `<p>${block.content}</p>`;
+
+    case "definition":
+      return `<div class="latex-definition">
+        <div class="label">Definition <span class="label-id">${block.id}</span></div>
+        <p>${block.content}</p>
+      </div>`;
+
+    case "axiom":
+      return `<div class="latex-axiom">
+        <div class="label">Axiom <span class="label-id">${block.id}</span></div>
+        <p>${block.content}</p>
+      </div>`;
+
+    case "property":
+      return `<div class="latex-property">
+        <div class="label">Property <span class="label-id">${block.id}</span></div>
+        <p>${block.content}</p>
+      </div>`;
+
+    case "note":
+      return `<div class="latex-note">
+        <div class="label">Note</div>
+        <p>${block.content}</p>
+      </div>`;
+
+    case "code":
+      return `<div class="latex-code">
+        <div class="code-title">${block.title}</div>
+        <pre><code>${block.code}</code></pre>
+        ${block.description ? `<p class="code-desc">${block.description}</p>` : ""}
+      </div>`;
+
+    case "table":
+      return `<div class="latex-table">
+        <table>
+          <thead>
+            <tr>${block.headers.map((h) => `<th>${h}</th>`).join("")}</tr>
+          </thead>
+          <tbody>
+            ${block.rows
+              .map(
+                (row) =>
+                  `<tr>${row.map((cell) => `<td>${cell}</td>`).join("")}</tr>`
+              )
+              .join("")}
+          </tbody>
+        </table>
+      </div>`;
+  }
+}
+---
+
+<BaseLayout title="Dryad Conventions" description="The formal specification of the Dryad programming language — syntax, type system, execution model, concurrency, FFI, and runtime architecture. The authoritative reference for implementors.">
+  <div class="latex-body">
+    <!-- Cover -->
+    <div class="latex-cover">
+      <h1>Dryad Conventions</h1>
+      <p class="subtitle">Language Specification and Theoretical Foundation</p>
+      <p class="meta">Version 1.0 &middot; May 2026 &middot; Draft Specification</p>
+      <p class="meta" style="margin-top:0.25rem;">
+        This document defines the formal conventions, syntax, semantics, and execution model of the Dryad programming language.
+        It serves as the authoritative reference for language implementors and advanced users,
+        analogous to the ECMAScript specification for JavaScript.
+      </p>
+    </div>
+
+    <!-- Table of Contents -->
+    <nav class="latex-toc">
+      <div class="latex-toc-title">Table of Contents</div>
+      {conventionsData.map((sec) => (
+        <a href={`#section-${sec.number}`}>
+          <span class="toc-num">§{sec.number}</span>
+          {sec.title}
+        </a>
+      ))}
+    </nav>
+
+    <!-- Sections -->
+    {conventionsData.map((sec) => (
+      <section id={`section-${sec.number}`}>
+        <div class="latex-section">
+          <h2>
+            <span class="latex-section-number">§{sec.number}</span>
+            {sec.title}
+          </h2>
+        </div>
+
+        {sec.blocks.map((block) => (
+          <div set:html={renderBlock(block, sec.number)} />
+        ))}
+
+        <a href="#" class="latex-back-to-top">&uarr; Back to top</a>
+        <hr class="latex-hr" />
+      </section>
+    ))}
+
+    <!-- Footer -->
+    <div class="latex-footer">
+      Dryad Conventions &middot; Version 1.0 &middot; May 2026<br />
+      This specification is maintained as the authoritative reference for the Dryad programming language.
+      Amendments and revisions follow the language development roadmap.
+    </div>
+  </div>
+</BaseLayout>

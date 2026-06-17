@@ -6,18 +6,56 @@ import '../index.css';
 
 export interface Props {
   title: string;
+  description?: string;
+  image?: string;
+  url?: string;
+  type?: string;
 }
 
-const { title } = Astro.props;
+const {
+  title,
+  description = 'Dryad is a multi-paradigm dynamically typed programming language with a hybrid execution model — AST interpreter, Bytecode VM, and AOT native compilation.',
+  image = '/og-image.svg',
+  url = 'https://dryadlang.org',
+  type = 'website',
+} = Astro.props;
+
+const fullTitle = `${title} | Dryad`;
+const siteName = 'Dryad Programming Language';
+const ogImage = url + image;
+const ogUrl = url + Astro.url.pathname;
 ---
 
 <!doctype html>
-<html lang="pt">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title} | Dryad</title>
+
+    <!-- Primary meta tags -->
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={ogUrl} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={ogUrl} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content={siteName} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Theme color -->
+    <meta name="theme-color" content="#065f46" />
   </head>
   <body class="min-h-screen flex flex-col bg-white text-gray-900 font-sans">
     <Header />
@@ -47,7 +85,7 @@ document.addEventListener("keydown", (e: KeyboardEvent) => {
     if (key === "h") {
       window.location.href = "/";
     } else if (key === "d") {
-      window.location.href = "/docs/introducao-e-filosofia";
+      window.location.href = "/docs";
     } else if (key === "b") {
       window.location.href = "/blog";
     }

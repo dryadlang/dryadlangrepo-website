@@ -1,0 +1,46 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { docsData } from "../../data/docsData";
+import type { DocSection } from "../../types";
+
+const categories = docsData.reduce((acc: Record<string, DocSection[]>, doc) => {
+  if (!acc[doc.category]) {
+    acc[doc.category] = [];
+  }
+  acc[doc.category].push(doc);
+  return acc;
+}, {} as Record<string, DocSection[]>);
+---
+
+<BaseLayout title="Documentation" description="Complete documentation for the Dryad programming language — type system, execution model, module system, concurrency, FFI, and more.">
+  <div>
+    <h2 class="text-lg font-bold text-gray-900 mb-1 leading-tight">Documentation</h2>
+    <p class="text-sm text-gray-600 mb-8 leading-relaxed">
+      The official Dryad language documentation. Browse by category or use the sidebar
+      on individual pages for quick navigation between sections.
+    </p>
+
+    {Object.entries(categories).map(([category, sections]) => (
+      <div class="mb-8">
+        <h3 class="text-sm font-bold text-gray-900 mb-3 text-xs uppercase tracking-wider text-gray-500">
+          {category}
+        </h3>
+        <div class="flex flex-col gap-3">
+          {sections.map((section) => (
+            <a
+              href={`/docs/${section.id}`}
+              class="group block no-underline border border-gray-200 rounded-lg p-4 hover:border-emerald-300 hover:bg-emerald-50/30 transition-colors"
+            >
+              <h4 class="text-sm font-semibold text-gray-900 group-hover:text-emerald-800 transition-colors">
+                {section.title}
+              </h4>
+              <p class="text-xs text-gray-500 mt-1 leading-relaxed line-clamp-2">
+                {section.content}
+              </p>
+            </a>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+</BaseLayout>

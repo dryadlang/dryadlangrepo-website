@@ -3,6 +3,7 @@ export interface DocSection {
   title: string;
   category: string; // e.g. "1. Introdução"
   content: string;
+  description?: string;
   markdown?: string;
   codeSnippets?: {
     title: string;
@@ -22,6 +23,7 @@ export interface BlogArticle {
   date: string;
   author: string;
   summary: string;
+  description?: string;
   readTime: string;
   content: string[];
   tags: string[];

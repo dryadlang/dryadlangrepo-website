@@ -435,5 +435,267 @@ export class Arquivo {
         ["7000-7999", "Syntax Errors", "Generic violation of strict grammar rules."]
       ]
     }
+  },
+  {
+    id: "bytecode-e-ir",
+    title: "13. Bytecode & Intermediate Representation",
+    category: "Architecture",
+    content: "The Dryad Bytecode VM is a stack-based virtual machine that compiles AST into linear OpCodes for efficient sequential execution. The Intermediate Representation (IR) sits between bytecode and native assembly — it is register-based (unlike the stack-based bytecode), architecture-independent, and enables classical optimizations before code generation.",
+    codeSnippets: [
+      {
+        title: "Bytecode Execution Cycle",
+        code: `// The VM follows a strict Fetch-Decode-Execute-Advance cycle:
+//
+// 1. FETCH:   Read OpCode at current Instruction Pointer (IP)
+// 2. DECODE:  Identify operation and operands
+// 3. EXECUTE: Perform the operation (manipulate the value stack)
+// 4. ADVANCE: Increment IP to the next instruction
+// 5. REPEAT:  Continue until Return or program end
+
+// Example: compiled representation of a + b
+LOAD_FAST a       // Push local 'a' onto the value stack
+LOAD_FAST b       // Push local 'b' onto the value stack
+ADD               // Pop two values, add, push result
+RETURN_VALUE      // Pop result and return from function`,
+        description: "The bytecode is strictly linear — no nested structure. All control flow is resolved via Jump, JumpIfFalse, and JumpIfTrue OpCodes."
+      }
+    ],
+    tableData: {
+      headers: ["OpCode Category", "Instructions", "Purpose"],
+      rows: [
+        ["Stack", "Push, Pop, Dup", "Value stack management for operands and results."],
+        ["Arithmetic", "Add, Sub, Mul, Div, Mod, Pow", "Numeric operations on the top of stack."],
+        ["Logical", "And, Or, Not", "Boolean short-circuit and negation operations."],
+        ["Bitwise", "BitwiseAnd, BitwiseOr, BitwiseXor, Shift", "Low-level bit manipulation instructions."],
+        ["Comparison", "Equal, NotEqual, Less, Greater, LessEqual, GreaterEqual", "Relational comparisons pushing boolean results."],
+        ["Control Flow", "Jump, JumpIfFalse, JumpIfTrue, Call, Return", "Unconditional and conditional branches, function calls."],
+        ["Variables", "GetLocal, SetLocal, GetGlobal, SetGlobal", "Scope-aware variable read/write operations."],
+        ["Objects/Arrays", "GetProperty, SetProperty, NewObject, NewArray", "Object field access, array construction and mutation."],
+        ["Classes", "DefineClass, NewInstance, CallMethod", "Class definition, instantiation, and virtual method dispatch."]
+      ]
+    }
+  },
+  {
+    id: "compilacao-aot",
+    title: "14. AOT Compilation Pipeline",
+    category: "Architecture",
+    content: "The Ahead-of-Time (AOT) compiler transforms Dryad bytecode into native machine code. It is structured as a multi-stage pipeline: stack-based OpCodes are first converted to a register-based IR, optimized via classical compiler passes, then lowered to assembly for the target architecture, and finally linked into an executable object file (ELF or PE).",
+    codeSnippets: [
+      {
+        title: "Pipeline Overview",
+        code: `// Dryad Source
+//     ↓  (parser)
+// AST
+//     ↓  (bytecode compiler)
+// OpCodes (stack-based)
+//     ↓  (IR converter)
+// IR (register-based, SSA-like)
+//     ↓  (optimizer)
+// Optimized IR
+//     ↓  (backend)
+// Assembly (ARM64 or x86_64)
+//     ↓  (object generator)
+// Native Binary (ELF or PE)
+
+// IR optimization passes include:
+// - Constant folding: 2 + 3 → 5 at compile time
+// - Dead code elimination: remove unreachable branches
+// - Register allocation: assign virtual regs to physical regs
+// - Inline caching elimination: devirtualize monomorphic calls`,
+        description: "The AOT pipeline is opt-in via 'dryad build --aot'. It is currently experimental — not all language features are supported in AOT mode."
+      }
+    ],
+    tableData: {
+      headers: ["Backend", "Architecture", "Register Model", "Object Format"],
+      rows: [
+        ["ARM64", "RISC 64-bit", "x0-x30, sp, pc (32-bit fixed instructions)", "ELF"],
+        ["x86_64", "CISC 64-bit", "rax, rbx, rcx, rdx, rsi, rdi, rsp, rbp, r8-r15", "ELF / PE"],
+        ["Windows PE", "x86_64 CISC", "Same as x86_64 with PE-specific sections", "PE (.text, .data, .rdata)"]
+      ]
+    }
+  },
+  {
+    id: "paradigmas-programacao",
+    title: "15. Programming Paradigms",
+    category: "Paradigms",
+    content: "Dryad is a multi-paradigm language that supports object-oriented, functional, and procedural programming styles — often mixing them in the same file. There is no enforced paradigm; developers choose the approach that best fits the problem.",
+    codeSnippets: [
+      {
+        title: "Object-Oriented: Encapsulation & Inheritance",
+        code: `class Animal {
+  public name: string;
+  constructor(name: string) {
+    this.name = name;
+  }
+  speak(): string {
+    return "..." ;
+  }
+}
+
+class Dog extends Animal {
+  constructor(name: string) {
+    super(name);
+  }
+  speak(): string {
+    return this.name ++ " says woof!";
+  }
+}
+
+let pet = new Dog("Rex");
+console.log(pet.speak()); // "Rex says woof!"`,
+        description: "Classes support single inheritance (extends), access modifiers (public, private, protected), and method overriding. super provides access to the parent class."
+      },
+      {
+        title: "Functional: Higher-Order Functions & Closures",
+        code: `// First-class function assigned to a variable
+let double: fn(number) -> number = (x) => x * 2;
+
+// Higher-order function: takes a function as argument
+function applyTwice(f: fn(number) -> number, x: number): number {
+  return f(f(x));
+}
+
+console.log(applyTwice(double, 3)); // 12
+
+// Closure: captures lexical scope
+function makeCounter() {
+  let count = 0;
+  return function() {
+    return ++count;
+  };
+}
+
+let counter = makeCounter();
+console.log(counter()); // 1
+console.log(counter()); // 2`,
+        description: "Arrow functions provide concise syntax. Closures capture variables from the definition scope and keep them alive as long as the closure exists."
+      },
+      {
+        title: "Procedural: Simple Scripting Without Classes",
+        code: `// Top-level functions — no class or object required
+function greet(name: string) {
+  return "Hello, " ++ name ++ "!";
+}
+
+let users = ["Alice", "Bob", "Charlie"];
+for (let i = 0; i < 3; i++) {
+  console.log(greet(users[i]));
+}`,
+        description: "Procedural code with top-level functions, global and local variables, and structured control flow. Ideal for scripts and automation tasks."
+      }
+    ],
+    tableData: {
+      headers: ["Paradigm", "Key Features", "When to Use"],
+      rows: [
+        ["Object-Oriented", "Classes, inheritance, encapsulation, polymorphism, access modifiers", "Domain modeling, large systems with stateful entities."],
+        ["Functional", "First-class functions, closures, higher-order functions, arrow syntax, immutability via const", "Data pipelines, transformations, callback-heavy code."],
+        ["Procedural", "Top-level functions, global/local scope, structured loops, no class overhead", "Scripts, automation, small-to-medium programs."]
+      ]
+    }
+  },
+  {
+    id: "gramatica-formal-bnf",
+    title: "16. Formal Grammar (BNF)",
+    category: "Specification",
+    content: "Below is the simplified BNF grammar defining Dryad's syntax. This is a subset covering the core language — some advanced features (guards in match, computed properties, decorators) are omitted for brevity. The grammar is context-free and serves as the reference for parser implementations.",
+    codeSnippets: [
+      {
+        title: "Core BNF Grammar",
+        code: `<program>       ::= <statement>*
+<statement>     ::= <var-decl>
+                  | <const-decl>
+                  | <function-decl>
+                  | <class-decl>
+                  | <if-stmt>
+                  | <while-stmt>
+                  | <for-stmt>
+                  | <return-stmt>
+                  | <throw-stmt>
+                  | <try-catch-stmt>
+                  | <expression-stmt>
+                  | <import-stmt>
+                  | <export-stmt>
+                  | <block-stmt>
+
+<var-decl>      ::= "let" <identifier> [":" <type>] ["=" <expression>] ";"
+<const-decl>    ::= "const" <identifier> [":" <type>] "=" <expression> ";"
+
+<function-decl> ::= ["async"] "function" <identifier>
+                    "(" <parameter-list> ")" [":" <type>]
+                    "{" <statement>* "}"
+
+<class-decl>    ::= "class" <identifier> ["extends" <identifier>]
+                    "{" <class-member>* "}"
+
+<expression>    ::= <literal>
+                  | <identifier>
+                  | <binary-expr>
+                  | <unary-expr>
+                  | <call-expr>
+                  | <member-expr>
+                  | <lambda-expr>
+                  | <array-literal>
+                  | <object-literal>
+                  | <match-expr>
+
+<binary-expr>   ::= <expression> <binary-op> <expression>
+<unary-expr>    ::= <unary-op> <expression>
+<call-expr>     ::= <expression> "(" <argument-list> ")"
+<member-expr>   ::= <expression> "." <identifier>
+                  | <expression> "[" <expression> "]"
+                  | <expression> "::" <identifier>
+<lambda-expr>   ::= "(" <parameter-list> ")" "=>" <expression>
+                  | "(" <parameter-list> ")" "=>" "{" <statement>* "}"
+
+<type>          ::= "number" | "string" | "bool" | "any"
+                  | <type> "[]"
+                  | "(" <type-list> ")"
+                  | "fn" "(" <type-list> ")" "->" <type>`,
+        description: "The grammar is designed to be unambiguous and LL(1) parsable for most constructs. The full reference is maintained in the theoretical foundation document."
+      }
+    ]
+  },
+  {
+    id: "limitacoes-performance",
+    title: "17. Limitations & Performance Trade-offs",
+    category: "Considerations",
+    content: "Dryad is designed for scripting, automation, prototyping, and small-to-medium applications. It is not intended for computationally intensive workloads, hard real-time systems, or performance-critical production pipelines — at least not until the AOT compiler matures. Below are the current known limitations and design trade-offs.",
+    codeSnippets: [
+      {
+        title: "When Not to Use Dryad (Current State)",
+        code: `// ❌ Heavy numeric computation (prefer AOT or native code)
+// Fibonacci(40) in the AST interpreter is ~10x slower than native
+function fib(n) {
+  if (n <= 1) return n;
+  return fib(n - 1) + fib(n - 2); // deep recursion is slow
+}
+
+// ✅ Automation and orchestration (where Dryad shines)
+#io
+function deploy() {
+  let config = io_read_file("deploy.json");
+  let result = run_health_checks(config);
+  io_write_file("status.log", result);
+}
+
+// ✅ Rapid prototyping with FFI
+#math
+let result = #math::clamp(value, 0, 100);`,
+        description: "Use the AST interpreter for scripting and prototyping. Switch to bytecode mode for better performance. Reserve AOT for production builds when the backend stabilizes."
+      }
+    ],
+    tableData: {
+      headers: ["Limitation", "Impact", "Mitigation / Future Work"],
+      rows: [
+        ["Interpreter speed", "Slower than compiled languages for CPU-heavy work", "Use bytecode VM (set_compile_mode(true)) or AOT compilation."],
+        ["Dynamic typing", "No compile-time type error detection", "Opt-in 'use strict types' mode enables static validation in AOT."],
+        ["FFI complexity", "Complex types passed as opaque pointers", "Stick to primitives across the FFI boundary; wrappers in Dryad."],
+        ["Single-threaded interpreter", "Base interpreter runs on one thread", "thread functions run on real OS threads; they are isolated."],
+        ["Module versioning", "No built-in package manager yet", "Manual path management; package manager is on the roadmap."],
+        ["AOT experimental", "Not all language features supported", "Use interpreter/bytecode for development; AOT for stable hot paths."],
+        ["Deep call stacks", "Stack overflow risk with unbounded recursion", "Prefer iterative patterns; set explicit recursion limits."],
+        ["Frequent GC pressure", "Large array operations trigger collections", "Use buffers for raw data; minimize object allocations in loops."]
+      ]
+    }
   }
 ];

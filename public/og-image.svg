@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  
+  <!-- Logo leaf -->
+  <g transform="translate(160, 315) scale(8)" fill="#3b5e40" stroke="#4ade80" stroke-width="0.15" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.5 1 9.1A7 7 0 0 1 13 18.1Z"/>
+    <path d="M12 22v-6.5"/>
+  </g>
+  
+  <!-- Title -->
+  <text x="340" y="310" font-family="Georgia, 'Times New Roman', serif" font-size="62" font-weight="700" fill="#f1f5f9">Dryad</text>
+  <text x="340" y="380" font-family="Georgia, 'Times New Roman', serif" font-size="32" fill="#94a3b8" font-style="italic">Programming Language</text>
+  
+  <!-- Description -->
+  <text x="340" y="440" font-family="system-ui, sans-serif" font-size="20" fill="#64748b">
+    Language Specification &amp; Theoretical Foundation
+  </text>
+  
+  <!-- Version -->
+  <text x="340" y="480" font-family="monospace" font-size="16" fill="#4ade80">v1.0 · May 2026</text>
+</svg>
