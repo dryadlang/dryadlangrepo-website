@@ -402,6 +402,27 @@ console.log(c.area()); // 78.53975`,
         content:
           "Runtime values are represented as a discriminated variant enum: <code>Number(f64)</code>, <code>String(String)</code>, <code>Bool(bool)</code>, <code>Null</code>, <code>Array(Vec&lt;Value&gt;)</code>, <code>Object(HashMap&lt;String, Value&gt;)</code>, <code>Function(...)</code>, <code>Class(...)</code>, and <code>Thread(...)</code>.",
       },
+      {
+        type: "definition",
+        id: "8.9",
+        title: "Type-Aware Bytecode",
+        content:
+          "The Bytecode VM does not emit generic opcodes — it emits type-specialized instructions based on type observations collected during the interpretation phase. When the interpreter detects that variable <code>soma</code> is always <code>f64</code>, the VM emits <code>ADD_F64</code> instead of <code>ADD_GENERIC</code>. Each compiled function carries a Metadata Header containing: (i) the observed type signature for every slot and parameter; (ii) the total number of opcodes; (iii) the stack depth required; and (iv) a per-slot type confidence level (STATIC, OBSERVED, UNKNOWN). The AOT compiler reads this header to pre-populate its symbol table, eliminating the need to re-infer types from scratch. If a slot's type is STATIC (inferred with certainty via CFG analysis) or OBSERVED (seen consistently during interpretation), the emitted bytecode uses the fast native opcode directly. If UNKNOWN, the generic Variant opcode is emitted. This design distributes type intelligence across all three layers: the interpreter observes, the VM annotates, and the AOT consumes.",
+      },
+      {
+        type: "definition",
+        id: "8.10",
+        title: "@compile() Decorator for Scoped Compilation",
+        content:
+          "The <code>@compile(mode)</code> decorator replaces the global <code>set_compile_mode()</code> function for fine-grained compilation control. It may be applied to function declarations or block statements. Accepted modes: <code>@compile(\"interpreter\")</code> — forces AST interpretation for this scope (useful for debugging); <code>@compile(\"bytecode\")</code> — compiles the scope to bytecode VM instructions; <code>@compile(\"AOT\")</code> — marks the scope for AOT compilation when producing a native binary. When applied to a block: <code>@compile(\"bytecode\") { ... }</code>, the statements inside the block are compiled in the specified mode while the surrounding code retains its default mode. When applied to a function declaration, all invocations of that function use the specified mode. The decorator is transitive: a function called from within an <code>@compile(AOT)</code> scope is also compiled to native, unless it has its own <code>@compile</code> override.",
+      },
+      {
+        type: "property",
+        id: "8.4",
+        title: "Three-Layer Contract — Interpreter → VM → AOT",
+        content:
+          "The three execution layers are not independent implementations — they form a pipeline with a strict contract. <strong>Layer 1 (Interpreter):</strong> Walks the AST directly. Collects runtime type observations for each variable slot. Records call-site frequencies and branch taken/not-taken profiles. <strong>Layer 2 (Bytecode VM):</strong> Reads the AST and the interpreter's type observations. Emits type-specialized opcodes using the Metadata Header. Functions compiled with high-confidence type observations use fast native opcodes; functions with low confidence fall back to generic dispatch. The VM may also apply inline caching for property access based on observed Shapes. <strong>Layer 3 (AOT Compiler):</strong> Consumes the type-annotated bytecode and Metadata Header. Performs the final Bind Once decision: if the metadata indicates STATIC or OBSERVED with high confidence, the compiler emits native LLVM IR with zero type checks. If confidence is low, it emits a guarded branch (fast path with a runtime type check fallback). The contract guarantees that a program behaves identically across all three layers — the only difference is performance, not semantics.",
+      },
     ],
   },
   {
@@ -991,6 +1012,96 @@ let doubled = scale([1, 2, 3], 2);
 //     ret`,
         description:
           "After gradient inference, the generated code contains zero type checks. The loop body compiles to a single FMUL instruction and a store — identical to what a C++ compiler would produce for <code>std::vector&lt;double&gt;</code>. The Variant Enum is entirely eliminated for this function.",
+      },
+      {
+        type: "definition",
+        id: "14.6",
+        title: "LLVM IR Backend Pipeline",
+        content:
+          "The AOT compiler does not generate machine code or object files directly. Instead, it emits LLVM Intermediate Representation (LLVM IR), a low-level, platform-independent language that LLVM's optimization passes and code generation backend consume. The pipeline is: (1) <strong>Bytecode → Micro-IR (3-Address, SSA)</strong> — the stack-based bytecode is converted to a register-based intermediate representation in Static Single Assignment form, where each instruction has the form <code>R1 = R2 op R3</code>. This conversion uses a simple stack-to-register algorithm that tracks the expected operand types from the Metadata Header. (2) <strong>Micro-IR → LLVM IR</strong> — each Micro-IR instruction maps to one or more LLVM IR instructions. Types are mapped: <code>f64</code> → <code>double</code>, <code>i32</code> → <code>i32</code>, <code>string</code> → <code>i8*</code> (pointer), <code>object</code> → <code>i8*</code> (opaque pointer). Structures (tuples, objects with known Shapes) are emitted as LLVM <code>struct</code> types with named fields. (3) <strong>LLVM Optimization</strong> — LLVM's built-in pass manager applies constant folding, dead code elimination, loop unrolling, vectorization (SIMD), and inlining. (4) <strong>Code Generation</strong> — LLVM's backend selects target-specific instructions for ARM64 or x86_64, performs physical register allocation, and emits an object file (<code>.o</code>). (5) <strong>Linking</strong> — the object file is linked against the Dryad runtime library (containing the ~50 intrinsic implementations and the reference counting GC) to produce the final ELF or PE executable.",
+      },
+      {
+        type: "code",
+        title: "Bytecode → Micro-IR → LLVM IR Translation",
+        code: `// Dryad source: let z = x + y;    (x, y observed as f64)
+
+// Stack bytecode (from VM):
+//   LOAD_FAST x        // push x onto stack
+//   LOAD_FAST y        // push y onto stack
+//   ADD_F64             // pop two f64 values, add, push result
+//   STORE_FAST z        // pop and store to local
+
+// Micro-IR (3-address, SSA):
+//   %1 = load_f64 @x          ; R1 = x
+//   %2 = load_f64 @y          ; R2 = y
+//   %3 = fadd_f64 %1, %2      ; R3 = R1 + R2
+//   store_f64 @z, %3          ; @z = R3
+
+// LLVM IR emitted:
+//   define void @_D42_example(double* %x_ptr, double* %y_ptr, double* %z_ptr) {
+//     %x = load double, double* %x_ptr
+//     %y = load double, double* %y_ptr
+//     %z = fadd double %x, %y
+//     store double %z, double* %z_ptr
+//     ret void
+//   }
+
+// Resulting ARM64 assembly (via LLVM):
+//   ldr d0, [x0]    ; load x
+//   ldr d1, [x1]    ; load y
+//   fadd d0, d0, d1 ; native f64 add
+//   str d0, [x2]    ; store z
+//   ret`,
+        description:
+          "The entire translation is type-driven. Because the Metadata Header recorded x and y as f64, every layer emits native floating-point operations. No Variant Enum logic appears anywhere in the pipeline — the Bind Once decision at the bytecode level propagates all the way to the silicon.",
+      },
+      {
+        type: "definition",
+        id: "14.7",
+        title: "Fast Path / Slow Path Intrinsic Dispatch",
+        content:
+          "Every intrinsic syscall (open, read, write, socket, etc.) has two entry points in the C++ runtime. <strong>Fast Path</strong> (<code>syscall_read_fast(i32 fd, ptr&lt;u8&gt; buf, usize len) → isize</code>) — expects unboxed native types matching the C ABI. Arguments are passed in CPU registers following the platform calling convention. No Variant Enum construction or destruction occurs. The AOT compiler emits a direct <code>call</code> instruction to this entry point when the Metadata Header confirms all argument types statically. <strong>Slow Path</strong> (<code>syscall_read_variant(Variant* args) → Variant</code>) — accepts a Variant array, extracts and validates each argument at runtime, calls the same internal implementation, and wraps the result in a Variant. Both paths share the same internal logic (<code>internal_read</code>). The VM and interpreter always use the Slow Path. The AOT compiler selects between Fast and Slow Path per-call-site: if all arguments have STATIC or OBSERVED types, Fast Path is used; if any argument is UNKNOWN (genuinely dynamic), Slow Path is used. This dual-port design ensures zero overhead for statically-typed code paths while preserving correctness for dynamic code — without duplicating the intrinsic implementation.",
+      },
+      {
+        type: "property",
+        id: "14.4",
+        title: "dryad --analyze — Slow Path Detection Tool",
+        content:
+          "The <code>dryad --analyze &lt;file.dryad&gt;</code> command performs a static analysis pass over the code and reports every call site that would fall into the Slow Path during AOT compilation. Output includes: (i) the exact line and column of each Slow Path call site; (ii) the reason for the fallback (e.g., 'argument type UNKNOWN — add type annotation to force Fast Path'); (iii) the estimated performance impact (number of Variant operations per call); and (iv) a suggested fix (e.g., 'add type hint <code>let data: Buffer</code>'). The analysis is non-destructive — it does not modify the source file or emit any binary. It is implemented as a separate pass over the AOT compiler's frontend that stops after type inference and emits the diagnostic report. This tool serves both as a debugging aid and as an educational resource, teaching developers how the compiler interprets their type declarations.",
+      },
+      {
+        type: "code",
+        title: "Using dryad --analyze",
+        code: `$ dryad --analyze server.dryad
+
+Dryad AOT Analysis Report
+━━━━━━━━━━━━━━━━━━━━━━━
+File: server.dryad
+
+[SLOW PATH] line 45 column 12
+  Function: processRequest(data, callback)
+  Reason: parameter 'data' type UNKNOWN
+    → Could not determine type at call site
+  Impact: ~120 Variant operations per invocation
+  Fix: add type hint 'let data: Buffer'
+
+[SLOW PATH] line 78 column 8
+  Function: data + transform
+  Reason: operator '+' receives 'string | number' (merged type)
+    → Type merger at line 72 assigns both types
+  Impact: ~8 Variant operations per invocation
+  Fix: refactor to separate numeric and string paths
+
+[FAST PATH] 142 of 150 call sites (94.7%)
+  Functions with static binding: processData, handleConnection,
+  parseHeaders, writeResponse, logAccess
+
+Summary:
+  Slow Path call sites: 2
+  Estimated Variant operations: ~128 per request
+  Recommended annotations: 1`,
+        description:
+          "The analyzer helps developers identify exactly where dynamic types degrade performance. Each warning includes a concrete suggestion to promote the variable to the Fast Path, aligning with Dryad's philosophy of progressive performance — add types only where they matter.",
       },
     ],
   },

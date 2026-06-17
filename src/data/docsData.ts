@@ -347,31 +347,86 @@ main();`,
     id: "modelo-de-execucao",
     title: "8. Triple Execution Model",
     category: "Architecture",
-    content: "Unlike common interpreters that force a one-way pipeline, Dryad's compiler and interpreter feature three configurable runtime modes according to the task's goal. This engineering aims for extreme versatility.",
+    description: "Dryad's three-tier execution architecture — AST Interpreter, Type-Aware Bytecode VM, and LLVM-based AOT Compiler — with the layer contract and @compile() decorator.",
+    content: "Dryad's execution engine is not a single interpreter or compiler — it is a three-layer pipeline where each layer feeds the next with progressively richer type information. Layer 1 (AST Interpreter) walks the syntax tree directly and collects runtime type observations for every variable slot, call site, and branch. Layer 2 (Bytecode VM) consumes the AST and the interpreter's type observations to emit type-specialized opcodes — ADD_F64 instead of ADD_GENERIC when the observed type is f64. Each compiled function carries a Metadata Header with the observed type signatures, allowing subsequent layers to skip type inference. Layer 3 (AOT Compiler) reads the type-annotated bytecode and emits LLVM IR with zero type checks for statically-known paths, falling back to guarded branches (fast path with runtime check) only when types are genuinely ambiguous. This design distributes type intelligence across all three layers: the interpreter observes, the VM annotates, and the AOT consumes.",
     codeSnippets: [
       {
-        title: "On-Demand Compilation",
-        code: `// Dynamic activation for optimized Bytecode execution
-set_compile_mode(true);
-
-function loopsMassivos() {
-  let soma = 0;
-  for (let i = 0; i < 100000; i++) {
-    soma = soma + i;
+        title: "Type-Aware Bytecode Emission",
+        code: `// Dryad source: the interpreter observes that 'sum' is always number
+function compute(arr) {
+  let sum = 0;
+  for (let i = 0; i < arr.len(); i++) {
+    sum = sum + arr[i];
   }
-  return soma;
+  return sum;
 }
 
-loopsMassivos();`,
-        description: "Dynamic optimizations in the stack-based bytecode VM for sequential operations."
+// Bytecode emitted by VM (with type observations from interpreter):
+// Metadata Header:
+//   FuncID: compute
+//   Slot 0 (arr): observed f64[]  → confidence: OBSERVED
+//   Slot 1 (sum): observed f64    → confidence: OBSERVED
+//   Slot 2 (i):   observed i32    → confidence: OBSERVED
+//
+// Emitted opcodes (type-specialized):
+//   LOAD_CONST 0
+//   STORE_FAST sum       ; sum: f64
+//   LOAD_CONST 0
+//   STORE_FAST i         ; i: i32
+// .loop:
+//   LOAD_FAST i          ; i: i32
+//   LOAD_FAST arr        ; arr: f64[]
+//   LOAD_FAST i          ; i: i32
+//   GET_ELEMENT_F64      ; arr[i] as f64 — native load
+//   ADD_F64              ; sum + arr[i] — native f64 add
+//   STORE_FAST sum
+//   ...loop control...
+//   JUMP_IF .loop`,
+        description: "The VM emits type-specialized opcodes (ADD_F64, GET_ELEMENT_F64) based on observations from the interpreter. The Metadata Header pre-populates the AOT compiler's symbol table, eliminating redundant type inference."
+      },
+      {
+        title: "@compile() Decorator for Scoped Compilation",
+        code: `// Scoped compilation replaces global set_compile_mode()
+// Each @compile() applies only to its annotated scope.
+
+// Function-level: compile only this function to AOT
+@compile("AOT")
+function hotPath(data: Buffer) {
+  // This function is compiled to native even if the
+  // surrounding module uses interpreter mode
+  let result = process(data);
+  return transform(result);
+}
+
+// Block-level: compile a specific block to bytecode
+function mixedMode() {
+  // This part runs in the interpreter (default)
+  let config = io_read_file("config.json");
+  let parsed = json_parse(config);
+
+  // This block runs in bytecode VM for performance
+  @compile("bytecode") {
+    for (let item in parsed.items) {
+      heavyProcessing(item);
+    }
+  }
+
+  // Back to interpreter mode
+  return parsed.status;
+}
+
+// The decorator is transitive: functions called from
+// within @compile("AOT") are also AOT-compiled, unless
+// they have their own @compile override.`,
+        description: "The @compile() decorator provides fine-grained compilation control. It replaces the older set_compile_mode() API and works at both function and block granularity."
       }
     ],
     tableData: {
-      headers: ["Strategy", "Technical Characteristics", "When to Use"],
+      headers: ["Execution Mode", "Input", "Type Info", "Performance Profile", "Use Case"],
       rows: [
-        ["Tree-Walking Interpreter", "Executes the Abstract Syntax Tree (AST) directly.", "Excellent for active development and rapid debugging."],
-        ["Bytecode VM", "Compiles the AST to stack-based instructions for fast, clean execution.", "Intermediate performance for automations and local processing."],
-        ["AOT Compiler (Ahead-of-Time)", "Compiles the intermediate Bytecode (IR) directly to native machine assembly (ARM64 / x86_64).", "Maximum absolute performance recommended for stable production."]
+        ["AST Interpreter", "Source code (.dryad)", "Runtime observations collected", "Fastest startup, slowest execution", "Development, debugging, rapid iteration"],
+        ["Bytecode VM", "AST + Type Observations", "Metadata Header: STATIC/OBSERVED/UNKNOWN", "Moderate startup, 10x over interpreter", "Automation, scripts, development servers"],
+        ["AOT Compiler (LLVM)", "Type-Annotated Bytecode (.dryadc)", "Bind Once: all types resolved at compile time", "10s startup, native C++ speed", "Production binaries, hot paths, deployment"]
       ]
     }
   },
@@ -973,38 +1028,109 @@ RETURN_VALUE      // Pop result and return from function`,
     id: "compilacao-aot",
     title: "14. AOT Compilation Pipeline",
     category: "Architecture",
-    content: "The Ahead-of-Time (AOT) compiler transforms Dryad bytecode into native machine code. It is structured as a multi-stage pipeline: stack-based OpCodes are first converted to a register-based IR, optimized via classical compiler passes, then lowered to assembly for the target architecture, and finally linked into an executable object file (ELF or PE). The compiler employs a 'Bind Once' strategy: gradient type inference promotes variables to native types at compile time, eliminating the Variant Enum for monomorphic code paths. Functions with dynamic parameters generate type-specialized stubs (monomorphization). Object property access uses Shapes (Hidden Classes) to resolve to direct memory loads. Escape analysis enables stack allocation for non-escaping objects. All type bindings are final at compile time — there is no deoptimization or JIT feedback loop, ensuring deterministic performance with zero warm-up.",
+    description: "Dryad's AOT compiler pipeline: Bytecode → Micro-IR (SSA) → LLVM IR → optimized native binary, with Fast/Slow Path intrinsic dispatch and dryad --analyze tooling.",
+    content: "The Ahead-of-Time (AOT) compiler transforms Dryad bytecode into native machine code through a multi-stage pipeline that avoids emitting assembly or object files directly — instead it leverages LLVM IR as its backend target. The pipeline: (1) Bytecode → Micro-IR — stack-based opcodes are converted to a register-based 3-address SSA form where each instruction is R1 = R2 op R3, using the Metadata Header to drive type mapping; (2) Micro-IR → LLVM IR — each Micro-IR instruction maps to LLVM IR instructions with native types (double, i32, i8*); (3) LLVM Optimization — LLVM's pass manager applies constant folding, dead code elimination, loop unrolling, SIMD vectorization, and inlining at -O2; (4) Code Generation — LLVM's backend emits object files for ARM64 or x86_64; (5) Linking — the object file is linked against the Dryad runtime library to produce an ELF or PE executable. Every intrinsic syscall has dual entry points: a Fast Path (native C ABI, zero overhead) and a Slow Path (Variant-based, for dynamic fallback). The dryad --analyze tool reports every call site that would use the Slow Path, with suggestions for promoting to Fast Path via type annotations.",
     codeSnippets: [
       {
-        title: "Pipeline Overview",
-        code: `// Dryad Source
-//     ↓  (parser)
-// AST
-//     ↓  (bytecode compiler)
-// OpCodes (stack-based)
-//     ↓  (IR converter)
-// IR (register-based, SSA-like)
-//     ↓  (optimizer)
-// Optimized IR
-//     ↓  (backend)
-// Assembly (ARM64 or x86_64)
-//     ↓  (object generator)
-// Native Binary (ELF or PE)
+        title: "Full Compilation Pipeline with LLVM",
+        code: `// Dryad Source: function add(a, b) { return a + b; }
+//     ↓  (interpreter collects types: a=f64, b=f64)
+// AST + Type Observations
+//     ↓  (bytecode compiler emits type-specialized opcodes)
+// Type-Annotated Bytecode:
+//   Metadata Header: a->f64(OBSERVED), b->f64(OBSERVED)
+//   Opcodes: LOAD_FAST a, LOAD_FAST b, ADD_F64, RETURN
+//     ↓  (stack-to-register conversion)
+// Micro-IR (3-address SSA):
+//   %1 = load_f64 @a
+//   %2 = load_f64 @b
+//   %3 = fadd_f64 %1, %2
+//   ret_f64 %3
+//     ↓  (LLVM IR emission)
+// LLVM IR (.ll):
+//   define double @add_f64(double %a, double %b) {
+//     %result = fadd double %a, %b
+//     ret double %result
+//   }
+//     ↓  (LLVM optimization + codegen)
+// ARM64 Assembly:
+//   fadd d0, d0, d1
+//   ret
+//     ↓  (link against runtime)
+// Native Binary (ELF or PE)`,
+        description: "The entire pipeline is type-driven. Because the Metadata Header recorded a and b as f64, every layer emits native floating-point operations. The Bind Once decision at the bytecode level propagates all the way to the generated binary."
+      },
+      {
+        title: "Fast Path / Slow Path Intrinsic Dispatch",
+        code: `// Every intrinsic syscall has two entry points in the C++ runtime.
+// Both share the same internal implementation — only the
+// argument passing convention differs.
 
-// IR optimization passes include:
-// - Constant folding: 2 + 3 → 5 at compile time
-// - Dead code elimination: remove unreachable branches
-// - Register allocation: assign virtual regs to physical regs
-// - Inline caching elimination: devirtualize monomorphic calls`,
-        description: "The AOT pipeline is opt-in via 'dryad build --aot'. It is currently experimental — not all language features are supported in AOT mode."
+// C++ Runtime (internal logic, shared):
+//   int64_t internal_read(int32_t fd, void* buf, size_t len) {
+//     return read(fd, buf, len);  // the actual syscall
+//   }
+
+// Fast Path (used by AOT when types are known):
+//   extern "C" int64_t syscall_read_fast(
+//     int32_t fd, void* buf, size_t len
+//   ) {
+//     return internal_read(fd, buf, len);
+//   }
+//   // Arguments passed in CPU registers (rdi, rsi, rdx on x86_64)
+//   // No Variant construction — zero overhead
+
+// Slow Path (used by VM and AOT fallback):
+//   Variant syscall_read_variant(Variant* args) {
+//     int32_t fd = args[0].as_i32();
+//     // ... extract, validate, box/unbox ...
+//     return Variant::from_i64(internal_read(fd, buf, len));
+//   }
+
+// AOT Compiler decision logic:
+//   if (all_arguments_have_static_types) {
+//     emit("call i64 @syscall_read_fast(i32, i8*, i64)");
+//   } else {
+//     emit("call %Variant @syscall_read_variant(%Variant*)");
+//   }`,
+        description: "The dual-port design ensures zero overhead for statically-typed code paths while preserving correctness for dynamic code. The AOT compiler selects the appropriate entry point per call site based on the Metadata Header."
+      },
+      {
+        title: "dryad --analyze — Slow Path Detection",
+        code: `$ dryad --analyze server.dryad
+
+Dryad AOT Analysis Report
+━━━━━━━━━━━━━━━━━━━━━━━
+File: server.dryad
+
+[SLOW PATH] line 45 col 12 — processRequest(data, callback)
+  Reason: parameter 'data' type UNKNOWN
+  Impact: ~120 Variant operations per invocation
+  Fix: add type hint 'let data: Buffer'
+
+[SLOW PATH] line 78 col 8 — data + transform
+  Reason: operator '+' receives merged type 'string | number'
+  Impact: ~8 Variant operations per invocation
+  Fix: separate numeric and string paths
+
+[FAST PATH] 142 of 150 call sites (94.7%)
+
+Summary:
+  Slow Path call sites: 2
+  Variant ops per request: ~128
+  Recommended annotations: 1`,
+        description: "The analyzer shows exactly where dynamic types degrade performance. Each warning includes a concrete fix suggestion, aligning with Dryad's philosophy of progressive performance — add types only where they matter."
       }
     ],
     tableData: {
-      headers: ["Backend", "Architecture", "Register Model", "Object Format"],
+      headers: ["Pipeline Stage", "Input", "Output", "Key Operation"],
       rows: [
-        ["ARM64", "RISC 64-bit", "x0-x30, sp, pc (32-bit fixed instructions)", "ELF"],
-        ["x86_64", "CISC 64-bit", "rax, rbx, rcx, rdx, rsi, rdi, rsp, rbp, r8-r15", "ELF / PE"],
-        ["Windows PE", "x86_64 CISC", "Same as x86_64 with PE-specific sections", "PE (.text, .data, .rdata)"]
+        ["Bytecode Decode", "Type-Annotated OpCodes", "Micro-IR (3-address SSA)", "Stack-to-register conversion using Metadata Header"],
+        ["IR Emission", "Micro-IR", "LLVM IR (.ll)", "Type mapping: f64→double, i32→i32, string→i8*, object→i8*"],
+        ["LLVM Optimization", "LLVM IR", "Optimized LLVM IR", "Constant folding, DCE, loop unrolling, SIMD, inlining (-O2)"],
+        ["Code Generation", "Optimized IR", "Object file (.o)", "LLVM backend: instruction selection, register allocation"],
+        ["Linking", "Object file(s)", "ELF / PE executable", "Link against Dryad runtime (intrinsics + RC GC)"],
+        ["Binary Output", "Linked executable", "Native binary", "Ready for deployment — no VM or runtime DLL required"]
       ]
     }
   },
