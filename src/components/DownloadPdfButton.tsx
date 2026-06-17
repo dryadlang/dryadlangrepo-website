@@ -35,7 +35,8 @@ function generateBookHtml(
   const body = sections
     .map(
       (s) => `
-    <article class="section" id="sec-${s.number}">
+    <a id="sec-${s.number}" class="section-anchor"></a>
+    <article class="section">
       <div class="section-header">
         <span class="section-number">§${s.number}</span>
         <h2>${s.title}</h2>
@@ -75,8 +76,19 @@ function generateBookHtml(
     }
   }
   @page cover { margin: 0; @bottom-center { content: none; } }
+  @page toc { @bottom-center { content: none; } }
 
-  /* ── Print toolbar (screen only) ── */
+  /* ── Section anchor (zero-height, ensures PDF link target lands on correct page) ── */
+  .section-anchor {
+    display: block;
+    visibility: hidden;
+    height: 0;
+    width: 0;
+    position: relative;
+    top: -1cm;
+  }
+
+  /* ── Print toolbar (screen only, hidden in print) ── */
   .print-toolbar {
     position: fixed;
     top: 0;
@@ -179,6 +191,7 @@ function generateBookHtml(
 
   /* ── Table of Contents ── */
   .toc {
+    page: toc;
     break-after: page;
     page-break-after: always;
     padding: 2cm 0 1cm 0;
@@ -281,11 +294,8 @@ function generateBookHtml(
     border-left: 3px solid #065f46;
     padding: 0.6em 0.8em;
     margin: 0.6em 0;
-    overflow-x: auto;
     white-space: pre-wrap;
     word-break: break-word;
-    page-break-inside: avoid;
-    break-inside: avoid;
   }
   .code-title {
     font-size: 8pt;
@@ -304,8 +314,6 @@ function generateBookHtml(
     margin-top: 0.4em;
   }
   .latex-code {
-    page-break-inside: avoid;
-    break-inside: avoid;
     margin: 0.6em 0;
   }
 
@@ -367,9 +375,6 @@ function generateBookHtml(
   /* ── Tables ── */
   .latex-table {
     margin: 0.6em 0;
-    overflow-x: auto;
-    page-break-inside: avoid;
-    break-inside: avoid;
   }
   table {
     width: 100%;
@@ -420,12 +425,25 @@ function generateBookHtml(
   /* ── Print-only adjustments ── */
   @media print {
     html { font-size: 10.5pt; }
-    body { padding-top: 0 !important; }
+    body {
+      padding-top: 0 !important;
+      overflow: visible !important;
+    }
     a { color: inherit; }
+    .section-anchor { display: block; visibility: visible; height: 1px; width: 1px; color: #065f46; font-size: 8pt; position: relative; top: 0; }
     .section { break-before: page; }
-    pre { white-space: pre-wrap; word-break: break-word; }
+    pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow: visible !important;
+      max-height: none !important;
+    }
+    .latex-table {
+      overflow: visible !important;
+    }
     h1, h2, h3, h4 { page-break-after: avoid; }
     .section-header { page-break-after: avoid; }
+    p { orphans: 3; widows: 3; }
   }
 
   /* ── Screen preview ── */
@@ -457,7 +475,7 @@ function generateBookHtml(
   <!-- Print toolbar (screen only, hidden in print) -->
   <div class="print-toolbar">
     <span class="toolbar-title">${title}</span>
-    <span class="toolbar-hint">Use the button below to save as PDF</span>
+    <span class="toolbar-hint">Clique no botão para gerar PDF — os links do índice funcionam dentro do PDF</span>
     <button onclick="window.print()">
       🖨️ Save as PDF
     </button>
