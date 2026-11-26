@@ -5,30 +5,30 @@ import { blogData } from '../data/blogData';
 
 <BaseLayout title="Blog" description="Technical articles from Dryad's compiler team — architecture decisions, execution models, memory safety, and language design. No fluff or hype.">
   <div>
-    <h2 class="text-lg font-bold text-gray-900 mb-1 leading-tight">Dryad DevLog</h2>
-    <p class="text-sm text-gray-600 mb-8 leading-relaxed">
+    <h1 class="text-2xl md:text-3xl font-extrabold text-gray-900 mb-2 tracking-tight">Dryad DevLog</h1>
+    <p class="text-[15px] text-gray-600 mb-12 leading-relaxed max-w-[58ch]">
       Follow the architectural decisions from Dryad's compiler team and runtime engineers.
       Technical articles with no fluff or hype.
     </p>
 
-    <div class="flex flex-col gap-8">
+    <div class="flex flex-col">
       {blogData.map((article) => (
-        <article>
-          <p class="text-xs text-gray-500 mb-1">
+        <article class="py-7 border-b border-gray-100 first:pt-0">
+          <p class="eyebrow mb-2">
             {article.date} · {article.author} · {article.readTime}
           </p>
 
           <a href={`/blog/${article.id}`} class="no-underline">
-            <h3 class="text-base font-bold text-gray-900 mb-2 hover:underline leading-snug">
+            <h2 class="text-lg md:text-xl font-bold text-gray-900 mb-2 hover:text-[#0f6b4f] transition-colors leading-snug tracking-tight">
               {article.title}
-            </h3>
+            </h2>
           </a>
 
-          <p class="text-sm text-gray-600 mb-2 leading-relaxed">{article.summary}</p>
+          <p class="text-[15px] text-gray-600 mb-3 leading-relaxed max-w-[62ch]">{article.summary}</p>
 
-          <p class="text-xs text-gray-500">
+          <p class="text-xs text-gray-400">
             {article.tags.map((tag, i) => (
-              <span>{i > 0 && <span class="text-gray-300 mx-0.5">·</span>}<span>{tag}</span></span>
+              <span>{i > 0 && <span class="text-gray-300 mx-1.5">·</span>}<span>{tag}</span></span>
             ))}
           </p>
         </article>
