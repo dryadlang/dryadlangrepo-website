@@ -47,27 +47,27 @@ function renderHighlightedCode(code: string): string {
 }
 ---
 
-<article class="py-2 leading-relaxed">
+<article class="leading-relaxed">
 
-  <h2 class="text-lg font-bold text-gray-900 mb-4 leading-tight">{section.title}</h2>
+  <h1 class="text-2xl md:text-3xl font-extrabold text-gray-900 mb-5 tracking-tight leading-tight">{section.title}</h1>
 
-  <p class="text-sm text-gray-600 mb-6 leading-relaxed">{section.content}</p>
+  <p class="text-[15px] md:text-base text-gray-600 mb-9 leading-relaxed max-w-[62ch]">{section.content}</p>
 
   {section.tableData && (
-    <div class="mb-8 overflow-x-auto">
-      <table class="w-full text-left text-sm border-collapse">
+    <div class="mb-10 overflow-x-auto">
+      <table class="data-table">
         <thead>
-          <tr class="text-gray-500 text-xs border-b border-gray-200">
+          <tr>
             {section.tableData.headers.map((hdr) => (
-              <th class="py-1.5 pr-3 font-semibold">{hdr}</th>
+              <th>{hdr}</th>
             ))}
           </tr>
         </thead>
         <tbody>
           {section.tableData.rows.map((row, ri) => (
-            <tr class="border-b border-gray-100">
+            <tr>
               {row.map((cell) => (
-                <td class="py-1.5 pr-3 text-gray-700 leading-relaxed" set:html={renderInlineCode(cell)} />
+                <td set:html={renderInlineCode(cell)} />
               ))}
             </tr>
           ))}
@@ -77,18 +77,18 @@ function renderHighlightedCode(code: string): string {
   )}
 
   {section.codeSnippets && section.codeSnippets.length > 0 && (
-    <div class="flex flex-col gap-5 mt-4 mb-8">
+    <div class="flex flex-col gap-7 mt-2 mb-10">
       {section.codeSnippets.map((snippet, idx) => {
         const lines = renderHighlightedCode(snippet.code);
         return (
           <div>
-            <div class="flex items-center justify-between mb-1">
-              <span class="text-xs text-emerald-800 font-semibold">{snippet.title}</span>
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="eyebrow text-[#0f6b4f]">{snippet.title}</span>
               <CodeCopyButton code={snippet.code} index={idx} client:load />
             </div>
-            <pre class="bg-gray-900 text-gray-100 p-4 text-sm leading-snug overflow-x-auto font-mono select-text" set:html={lines}></pre>
+            <pre class="code-block" set:html={lines}></pre>
             {snippet.description && (
-              <p class="text-xs text-gray-500 mt-1 italic leading-relaxed">{snippet.description}</p>
+              <p class="text-[13px] text-gray-500 mt-2 italic leading-relaxed">{snippet.description}</p>
             )}
           </div>
         );
@@ -96,7 +96,7 @@ function renderHighlightedCode(code: string): string {
     </div>
   )}
 
-  <p class="text-xs text-gray-400 mt-10 leading-relaxed">
+  <p class="text-xs text-gray-400 mt-12 pt-6 border-t border-gray-100 leading-relaxed">
     Found an error in the spec? Open a PR.
     <br />
     Official Version: 1.0 · May 2026

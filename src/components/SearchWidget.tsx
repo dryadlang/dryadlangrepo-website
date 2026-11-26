@@ -64,7 +64,7 @@ export default function SearchWidget() {
   };
 
   return (
-    <div ref={searchContainerRef} className="relative flex-1 max-w-xs hidden sm:block">
+    <div ref={searchContainerRef} className="relative flex-1 max-w-[140px] sm:max-w-xs">
       <input
         ref={searchInputRef}
         type="text"
@@ -72,7 +72,7 @@ export default function SearchWidget() {
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         onFocus={() => setIsFocused(true)}
-        className="w-full px-2.5 py-1 text-xs bg-white border border-gray-300 text-gray-700 focus:outline-hidden focus:border-gray-500 font-mono"
+        className="w-full px-2.5 py-1.5 text-xs bg-white border border-gray-200 text-gray-700 focus:outline-hidden focus:border-gray-400 font-mono"
       />
 
       {isFocused && searchResults.length > 0 && (

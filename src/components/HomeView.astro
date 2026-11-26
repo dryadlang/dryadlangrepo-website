@@ -1,25 +1,26 @@
 
 
-<div class="text-gray-800 leading-relaxed">
+<div class="text-gray-800">
 
-  <h1 class="text-2xl font-extrabold text-gray-900 mb-3 tracking-tight">Dryad Programming Language</h1>
+  <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-5 tracking-tight leading-[1.05]">Dryad Programming Language</h1>
 
-  <p class="text-sm text-gray-600 mb-6 leading-relaxed">
+  <p class="text-base md:text-lg text-gray-600 mb-8 leading-relaxed max-w-[58ch]">
     A multi-paradigm dynamically typed programming language inspired by JavaScript/TypeScript,
     designed for rapid infrastructure automation and ultra-lightweight native binaries. Through
     a unique hybrid execution architecture, Dryad compiles strictly typed code paths directly
     to ARM64/x86_64, while maintaining an instant-on interpreter for sandboxed scripting.
   </p>
 
-  <p class="text-sm mb-8">
-    <a href="/docs/introducao-e-filosofia" class="text-emerald-800 no-underline hover:underline font-semibold">Read the Spec →</a>
-    <span class="text-gray-300 mx-2">·</span>
-    <a href="/docs/tabela-codigos-de-erro" class="text-emerald-800 no-underline hover:underline font-semibold">Error Codes →</a>
+  <p class="text-sm mb-16">
+    <a href="/docs/introducao-e-filosofia" class="text-[#0f6b4f] no-underline hover:underline font-semibold">Read the Spec →</a>
+    <span class="text-gray-300 mx-3">·</span>
+    <a href="/docs/tabela-codigos-de-erro" class="text-[#0f6b4f] no-underline hover:underline font-semibold">Error Codes →</a>
   </p>
 
-  <div class="mb-8">
-    <h2 class="text-sm font-bold text-gray-900 mb-3">Triple Execution Engine</h2>
-    <p class="text-sm text-gray-600 mb-2">
+  <div class="mb-14">
+    <p class="eyebrow mb-3">Architecture</p>
+    <h2 class="text-xl font-bold text-gray-900 mb-3 tracking-tight">Triple Execution Engine</h2>
+    <p class="text-[15px] text-gray-600 mb-3 leading-relaxed max-w-[62ch]">
       Dryad is engineered with three execution strategies: a <strong>Tree-Walking Interpreter</strong>
       for rapid prototyping, a <strong>Stack-Based Bytecode VM</strong> for intermediate
       performance, and an <strong>AOT Native Compilation</strong> pipeline for maximum
@@ -27,29 +28,31 @@
       being built according to the published specification.
     </p>
     <p class="text-sm">
-      <a href="/docs/modelo-de-execucao" class="text-emerald-800 no-underline hover:underline font-semibold">How the execution pipeline works →</a>
+      <a href="/docs/modelo-de-execucao" class="text-[#0f6b4f] no-underline hover:underline font-semibold">How the execution pipeline works →</a>
     </p>
   </div>
 
-  <div class="mb-8">
-    <h2 class="text-sm font-bold text-gray-900 mb-3">Deterministic Safety</h2>
-    <p class="text-sm text-gray-600 mb-2">
+  <div class="mb-14">
+    <p class="eyebrow mb-3">Memory</p>
+    <h2 class="text-xl font-bold text-gray-900 mb-3 tracking-tight">Deterministic Safety</h2>
+    <p class="text-[15px] text-gray-600 mb-3 leading-relaxed max-w-[62ch]">
       Predictable memory cleanup via <strong>automatic Reference Counting with no tracing GC</strong>,
       triggered the moment structures go out of scope or threads terminate, with bounds-checking
       support for low-level arrays.
     </p>
     <p class="text-sm">
-      <a href="/blog" class="text-emerald-800 no-underline hover:underline font-semibold">No-Nonsense Deep Dive on the Blog →</a>
+      <a href="/blog" class="text-[#0f6b4f] no-underline hover:underline font-semibold">No-Nonsense Deep Dive on the Blog →</a>
     </p>
   </div>
 
-  <div class="mb-8">
-    <h2 class="text-sm font-bold text-gray-900 mb-3">Quick Start</h2>
-    <p class="text-sm text-gray-600 mb-3">
+  <div class="mb-14">
+    <p class="eyebrow mb-3">Getting Started</p>
+    <h2 class="text-xl font-bold text-gray-900 mb-3 tracking-tight">Quick Start</h2>
+    <p class="text-[15px] text-gray-600 mb-4 leading-relaxed max-w-[62ch]">
       The official installer detects your CPU architecture (x86_64 or ARM64) and instantly
-      sets up the <code class="text-emerald-800 font-semibold">dryad</code> CLI in your PATH:
+      sets up the <code class="text-[#0f6b4f] font-semibold">dryad</code> CLI in your PATH:
     </p>
-    <pre class="bg-gray-900 text-emerald-400 p-4 text-sm leading-snug overflow-x-auto select-text mb-3 font-mono">$ curl -fsSL https://dryad.dev/install | sh
+    <pre class="code-block select-text">$ curl -fsSL https://dryad.dev/install | sh
 <span class="text-gray-500 italic"># Installing Dryad Toolkit v1.0.0... Ready.</span>
 $ dryad run scripts/main.dy
 <span class="text-gray-500 italic"># Hello World! Running dynamically via AST Interpreter.</span>
@@ -57,31 +60,32 @@ $ dryad build --aot scripts/main.dy -o output_bin
 <span class="text-gray-500 italic"># Converted to IR, optimized with Constant Folding & native ELF output.</span></pre>
   </div>
 
-  <div class="mb-8">
-    <h2 class="text-sm font-bold text-gray-900 mb-3">Project Status</h2>
-    <p class="text-sm text-gray-600 mb-2">
+  <div class="mb-14">
+    <p class="eyebrow mb-3">Status</p>
+    <h2 class="text-xl font-bold text-gray-900 mb-3 tracking-tight">Project Status</h2>
+    <p class="text-[15px] text-gray-600 mb-3 leading-relaxed max-w-[62ch]">
       Dryad is currently in <strong>active development</strong> — the language specification
       is stable, and the <strong>AST interpreter</strong> proof-of-concept is functional.
       The Bytecode VM and AOT compiler backends are under implementation as specified in
       the theoretical foundation.
     </p>
-    <p class="text-sm text-gray-600 mb-2">
+    <p class="text-[15px] text-gray-600 mb-3 leading-relaxed max-w-[62ch]">
       <strong>What's ready:</strong> Lexer, parser, AST interpreter, type system, module
       resolution, native directive FFI, and the full error infrastructure.
     </p>
-    <p class="text-sm text-gray-600 mb-2">
+    <p class="text-[15px] text-gray-600 mb-3 leading-relaxed max-w-[62ch]">
       <strong>In progress:</strong> Stack-based Bytecode VM, IR optimizer, AOT compiler
       pipeline (ARM64/x86_64), self-hosted standard library, and package manager.
     </p>
-    <p class="text-sm text-gray-600">
+    <p class="text-[15px] text-gray-600 leading-relaxed max-w-[62ch]">
       Performance benchmarks will be published once the Bytecode VM and AOT backends
-      reach their first stable release. Watch the <a href="/blog" class="text-emerald-800 no-underline hover:underline font-semibold">blog</a> for updates.
+      reach their first stable release. Watch the <a href="/blog" class="text-[#0f6b4f] no-underline hover:underline font-semibold">blog</a> for updates.
     </p>
   </div>
 
-  <div class="mb-4">
-    <h2 class="text-sm font-bold text-gray-900 mb-2">DESIGN PHILOSOPHY</h2>
-    <blockquote class="text-sm text-gray-600 italic leading-relaxed">
+  <div class="pt-10 border-t border-gray-100">
+    <p class="eyebrow mb-3">Design Philosophy</p>
+    <blockquote class="text-base text-gray-700 italic leading-relaxed max-w-[58ch] font-serif">
       "Clarity over performance: Legibility, syntactic consistency, and clean error messages
       with suggestions are unconditionally prioritized over obscure runtime optimizations."
     </blockquote>

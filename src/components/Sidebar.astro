@@ -18,22 +18,56 @@ const categories = docsData.reduce((acc: Record<string, DocSection[]>, doc) => {
 }, {} as Record<string, DocSection[]>);
 ---
 
-<nav class="mb-8 text-sm leading-relaxed">
-  {Object.entries(categories).map(([category, sections]) => (
-    <div class="mb-3">
-      <span class="text-gray-500 font-semibold text-xs">{category}:</span>{' '}
-      {sections.map((section, i) => (
-        <span>
-          {i > 0 && <span class="text-gray-300 mx-0.5">·</span>}
-          {section.id === selectedDocId ? (
-            <span class="text-gray-900 font-semibold">{section.title.replace(/^\d+(\.\d+)?\s+/, "")}</span>
-          ) : (
-            <a href={`/docs/${section.id}`} class="text-gray-600 no-underline hover:text-emerald-800 hover:underline">
+<!-- Mobile: collapsed accordion so the nav doesn't push content below the fold -->
+<details class="lg:hidden mb-8 border border-gray-200">
+  <summary class="cursor-pointer select-none px-4 py-3 text-xs font-bold uppercase tracking-wider text-gray-500 flex items-center justify-between">
+    All sections
+    <span class="text-gray-400">&#9662;</span>
+  </summary>
+  <nav class="px-4 pb-4 pt-1 text-sm">
+    {Object.entries(categories).map(([category, sections]) => (
+      <div class="mb-4">
+        <p class="eyebrow mb-1.5">{category}</p>
+        <div class="flex flex-col">
+          {sections.map((section) => (
+            <a
+              href={`/docs/${section.id}`}
+              class:list={[
+                "no-underline py-1",
+                section.id === selectedDocId ? "is-current" : "text-gray-600 hover:text-[#0f6b4f]",
+              ]}
+            >
               {section.title.replace(/^\d+(\.\d+)?\s+/, "")}
             </a>
-          )}
-        </span>
-      ))}
-    </div>
-  ))}
-</nav>
+          ))}
+        </div>
+      </div>
+    ))}
+  </nav>
+</details>
+
+<!-- Desktop: persistent sticky rail -->
+<aside class="hidden lg:block w-[220px] shrink-0">
+  <nav class="sticky top-24 text-sm pb-12 max-h-[calc(100vh-7rem)] overflow-y-auto pr-2">
+    {Object.entries(categories).map(([category, sections]) => (
+      <div class="mb-6">
+        <p class="eyebrow mb-2">{category}</p>
+        <div class="flex flex-col gap-0.5">
+          {sections.map((section) => (
+            <a
+              href={`/docs/${section.id}`}
+              class:list={[
+                "no-underline leading-snug py-0.5 pl-3 -ml-px border-l-2",
+                section.id === selectedDocId
+                  ? "is-current border-l-[var(--color-accent)]"
+                  : "text-gray-500 border-l-transparent hover:text-gray-900 hover:border-l-gray-300",
+              ]}
+            >
+              {section.title.replace(/^\d+(\.\d+)?\s+/, "")}
+            </a>
+          ))}
+        </div>
+      </div>
+    ))}
+  </nav>
+</aside>

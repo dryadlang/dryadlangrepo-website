@@ -5,10 +5,83 @@
   --font-sans: "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
   --font-serif: "Noto Serif", Georgia, "Times New Roman", serif;
+
+  /* Single accent + ink/paper scale — keep the palette small and deliberate. */
+  --color-ink: #16181c;
+  --color-paper: #fffffe;
+  --color-accent: #0f6b4f;
+  --color-accent-soft: #0f6b4f;
+}
+
+/* ═══════════════════════════════════════════
+   Base rhythm — one consistent type scale used
+   everywhere outside the /conventions page.
+   ═══════════════════════════════════════════ */
+
+html {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
 body {
-  @apply bg-white text-gray-900 selection:bg-emerald-200 selection:text-emerald-950 font-sans;
+  @apply bg-white text-[#1c1f23] selection:bg-emerald-200 selection:text-emerald-950 font-sans text-[16px] leading-[1.65];
+}
+
+/* Prose-ish base elements inside page bodies (Astro slots render raw markup
+   without utility classes most of the time) */
+.content-body h1 {
+  @apply text-3xl md:text-4xl font-extrabold tracking-tight text-gray-900;
+}
+
+.content-body h2 {
+  @apply text-xl md:text-2xl font-bold tracking-tight text-gray-900;
+}
+
+.content-body h3 {
+  @apply text-base md:text-lg font-bold text-gray-900;
+}
+
+.content-body p {
+  @apply text-[15px] md:text-base text-gray-600 leading-relaxed;
+}
+
+/* Reusable section-eyebrow label: tiny, uppercase, wide-tracked — this is the
+   quiet structural device that replaces heavy borders/cards. */
+.eyebrow {
+  @apply text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400;
+}
+
+/* Shared "current page" indicator used in header nav + docs sidebar */
+.is-current {
+  @apply text-[var(--color-accent)] font-semibold;
+}
+
+/* Integrated code block: a quiet mono surface with a label rail, not a
+   rounded "card" floating on the page. */
+.code-block {
+  @apply relative bg-[#13161a] text-gray-100 font-mono text-[13px] md:text-sm leading-[1.65] overflow-x-auto;
+  border-left: 3px solid var(--color-accent);
+  padding: 1rem 1.125rem;
+}
+
+/* Integrated table: borders only (no fills/shadows), header rests on a
+   heavier rule so it reads as structure, not decoration. */
+.data-table {
+  @apply w-full text-left text-[13.5px] md:text-sm border-collapse;
+}
+
+.data-table th {
+  @apply py-2 pr-4 font-semibold text-gray-500 text-[11px] uppercase tracking-wider;
+  border-bottom: 2px solid var(--color-ink);
+}
+
+.data-table td {
+  @apply py-2.5 pr-4 text-gray-700 align-top;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.data-table tr:last-child td {
+  border-bottom: none;
 }
 
 /* ═══════════════════════════════════════════
@@ -20,11 +93,11 @@ body {
   font-family: "Noto Serif", Georgia, "Times New Roman", serif;
   color: #1a1a1a;
   line-height: 1.7;
-  font-size: 15.5px;
+  font-size: 16px;
 }
 
 .latex-body p {
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.85rem;
 }
 
 .latex-body code {
@@ -33,26 +106,26 @@ body {
   background: #f1f5f9;
   padding: 0.125rem 0.375rem;
   border-radius: 3px;
-  color: #065f46;
+  color: #0f6b4f;
 }
 
 /* Cover / Title block */
 .latex-cover {
   text-align: center;
-  padding: 4rem 0 3rem;
-  border-bottom: 2px solid #d1d5db;
-  margin-bottom: 2.5rem;
+  padding: 4.5rem 0 3.25rem;
+  border-bottom: 2px solid var(--color-ink);
+  margin-bottom: 3rem;
 }
 
 .latex-cover h1 {
-  font-size: 1.75rem;
+  font-size: 2.25rem;
   font-weight: 700;
-  letter-spacing: 0.02em;
-  margin-bottom: 0.25rem;
+  letter-spacing: 0.01em;
+  margin-bottom: 0.5rem;
 }
 
 .latex-cover .subtitle {
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: #6b7280;
   font-style: italic;
 }
@@ -60,83 +133,90 @@ body {
 .latex-cover .meta {
   font-size: 0.8rem;
   color: #9ca3af;
-  margin-top: 0.75rem;
+  margin-top: 0.9rem;
+  max-width: 34rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Section heading */
 .latex-section {
-  margin-top: 2.5rem;
-  margin-bottom: 1.25rem;
-  padding-bottom: 0.25rem;
+  margin-top: 3.25rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.4rem;
   border-bottom: 1px solid #e5e7eb;
 }
 
 .latex-section h2 {
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   font-weight: 700;
   color: #111;
 }
 
 .latex-section-number {
-  color: #065f46;
+  color: var(--color-accent);
   font-weight: 600;
   margin-right: 0.5rem;
+  font-family: "JetBrains Mono", monospace;
 }
 
 /* TOC */
 .latex-toc {
-  background: #fafafa;
+  background: transparent;
   border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  padding: 1.25rem 1.5rem;
-  margin-bottom: 2rem;
+  border-radius: 0;
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 2.5rem;
 }
 
 .latex-toc-title {
-  font-size: 0.85rem;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 0.78rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   color: #6b7280;
-  margin-bottom: 0.75rem;
+  margin-bottom: 1rem;
 }
 
 .latex-toc a {
   display: block;
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   color: #374151;
   text-decoration: none;
-  padding: 0.2rem 0;
-  border-bottom: 1px dotted #f0f0f0;
+  padding: 0.3rem 0;
+  border-bottom: 1px dotted #ececec;
 }
 
 .latex-toc a:hover {
-  color: #065f46;
+  color: var(--color-accent);
 }
 
 .latex-toc .toc-num {
   font-weight: 600;
-  color: #065f46;
-  min-width: 2rem;
+  color: var(--color-accent);
+  min-width: 2.25rem;
   display: inline-block;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8rem;
 }
 
 /* Definition box */
 .latex-definition {
-  background: #f0f9ff;
-  border-left: 4px solid #3b82f6;
-  padding: 0.75rem 1rem;
-  margin: 1rem 0;
-  border-radius: 0 6px 6px 0;
+  background: #f7faf9;
+  border-left: 3px solid #3b82f6;
+  padding: 0.9rem 1.1rem;
+  margin: 1.25rem 0;
 }
 
 .latex-definition .label {
+  font-family: "Plus Jakarta Sans", sans-serif;
   font-weight: 700;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   color: #2563eb;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.3rem;
 }
 
 .latex-definition .label-id {
@@ -151,20 +231,20 @@ body {
 
 /* Axiom box */
 .latex-axiom {
-  background: #fff7ed;
-  border-left: 4px solid #f97316;
-  padding: 0.75rem 1rem;
-  margin: 1rem 0;
-  border-radius: 0 6px 6px 0;
+  background: #f7faf9;
+  border-left: 3px solid #f97316;
+  padding: 0.9rem 1.1rem;
+  margin: 1.25rem 0;
 }
 
 .latex-axiom .label {
+  font-family: "Plus Jakarta Sans", sans-serif;
   font-weight: 700;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   color: #ea580c;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.3rem;
 }
 
 .latex-axiom .label-id {
@@ -179,20 +259,20 @@ body {
 
 /* Property / Theorem box */
 .latex-property {
-  background: #f0fdf4;
-  border-left: 4px solid #22c55e;
-  padding: 0.75rem 1rem;
-  margin: 1rem 0;
-  border-radius: 0 6px 6px 0;
+  background: #f7faf9;
+  border-left: 3px solid #22c55e;
+  padding: 0.9rem 1.1rem;
+  margin: 1.25rem 0;
 }
 
 .latex-property .label {
+  font-family: "Plus Jakarta Sans", sans-serif;
   font-weight: 700;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   color: #16a34a;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.3rem;
 }
 
 .latex-property .label-id {
@@ -207,79 +287,83 @@ body {
 
 /* Note box */
 .latex-note {
-  background: #fefce8;
-  border-left: 4px solid #eab308;
-  padding: 0.75rem 1rem;
-  margin: 1rem 0;
-  border-radius: 0 6px 6px 0;
+  background: #f7faf9;
+  border-left: 3px solid #eab308;
+  padding: 0.9rem 1.1rem;
+  margin: 1.25rem 0;
   font-style: italic;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
 }
 
 .latex-note .label {
+  font-family: "Plus Jakarta Sans", sans-serif;
   font-weight: 700;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   color: #a16207;
-  margin-bottom: 0.125rem;
+  margin-bottom: 0.15rem;
 }
 
 /* Code block in conventions */
 .latex-code {
-  margin: 1rem 0;
+  margin: 1.25rem 0;
 }
 
 .latex-code .code-title {
-  font-size: 0.78rem;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 0.75rem;
   font-weight: 600;
+  letter-spacing: 0.03em;
   color: #374151;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.35rem;
 }
 
 .latex-code pre {
-  background: #1e293b;
+  background: #13161a;
   color: #e2e8f0;
-  padding: 0.875rem 1rem;
-  font-size: 0.78rem;
-  line-height: 1.6;
+  padding: 1rem 1.125rem;
+  font-size: 0.8125rem;
+  line-height: 1.65;
   overflow-x: auto;
-  border-radius: 6px;
+  border-radius: 0;
+  border-left: 3px solid var(--color-accent);
   font-family: "JetBrains Mono", ui-monospace, monospace;
 }
 
 .latex-code .code-desc {
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   color: #6b7280;
   font-style: italic;
-  margin-top: 0.25rem;
+  margin-top: 0.35rem;
 }
 
 /* Table in conventions */
 .latex-table {
-  margin: 1rem 0;
+  margin: 1.25rem 0;
   overflow-x: auto;
 }
 
 .latex-table table {
   width: 100%;
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   border-collapse: collapse;
 }
 
 .latex-table th {
   text-align: left;
-  padding: 0.4rem 0.6rem;
+  padding: 0.5rem 0.7rem;
   font-weight: 600;
+  font-family: "Plus Jakarta Sans", sans-serif;
   color: #374151;
-  border-bottom: 2px solid #d1d5db;
-  font-size: 0.75rem;
+  border-bottom: 2px solid var(--color-ink);
+  font-size: 0.72rem;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
 }
 
 .latex-table td {
-  padding: 0.35rem 0.6rem;
+  padding: 0.5rem 0.7rem;
   border-bottom: 1px solid #e5e7eb;
   color: #374151;
   vertical-align: top;
@@ -292,29 +376,31 @@ body {
 /* Horizontal rule between major sections */
 .latex-hr {
   border: none;
-  border-top: 1px solid #d1d5db;
-  margin: 0.5rem 0;
+  border-top: 1px solid #e5e7eb;
+  margin: 0.75rem 0;
 }
 
 /* Back to top */
 .latex-back-to-top {
   display: inline-block;
+  font-family: "Plus Jakarta Sans", sans-serif;
   font-size: 0.75rem;
   color: #9ca3af;
   text-decoration: none;
-  margin-top: 0.75rem;
+  margin-top: 1rem;
   transition: color 0.15s;
 }
 
 .latex-back-to-top:hover {
-  color: #065f46;
+  color: var(--color-accent);
 }
 
 /* Footer in conventions page */
 .latex-footer {
-  margin-top: 3rem;
-  padding-top: 1.5rem;
-  border-top: 2px solid #d1d5db;
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 2px solid var(--color-ink);
+  font-family: "Plus Jakarta Sans", sans-serif;
   font-size: 0.75rem;
   color: #9ca3af;
   text-align: center;

@@ -54,14 +54,14 @@ const pdfSections: PdfSection[] = docsData.map((doc, i) => ({
 }));
 ---
 
-<BaseLayout title="Documentation" description="Complete documentation for the Dryad programming language — type system, execution model, module system, concurrency, FFI, and more.">
+<BaseLayout title="Documentation" description="Complete documentation for the Dryad programming language — type system, execution model, module system, concurrency, FFI, and more." wide>
   <div>
-    <h2 class="text-lg font-bold text-gray-900 mb-1 leading-tight">Documentation</h2>
-    <p class="text-sm text-gray-600 mb-8 leading-relaxed">
+    <h1 class="text-2xl md:text-3xl font-extrabold text-gray-900 mb-2 tracking-tight">Documentation</h1>
+    <p class="text-[15px] text-gray-600 mb-10 leading-relaxed max-w-[62ch]">
       The official Dryad language documentation. Browse by category or use the sidebar
       on individual pages for quick navigation between sections.
     </p>
-    <div class="mb-8 flex justify-center">
+    <div class="mb-12 flex justify-center">
       <DownloadPdfButton
         client:visible
         sections={pdfSections}
@@ -74,27 +74,27 @@ const pdfSections: PdfSection[] = docsData.map((doc, i) => ({
       />
     </div>
 
-    {Object.entries(categories).map(([category, sections]) => (
-      <div class="mb-8">
-        <h3 class="text-sm font-bold text-gray-900 mb-3 text-xs uppercase tracking-wider text-gray-500">
-          {category}
-        </h3>
-        <div class="flex flex-col gap-3">
-          {sections.map((section) => (
-            <a
-              href={`/docs/${section.id}`}
-              class="group block no-underline border border-gray-200 rounded-lg p-4 hover:border-emerald-300 hover:bg-emerald-50/30 transition-colors"
-            >
-              <h4 class="text-sm font-semibold text-gray-900 group-hover:text-emerald-800 transition-colors">
-                {section.title}
-              </h4>
-              <p class="text-xs text-gray-500 mt-1 leading-relaxed line-clamp-2">
-                {section.content}
-              </p>
-            </a>
-          ))}
+    <div class="grid sm:grid-cols-2 gap-x-10 gap-y-10">
+      {Object.entries(categories).map(([category, sections]) => (
+        <div>
+          <p class="eyebrow mb-3">{category}</p>
+          <div class="flex flex-col">
+            {sections.map((section) => (
+              <a
+                href={`/docs/${section.id}`}
+                class="group block no-underline py-2.5 border-b border-gray-100"
+              >
+                <h3 class="text-[15px] font-semibold text-gray-900 group-hover:text-[#0f6b4f] transition-colors">
+                  {section.title}
+                </h3>
+                <p class="text-[13px] text-gray-500 mt-0.5 leading-relaxed line-clamp-2">
+                  {section.content}
+                </p>
+              </a>
+            ))}
+          </div>
         </div>
-      </div>
-    ))}
+      ))}
+    </div>
   </div>
 </BaseLayout>
