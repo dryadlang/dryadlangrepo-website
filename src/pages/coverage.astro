@@ -31,7 +31,7 @@ const packages = stdlib.modules.reduce((acc: Record<string, StdlibModule[]>, mod
 }, {});
 
 function publicApis(module: StdlibModule): StdlibApi[] {
-  return module.apis.filter((api) => !api.internal);
+  return module.apis.filter((api) => !api.internal && !api.deprecated);
 }
 
 function packageStats(modules: StdlibModule[]) {
@@ -147,7 +147,7 @@ const repo = "https://github.com/dryadlang/source/blob/main/";
       <p class="text-[13px] text-gray-500 mb-2 max-w-[70ch]">
         {s.publicApis} public APIs and {s.methods} public methods across {s.modules} modules. A name counts as
         tested when a test references it, and as documented when its module page mentions it.
-        {s.internalHelpers} helpers that nothing outside their own file uses are left out.
+        {s.internalHelpers} internal helpers{s.deprecatedAliases ? <> and {s.deprecatedAliases} deprecated aliases</> : ""} are left out.
       </p>
       <p class="legend mb-5">
         <span class="chip good">tested + documented</span>

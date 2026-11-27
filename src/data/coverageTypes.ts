@@ -40,6 +40,7 @@ export interface StdlibApi {
   name: string;
   kind: "function" | "class" | "value";
   internal: boolean;
+  deprecated?: boolean;
   tested: boolean;
   documented: boolean;
   methods?: StdlibMethod[];
@@ -57,6 +58,7 @@ export interface StdlibCoverage {
     modules: number;
     publicApis: number;
     internalHelpers: number;
+    deprecatedAliases?: number;
     tested: number;
     documented: number;
     methods: number;

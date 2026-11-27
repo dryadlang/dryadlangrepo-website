@@ -102,7 +102,7 @@ const coverage = rawCoverage as unknown as CoverageSnapshot;
 function coverageFor(file: string): StdlibPage["coverage"] {
   const modules = coverage.stdlib.modules.filter((m) => m.docPage === file);
   if (!modules.length) return null;
-  const apis = modules.flatMap((m) => m.apis.filter((a) => !a.internal));
+  const apis = modules.flatMap((m) => m.apis.filter((a) => !a.internal && !a.deprecated));
   return {
     modules: modules.map((m) => m.module),
     apis: apis.length,
