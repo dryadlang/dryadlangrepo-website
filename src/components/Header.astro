@@ -13,6 +13,7 @@ import SearchWidget from './SearchWidget.tsx';
         <a href="/docs" data-nav="docs" class="no-underline hover:text-[#0f6b4f] transition-colors py-1">Docs</a>
         <a href="/conventions" data-nav="conventions" class="no-underline hover:text-[#0f6b4f] transition-colors py-1">Conventions</a>
         <a href="/blog" data-nav="blog" class="no-underline hover:text-[#0f6b4f] transition-colors py-1">Blog</a>
+        <a href="/coverage" data-nav="coverage" class="no-underline hover:text-[#0f6b4f] transition-colors py-1">Coverage</a>
       </nav>
     </div>
 
@@ -36,6 +37,7 @@ import SearchWidget from './SearchWidget.tsx';
     <a href="/docs" data-nav="docs" class="no-underline hover:text-[#0f6b4f] py-2">Docs</a>
     <a href="/conventions" data-nav="conventions" class="no-underline hover:text-[#0f6b4f] py-2">Conventions</a>
     <a href="/blog" data-nav="blog" class="no-underline hover:text-[#0f6b4f] py-2">Blog</a>
+    <a href="/coverage" data-nav="coverage" class="no-underline hover:text-[#0f6b4f] py-2">Coverage</a>
   </nav>
 </header>
 
@@ -49,6 +51,8 @@ import SearchWidget from './SearchWidget.tsx';
       ? 'conventions'
       : path.startsWith('/blog')
       ? 'blog'
+      : path.startsWith('/coverage')
+      ? 'coverage'
       : '';
     document.querySelectorAll<HTMLAnchorElement>('[data-nav]').forEach((el) => {
       const isCurrent = el.dataset.nav === section;

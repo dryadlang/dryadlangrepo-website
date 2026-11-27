@@ -1,0 +1,4838 @@
+{
+  "generatedAt": "2026-11-27T01:30:58Z",
+  "lineCoverage": {
+    "target": 80.0,
+    "floor": 70.0,
+    "line": 73.0,
+    "function": 89.7,
+    "branch": 42.1,
+    "linesTotal": 10205,
+    "linesCovered": 7454,
+    "modules": [
+      {
+        "name": "aot",
+        "line": 73.3,
+        "lines": 2125,
+        "function": 98.1,
+        "branch": 39.1,
+        "files": [
+          {
+            "file": "src/aot/package_installer.cpp",
+            "line": 51.8,
+            "lines": 83,
+            "function": 100.0,
+            "branch": 23.6
+          },
+          {
+            "file": "src/aot/llvm_backend.cpp",
+            "line": 69.4,
+            "lines": 712,
+            "function": 100.0,
+            "branch": 34.4
+          },
+          {
+            "file": "src/aot/micro_ir.cpp",
+            "line": 73.9,
+            "lines": 762,
+            "function": 100.0,
+            "branch": 48.0
+          },
+          {
+            "file": "src/aot/aot_compiler.cpp",
+            "line": 74.7,
+            "lines": 95,
+            "function": 100.0,
+            "branch": 42.6
+          },
+          {
+            "file": "src/aot/native_linker.cpp",
+            "line": 78.5,
+            "lines": 121,
+            "function": 92.9,
+            "branch": 44.4
+          },
+          {
+            "file": "src/aot/library_linker.cpp",
+            "line": 78.9,
+            "lines": 152,
+            "function": 93.3,
+            "branch": 46.0
+          },
+          {
+            "file": "src/aot/jit_compiler.cpp",
+            "line": 84.8,
+            "lines": 99,
+            "function": 100.0,
+            "branch": 54.5
+          },
+          {
+            "file": "src/aot/analyze_pass.cpp",
+            "line": 87.1,
+            "lines": 101,
+            "function": 100.0,
+            "branch": 52.0
+          }
+        ]
+      },
+      {
+        "name": "common",
+        "line": 55.6,
+        "lines": 18,
+        "function": 75.0,
+        "branch": 40.0,
+        "files": [
+          {
+            "file": "src/common/utils.cpp",
+            "line": 55.6,
+            "lines": 18,
+            "function": 75.0,
+            "branch": 40.0
+          }
+        ]
+      },
+      {
+        "name": "compiler",
+        "line": 78.3,
+        "lines": 3645,
+        "function": 91.5,
+        "branch": 50.3,
+        "files": [
+          {
+            "file": "src/compiler/token.cpp",
+            "line": 4.9,
+            "lines": 102,
+            "function": 25.0,
+            "branch": 41.6
+          },
+          {
+            "file": "src/compiler/execution_mode.cpp",
+            "line": 46.7,
+            "lines": 15,
+            "function": 50.0,
+            "branch": 22.2
+          },
+          {
+            "file": "src/compiler/execution_engine.cpp",
+            "line": 62.6,
+            "lines": 235,
+            "function": 80.0,
+            "branch": 34.9
+          },
+          {
+            "file": "src/compiler/validator.cpp",
+            "line": 64.7,
+            "lines": 51,
+            "function": 75.0,
+            "branch": 40.5
+          },
+          {
+            "file": "src/compiler/type_profiler.cpp",
+            "line": 68.1,
+            "lines": 163,
+            "function": 77.8,
+            "branch": 44.0
+          },
+          {
+            "file": "src/compiler/bytecode_compiler.cpp",
+            "line": 74.7,
+            "lines": 672,
+            "function": 89.7,
+            "branch": 43.4
+          },
+          {
+            "file": "src/compiler/semantic_analyzer.cpp",
+            "line": 74.7,
+            "lines": 383,
+            "function": 100.0,
+            "branch": 49.2
+          },
+          {
+            "file": "src/compiler/library_compiler.cpp",
+            "line": 75.7,
+            "lines": 206,
+            "function": 80.0,
+            "branch": 45.9
+          },
+          {
+            "file": "src/compiler/import_cycle_detector.cpp",
+            "line": 75.9,
+            "lines": 58,
+            "function": 100.0,
+            "branch": 45.7
+          },
+          {
+            "file": "src/compiler/evaluator.cpp",
+            "line": 83.8,
+            "lines": 334,
+            "function": 100.0,
+            "branch": 54.1
+          },
+          {
+            "file": "src/compiler/compile_pipeline.cpp",
+            "line": 87.0,
+            "lines": 46,
+            "function": 100.0,
+            "branch": 53.5
+          },
+          {
+            "file": "src/compiler/statement_executor.cpp",
+            "line": 87.3,
+            "lines": 283,
+            "function": 95.0,
+            "branch": 57.8
+          },
+          {
+            "file": "src/compiler/diagnostic.cpp",
+            "line": 88.9,
+            "lines": 9,
+            "function": 100.0,
+            "branch": 45.8
+          },
+          {
+            "file": "src/compiler/parser.cpp",
+            "line": 89.0,
+            "lines": 738,
+            "function": 96.4,
+            "branch": 53.7
+          },
+          {
+            "file": "src/compiler/interpreter.cpp",
+            "line": 92.1,
+            "lines": 126,
+            "function": 100.0,
+            "branch": 53.1
+          },
+          {
+            "file": "src/compiler/program_entry.cpp",
+            "line": 93.9,
+            "lines": 33,
+            "function": 100.0,
+            "branch": 78.1
+          },
+          {
+            "file": "src/compiler/lexer.cpp",
+            "line": 95.8,
+            "lines": 191,
+            "function": 100.0,
+            "branch": 67.3
+          }
+        ]
+      },
+      {
+        "name": "include",
+        "line": 93.0,
+        "lines": 187,
+        "function": 95.4,
+        "branch": 56.0,
+        "files": [
+          {
+            "file": "include/dryad/runtime/event_loop.h",
+            "line": 50.0,
+            "lines": 2,
+            "function": 50.0,
+            "branch": 50.0
+          },
+          {
+            "file": "include/dryad/runtime/vm_jit_delegate.h",
+            "line": 50.0,
+            "lines": 2,
+            "function": 100.0,
+            "branch": 100.0
+          },
+          {
+            "file": "include/dryad/runtime/vm_runtime_delegate.h",
+            "line": 50.0,
+            "lines": 2,
+            "function": 100.0,
+            "branch": 100.0
+          },
+          {
+            "file": "include/dryad/compiler/interpreter.h",
+            "line": 81.2,
+            "lines": 16,
+            "function": 81.2,
+            "branch": 100.0
+          },
+          {
+            "file": "include/dryad/runtime/function.h",
+            "line": 92.9,
+            "lines": 14,
+            "function": 100.0,
+            "branch": 100.0
+          },
+          {
+            "file": "include/dryad/compiler/ast.h",
+            "line": 94.1,
+            "lines": 102,
+            "function": 97.7,
+            "branch": 44.4
+          },
+          {
+            "file": "include/dryad/aot/jit_compiler.h",
+            "line": 100.0,
+            "lines": 1,
+            "function": 100.0,
+            "branch": 100.0
+          },
+          {
+            "file": "include/dryad/common/utils.h",
+            "line": 100.0,
+            "lines": 2,
+            "function": 100.0,
+            "branch": 100.0
+          },
+          {
+            "file": "include/dryad/compiler/bytecode_compiler.h",
+            "line": 100.0,
+            "lines": 2,
+            "function": 100.0,
+            "branch": 50.0
+          },
+          {
+            "file": "include/dryad/compiler/diagnostic.h",
+            "line": 100.0,
+            "lines": 3,
+            "function": 100.0,
+            "branch": 50.0
+          },
+          {
+            "file": "include/dryad/compiler/lexer.h",
+            "line": 100.0,
+            "lines": 1,
+            "function": 100.0,
+            "branch": 100.0
+          },
+          {
+            "file": "include/dryad/compiler/parser.h",
+            "line": 100.0,
+            "lines": 4,
+            "function": 100.0,
+            "branch": 100.0
+          },
+          {
+            "file": "include/dryad/compiler/semantic_analyzer.h",
+            "line": 100.0,
+            "lines": 2,
+            "function": 100.0,
+            "branch": 100.0
+          },
+          {
+            "file": "include/dryad/compiler/token.h",
+            "line": 100.0,
+            "lines": 4,
+            "function": 100.0,
+            "branch": 100.0
+          },
+          {
+            "file": "include/dryad/compiler/type_profiler.h",
+            "line": 100.0,
+            "lines": 4,
+            "function": 100.0,
+            "branch": 50.0
+          },
+          {
+            "file": "include/dryad/runtime/bytecode_builder.h",
+            "line": 100.0,
+            "lines": 2,
+            "function": 100.0,
+            "branch": 100.0
+          },
+          {
+            "file": "include/dryad/runtime/bytecode_cache.h",
+            "line": 100.0,
+            "lines": 1,
+            "function": 100.0,
+            "branch": 100.0
+          },
+          {
+            "file": "include/dryad/runtime/class.h",
+            "line": 100.0,
+            "lines": 4,
+            "function": 100.0,
+            "branch": 100.0
+          },
+          {
+            "file": "include/dryad/runtime/intrinsics_registry.h",
+            "line": 100.0,
+            "lines": 2,
+            "function": 100.0,
+            "branch": 100.0
+          },
+          {
+            "file": "include/dryad/runtime/native_module.h",
+            "line": 100.0,
+            "lines": 1,
+            "function": 100.0,
+            "branch": 100.0
+          },
+          {
+            "file": "include/dryad/runtime/value.h",
+            "line": 100.0,
+            "lines": 12,
+            "function": 100.0,
+            "branch": 100.0
+          },
+          {
+            "file": "include/dryad/runtime/vm.h",
+            "line": 100.0,
+            "lines": 4,
+            "function": 100.0,
+            "branch": 100.0
+          }
+        ]
+      },
+      {
+        "name": "runtime",
+        "line": 73.6,
+        "lines": 3883,
+        "function": 87.7,
+        "branch": 40.4,
+        "files": [
+          {
+            "file": "src/runtime/gc.cpp",
+            "line": 0.0,
+            "lines": 4,
+            "function": 0.0,
+            "branch": 100.0
+          },
+          {
+            "file": "src/runtime/opcode.cpp",
+            "line": 0.0,
+            "lines": 59,
+            "function": 0.0,
+            "branch": 0.0
+          },
+          {
+            "file": "src/runtime/intrinsics_tls.cpp",
+            "line": 9.4,
+            "lines": 85,
+            "function": 13.3,
+            "branch": 7.6
+          },
+          {
+            "file": "src/runtime/intrinsics_poller.cpp",
+            "line": 20.0,
+            "lines": 25,
+            "function": 25.0,
+            "branch": 15.0
+          },
+          {
+            "file": "src/runtime/io_poller.cpp",
+            "line": 32.5,
+            "lines": 40,
+            "function": 60.0,
+            "branch": 7.1
+          },
+          {
+            "file": "src/runtime/intrinsics_process.cpp",
+            "line": 61.3,
+            "lines": 31,
+            "function": 66.7,
+            "branch": 37.5
+          },
+          {
+            "file": "src/runtime/intrinsics_network.cpp",
+            "line": 63.9,
+            "lines": 169,
+            "function": 80.0,
+            "branch": 34.5
+          },
+          {
+            "file": "src/runtime/promise_runtime.cpp",
+            "line": 66.1,
+            "lines": 62,
+            "function": 81.8,
+            "branch": 33.1
+          },
+          {
+            "file": "src/runtime/bytecode_module.cpp",
+            "line": 66.8,
+            "lines": 193,
+            "function": 100.0,
+            "branch": 38.5
+          },
+          {
+            "file": "src/runtime/native_module.cpp",
+            "line": 67.4,
+            "lines": 92,
+            "function": 100.0,
+            "branch": 41.9
+          },
+          {
+            "file": "src/runtime/intrinsics_event_loop.cpp",
+            "line": 69.2,
+            "lines": 26,
+            "function": 83.3,
+            "branch": 36.0
+          },
+          {
+            "file": "src/runtime/library_module.cpp",
+            "line": 71.8,
+            "lines": 393,
+            "function": 83.3,
+            "branch": 41.2
+          },
+          {
+            "file": "src/runtime/vm.cpp",
+            "line": 72.1,
+            "lines": 713,
+            "function": 86.2,
+            "branch": 40.4
+          },
+          {
+            "file": "src/runtime/intrinsics_filesystem.cpp",
+            "line": 76.8,
+            "lines": 95,
+            "function": 87.5,
+            "branch": 44.5
+          },
+          {
+            "file": "src/runtime/intrinsics_registry.cpp",
+            "line": 78.0,
+            "lines": 305,
+            "function": 94.1,
+            "branch": 42.8
+          },
+          {
+            "file": "src/runtime/class.cpp",
+            "line": 78.5,
+            "lines": 107,
+            "function": 90.0,
+            "branch": 47.4
+          },
+          {
+            "file": "src/runtime/intrinsics.cpp",
+            "line": 81.7,
+            "lines": 301,
+            "function": 89.7,
+            "branch": 43.8
+          },
+          {
+            "file": "src/runtime/package_manifest.cpp",
+            "line": 82.1,
+            "lines": 78,
+            "function": 100.0,
+            "branch": 50.0
+          },
+          {
+            "file": "src/runtime/value.cpp",
+            "line": 82.3,
+            "lines": 237,
+            "function": 97.1,
+            "branch": 43.1
+          },
+          {
+            "file": "src/runtime/function.cpp",
+            "line": 82.9,
+            "lines": 70,
+            "function": 100.0,
+            "branch": 45.6
+          },
+          {
+            "file": "src/runtime/intrinsics_thread.cpp",
+            "line": 83.3,
+            "lines": 60,
+            "function": 100.0,
+            "branch": 45.1
+          },
+          {
+            "file": "src/runtime/module_loader.cpp",
+            "line": 84.1,
+            "lines": 276,
+            "function": 96.0,
+            "branch": 47.2
+          },
+          {
+            "file": "src/runtime/thread_manager.cpp",
+            "line": 86.2,
+            "lines": 188,
+            "function": 100.0,
+            "branch": 37.5
+          },
+          {
+            "file": "src/runtime/environment.cpp",
+            "line": 90.3,
+            "lines": 31,
+            "function": 100.0,
+            "branch": 47.1
+          },
+          {
+            "file": "src/runtime/bytecode_cache.cpp",
+            "line": 91.4,
+            "lines": 35,
+            "function": 100.0,
+            "branch": 50.0
+          },
+          {
+            "file": "src/runtime/event_loop.cpp",
+            "line": 93.1,
+            "lines": 58,
+            "function": 100.0,
+            "branch": 38.8
+          },
+          {
+            "file": "src/runtime/loop_analyzer.cpp",
+            "line": 93.5,
+            "lines": 46,
+            "function": 100.0,
+            "branch": 73.9
+          },
+          {
+            "file": "src/runtime/bytecode_builder.cpp",
+            "line": 97.1,
+            "lines": 104,
+            "function": 96.4,
+            "branch": 50.0
+          }
+        ]
+      },
+      {
+        "name": "tools",
+        "line": 0.0,
+        "lines": 347,
+        "function": 0.0,
+        "branch": 0.0,
+        "files": [
+          {
+            "file": "src/tools/main.cpp",
+            "line": 0.0,
+            "lines": 345,
+            "function": 0.0,
+            "branch": 0.0
+          },
+          {
+            "file": "src/tools/repl.cpp",
+            "line": 0.0,
+            "lines": 2,
+            "function": 0.0,
+            "branch": 100.0
+          }
+        ]
+      }
+    ],
+    "commit": "f179005"
+  },
+  "stdlib": {
+    "summary": {
+      "modules": 43,
+      "publicApis": 193,
+      "internalHelpers": 126,
+      "tested": 134,
+      "documented": 134,
+      "methods": 140,
+      "methodsTested": 125,
+      "methodsDocumented": 77
+    },
+    "modules": [
+      {
+        "module": "@std/async/async",
+        "source": "src/stdlib/@std/async/async.dryad",
+        "docPage": "async.md",
+        "apis": []
+      },
+      {
+        "module": "@std/async/event_loop",
+        "source": "src/stdlib/@std/async/event_loop.dryad",
+        "docPage": "async.md",
+        "apis": [
+          {
+            "name": "EventLoop_schedule",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "EventLoop_pendingCount",
+            "kind": "function",
+            "tested": true,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "EventLoop_pump",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "EventLoop_runTurn",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": false
+          }
+        ]
+      },
+      {
+        "module": "@std/async/promise",
+        "source": "src/stdlib/@std/async/promise.dryad",
+        "docPage": "async.md",
+        "apis": [
+          {
+            "name": "Promise_queueSettlement",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Promise_isPromise",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Promise_createDeferred",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Promise_adoptResolved",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Promise_adoptRejected",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Promise_flushFulfilled",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Promise_flushRejected",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Promise",
+            "kind": "class",
+            "methods": [
+              {
+                "name": "then",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "catchError",
+                "tested": false,
+                "documented": false
+              },
+              {
+                "name": "finally",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "finallyDo",
+                "tested": false,
+                "documented": false
+              }
+            ],
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Promise_resolve",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Promise_reject",
+            "kind": "function",
+            "tested": true,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "Promise_wrap",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "Promise_all",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Promise_flush",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Promise_await",
+            "kind": "function",
+            "tested": false,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Promise_race",
+            "kind": "function",
+            "tested": true,
+            "documented": false,
+            "internal": false
+          }
+        ]
+      },
+      {
+        "module": "@std/async/threading/thread",
+        "source": "src/stdlib/@std/async/threading/thread.dryad",
+        "docPage": "async-threading.md",
+        "apis": [
+          {
+            "name": "Thread_makeOutcome",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Thread",
+            "kind": "class",
+            "methods": [
+              {
+                "name": "start",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "join",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "isStarted",
+                "tested": false,
+                "documented": false
+              }
+            ],
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Thread_parallel",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Thread_sleepMs",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Thread_hardwareConcurrency",
+            "kind": "function",
+            "tested": true,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "Thread_startAsync",
+            "kind": "function",
+            "tested": true,
+            "documented": false,
+            "internal": false
+          }
+        ]
+      },
+      {
+        "module": "@std/async/threading/thread_pool",
+        "source": "src/stdlib/@std/async/threading/thread_pool.dryad",
+        "docPage": "async-threading.md",
+        "apis": [
+          {
+            "name": "ThreadPool",
+            "kind": "class",
+            "methods": [
+              {
+                "name": "submit",
+                "tested": false,
+                "documented": true
+              },
+              {
+                "name": "wait",
+                "tested": false,
+                "documented": true
+              },
+              {
+                "name": "run",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "submitAsync",
+                "tested": false,
+                "documented": false
+              },
+              {
+                "name": "destroy",
+                "tested": true,
+                "documented": true
+              }
+            ],
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "ThreadPool_map",
+            "kind": "function",
+            "tested": true,
+            "documented": false,
+            "internal": false
+          }
+        ]
+      },
+      {
+        "module": "@std/async/threading/threading",
+        "source": "src/stdlib/@std/async/threading/threading.dryad",
+        "docPage": "async-threading.md",
+        "apis": []
+      },
+      {
+        "module": "@std/buffers/buffer",
+        "source": "src/stdlib/@std/buffers/buffer.dryad",
+        "docPage": "buffers.md",
+        "apis": [
+          {
+            "name": "Buffer_CreateInternal",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Buffer_New",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Buffer_FromPtr",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Buffer_GetActualHandle",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "Buffer_GetOffset",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "Buffer_Len",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Buffer_Capacity",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Buffer_Read",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Buffer_Write",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Buffer_Fill",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Buffer_Slice",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Buffer_Resize",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Buffer_CopyTo",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Buffer_FromString",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Buffer_AsString",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Buffer_Dispose",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          }
+        ]
+      },
+      {
+        "module": "@std/bytes/bytes",
+        "source": "src/stdlib/@std/bytes/bytes.dryad",
+        "docPage": "bytes.md",
+        "apis": [
+          {
+            "name": "Bytes_ValidateRange",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Bytes_Copy",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Bytes_Fill",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Bytes_Compare",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Bytes_Equals",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Bytes_IndexOf",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Bytes_LastIndexOf",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Bytes_Contains",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Bytes_MatchesAt",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Bytes_StartsWith",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Bytes_EndsWith",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Bytes_Concat",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Bytes_Repeat",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Bytes_IsWhitespace",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Bytes_FirstNonWhitespace",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Bytes_LastNonWhitespace",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Bytes_SliceResult",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Bytes_Trim",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Bytes_TrimStart",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Bytes_TrimEnd",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Bytes_ToHex",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Bytes_HexValue",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Bytes_FromHex",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          }
+        ]
+      },
+      {
+        "module": "@std/collections/list",
+        "source": "src/stdlib/@std/collections/list.dryad",
+        "docPage": "collections.md",
+        "apis": [
+          {
+            "name": "List_ensureIndex",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "List_ensureInsertIndex",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "List",
+            "kind": "class",
+            "methods": [
+              {
+                "name": "count",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "capacity",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "get",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "set",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "add",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "insert",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "remove",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "removeAt",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "clear",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "contains",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "indexOf",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "forEach",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "map",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "filter",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "reduce",
+                "tested": true,
+                "documented": true
+              }
+            ],
+            "tested": true,
+            "documented": true,
+            "internal": false
+          }
+        ]
+      },
+      {
+        "module": "@std/collections/map",
+        "source": "src/stdlib/@std/collections/map.dryad",
+        "docPage": "collections.md",
+        "apis": [
+          {
+            "name": "Map_findEntryIndex",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Map_createEntry",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Map",
+            "kind": "class",
+            "methods": [
+              {
+                "name": "size",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "put",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "get",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "has",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "delete",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "clear",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "forEach",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "keys",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "values",
+                "tested": true,
+                "documented": true
+              }
+            ],
+            "tested": true,
+            "documented": true,
+            "internal": false
+          }
+        ]
+      },
+      {
+        "module": "@std/collections/queue",
+        "source": "src/stdlib/@std/collections/queue.dryad",
+        "docPage": "collections.md",
+        "apis": [
+          {
+            "name": "Queue_allocateSlots",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Queue_grow",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Queue",
+            "kind": "class",
+            "methods": [
+              {
+                "name": "count",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "capacity",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "isEmpty",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "enqueue",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "dequeue",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "peek",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "clear",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "forEach",
+                "tested": true,
+                "documented": true
+              }
+            ],
+            "tested": true,
+            "documented": true,
+            "internal": false
+          }
+        ]
+      },
+      {
+        "module": "@std/collections/set",
+        "source": "src/stdlib/@std/collections/set.dryad",
+        "docPage": "collections.md",
+        "apis": [
+          {
+            "name": "Set",
+            "kind": "class",
+            "methods": [
+              {
+                "name": "size",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "add",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "delete",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "has",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "clear",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "forEach",
+                "tested": true,
+                "documented": true
+              }
+            ],
+            "tested": true,
+            "documented": true,
+            "internal": false
+          }
+        ]
+      },
+      {
+        "module": "@std/collections",
+        "source": "src/stdlib/@std/collections.dryad",
+        "docPage": "collections.md",
+        "apis": []
+      },
+      {
+        "module": "@std/core/disposable",
+        "source": "src/stdlib/@std/core/disposable.dryad",
+        "docPage": "core.md",
+        "apis": []
+      },
+      {
+        "module": "@std/core/enumerable",
+        "source": "src/stdlib/@std/core/enumerable.dryad",
+        "docPage": "core.md",
+        "apis": []
+      },
+      {
+        "module": "@std/core/exceptions",
+        "source": "src/stdlib/@std/core/exceptions.dryad",
+        "docPage": "core.md",
+        "apis": [
+          {
+            "name": "Exception",
+            "kind": "function",
+            "tested": false,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "ArgumentException",
+            "kind": "function",
+            "tested": false,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "ArgumentNullException",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "ArgumentOutOfRangeException",
+            "kind": "function",
+            "tested": false,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "IOException",
+            "kind": "function",
+            "tested": false,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "FileNotFoundException",
+            "kind": "function",
+            "tested": false,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "DirectoryNotFoundException",
+            "kind": "function",
+            "tested": false,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "EndOfStreamException",
+            "kind": "function",
+            "tested": false,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "InvalidOperationException",
+            "kind": "function",
+            "tested": false,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "ObjectDisposedException",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "IndexOutOfRangeException",
+            "kind": "function",
+            "tested": false,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "KeyNotFoundException",
+            "kind": "function",
+            "tested": false,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "NetworkException",
+            "kind": "function",
+            "tested": false,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "SocketException",
+            "kind": "function",
+            "tested": false,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "HttpException",
+            "kind": "function",
+            "tested": false,
+            "documented": true,
+            "internal": false
+          }
+        ]
+      },
+      {
+        "module": "@std/io/file",
+        "source": "src/stdlib/@std/io/file.dryad",
+        "docPage": "io.md",
+        "apis": [
+          {
+            "name": "_globalVFS",
+            "kind": "value",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "_getGlobalVFS",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "readFile",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "writeFile",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "exists",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "removeFile",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "listDirectory",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "mkdir",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "setVFSBackend",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "readFileAsync",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "writeFileAsync",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "existsAsync",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "removeFileAsync",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "listDirectoryAsync",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "mkdirAsync",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          }
+        ]
+      },
+      {
+        "module": "@std/io/filehandle",
+        "source": "src/stdlib/@std/io/filehandle.dryad",
+        "docPage": "io.md",
+        "apis": [
+          {
+            "name": "FileHandle",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "FileHandle_isOpen",
+            "kind": "function",
+            "tested": true,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "FileHandle_read",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "FileHandle_write",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "FileHandle_close",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "FileHandle_dispose",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "FileHandle_getPath",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "FileHandle_getMode",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          }
+        ]
+      },
+      {
+        "module": "@std/io/filestream",
+        "source": "src/stdlib/@std/io/filestream.dryad",
+        "docPage": "io.md",
+        "apis": [
+          {
+            "name": "FileMode_Read",
+            "kind": "value",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "FileMode_Write",
+            "kind": "value",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "FileMode_ReadWrite",
+            "kind": "value",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "FileMode_Append",
+            "kind": "value",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "FileMode_Create",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "FileMode",
+            "kind": "value",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "FileStream_ensureOpen",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "FileStream_ensureCanRead",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "FileStream_ensureCanWrite",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "FileStream_validateBufferArgs",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "FileStream",
+            "kind": "class",
+            "methods": [
+              {
+                "name": "canRead",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "canWrite",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "canSeek",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "length",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "position",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "read",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "write",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "seek",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "flush",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "close",
+                "tested": true,
+                "documented": true
+              }
+            ],
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "File_open",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "File_exists",
+            "kind": "function",
+            "tested": true,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "File_delete",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "File_readAllText",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "File_writeAllText",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          }
+        ]
+      },
+      {
+        "module": "@std/io/io_concurrency",
+        "source": "src/stdlib/@std/io/io_concurrency.dryad",
+        "docPage": "io.md",
+        "apis": [
+          {
+            "name": "FileLock",
+            "kind": "function",
+            "tested": false,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "FileLock_acquire",
+            "kind": "function",
+            "tested": false,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "FileLock_release",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "ThreadSafeVFS",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "ThreadSafeVFS_readFile",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "ThreadSafeVFS_writeFile",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "ThreadSafeVFS_exists",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "ThreadSafeVFS_removeFile",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "ThreadSafeVFS_listDirectory",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "ThreadSafeVFS_mkdir",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          }
+        ]
+      },
+      {
+        "module": "@std/io/io_errors",
+        "source": "src/stdlib/@std/io/io_errors.dryad",
+        "docPage": "io.md",
+        "apis": [
+          {
+            "name": "InvalidPathError",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "FileNotFoundError",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "DirectoryNotFoundError",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "AccessDeniedError",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "FileAlreadyExistsError",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "InvalidOperationError",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "NormalizePath",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "ValidatePath",
+            "kind": "function",
+            "tested": false,
+            "documented": true,
+            "internal": false
+          }
+        ]
+      },
+      {
+        "module": "@std/io/memory_stream",
+        "source": "src/stdlib/@std/io/memory_stream.dryad",
+        "docPage": "io.md",
+        "apis": [
+          {
+            "name": "MemoryStream_ensureOpen",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "MemoryStream_ensureCanRead",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "MemoryStream_ensureCanWrite",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "MemoryStream_validateBufferArgs",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "MemoryStream",
+            "kind": "class",
+            "methods": [
+              {
+                "name": "canRead",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "canWrite",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "canSeek",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "length",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "position",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "read",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "write",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "seek",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "flush",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "close",
+                "tested": true,
+                "documented": true
+              }
+            ],
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "MemoryStream_new",
+            "kind": "function",
+            "tested": true,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "MemoryStream_fromString",
+            "kind": "function",
+            "tested": true,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "MemoryStream_fromBuffer",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "MemoryStream_toString",
+            "kind": "function",
+            "tested": true,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "MemoryStream_getBuffer",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          }
+        ]
+      },
+      {
+        "module": "@std/io/path",
+        "source": "src/stdlib/@std/io/path.dryad",
+        "docPage": "io.md",
+        "apis": [
+          {
+            "name": "Path_charAt",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Path_join",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Path_dirname",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Path_basename",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Path_extension",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Path_ensureDirectory",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Path_ensureParentForFile",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "Path_Create",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Path",
+            "kind": "value",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          }
+        ]
+      },
+      {
+        "module": "@std/io/stream",
+        "source": "src/stdlib/@std/io/stream.dryad",
+        "docPage": "io.md",
+        "apis": [
+          {
+            "name": "SeekOrigin_Begin",
+            "kind": "value",
+            "tested": false,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "SeekOrigin_Current",
+            "kind": "value",
+            "tested": false,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "SeekOrigin_End",
+            "kind": "value",
+            "tested": false,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "SeekOrigin_Create",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "SeekOrigin",
+            "kind": "value",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Stream_isStream",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "Stream_isError",
+            "kind": "function",
+            "tested": false,
+            "documented": true,
+            "internal": false
+          }
+        ]
+      },
+      {
+        "module": "@std/io/vfs",
+        "source": "src/stdlib/@std/io/vfs.dryad",
+        "docPage": "io.md",
+        "apis": [
+          {
+            "name": "FileSystemBackend",
+            "kind": "function",
+            "tested": true,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "VFS",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "VFS_readFile",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "VFS_writeFile",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "VFS_listDirectory",
+            "kind": "function",
+            "tested": true,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "VFS_removeFile",
+            "kind": "function",
+            "tested": true,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "VFS_exists",
+            "kind": "function",
+            "tested": true,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "VFS_mkdir",
+            "kind": "function",
+            "tested": true,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "VFS_dispose",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "FileSystemBackend_readFile",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "FileSystemBackend_writeFile",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "FileSystemBackend_exists",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "FileSystemBackend_removeFile",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "FileSystemBackend_listDirectory",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "FileSystemBackend_mkdir",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "FileSystemBackend_dispose",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "MemoryBackend",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "MemoryBackend_readFile",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "MemoryBackend_writeFile",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "MemoryBackend_exists",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "MemoryBackend_removeFile",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "MemoryBackend_listDirectory",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "MemoryBackend_mkdir",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "MemoryBackend_dispose",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "NativeBackend",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "NativeBackend_readFile",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "NativeBackend_writeFile",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "NativeBackend_exists",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "NativeBackend_removeFile",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "NativeBackend_listDirectory",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "NativeBackend_mkdir",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "NativeBackend_dispose",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          }
+        ]
+      },
+      {
+        "module": "@std/net/constants",
+        "source": "src/stdlib/@std/net/constants.dryad",
+        "docPage": "net.md",
+        "apis": [
+          {
+            "name": "SocketDomain_IPv4",
+            "kind": "value",
+            "tested": true,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "SocketDomain_IPv6",
+            "kind": "value",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "SocketType_Stream",
+            "kind": "value",
+            "tested": true,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "SocketType_Datagram",
+            "kind": "value",
+            "tested": false,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "Shutdown_Read",
+            "kind": "value",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Shutdown_Write",
+            "kind": "value",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Shutdown_Both",
+            "kind": "value",
+            "tested": false,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "SocketDomain_Create",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "SocketType_Create",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Shutdown_Create",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "SocketDomain",
+            "kind": "value",
+            "tested": false,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "SocketType",
+            "kind": "value",
+            "tested": false,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Shutdown",
+            "kind": "value",
+            "tested": false,
+            "documented": true,
+            "internal": false
+          }
+        ]
+      },
+      {
+        "module": "@std/net/dns",
+        "source": "src/stdlib/@std/net/dns.dryad",
+        "docPage": "net.md",
+        "apis": [
+          {
+            "name": "Net_isIpv4Literal",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Net_splitHost",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Net_charByte",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Net_parseInt",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Net_resolveHost",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "Net_resolveHostOrError",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": false
+          }
+        ]
+      },
+      {
+        "module": "@std/net/http/http_client",
+        "source": "src/stdlib/@std/net/http/http_client.dryad",
+        "docPage": "net.md",
+        "apis": [
+          {
+            "name": "HttpClient_isStream",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "HttpClient",
+            "kind": "class",
+            "methods": [
+              {
+                "name": "send",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "get",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "post",
+                "tested": false,
+                "documented": false
+              },
+              {
+                "name": "getAsync",
+                "tested": false,
+                "documented": false
+              },
+              {
+                "name": "postAsync",
+                "tested": false,
+                "documented": false
+              }
+            ],
+            "tested": true,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "HttpClient_create",
+            "kind": "function",
+            "tested": true,
+            "documented": false,
+            "internal": false
+          }
+        ]
+      },
+      {
+        "module": "@std/net/http/http_headers",
+        "source": "src/stdlib/@std/net/http/http_headers.dryad",
+        "docPage": "net.md",
+        "apis": [
+          {
+            "name": "HttpHeaders",
+            "kind": "class",
+            "methods": [
+              {
+                "name": "set",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "get",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "has",
+                "tested": true,
+                "documented": false
+              }
+            ],
+            "tested": false,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "HttpHeaders_fromLines",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "HttpHeaders_indexOfColon",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "HttpHeaders_trim",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          }
+        ]
+      },
+      {
+        "module": "@std/net/http/http_request",
+        "source": "src/stdlib/@std/net/http/http_request.dryad",
+        "docPage": "net.md",
+        "apis": [
+          {
+            "name": "HttpRequest",
+            "kind": "class",
+            "methods": [],
+            "tested": false,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "HttpRequest_buildWire",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": false
+          }
+        ]
+      },
+      {
+        "module": "@std/net/http/http_response",
+        "source": "src/stdlib/@std/net/http/http_response.dryad",
+        "docPage": "net.md",
+        "apis": [
+          {
+            "name": "HttpResponse",
+            "kind": "class",
+            "methods": [],
+            "tested": false,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "HttpResponse_parse",
+            "kind": "function",
+            "tested": true,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "HttpResponse_splitLines",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "HttpResponse_parseStatusLine",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "HttpResponse_parseInt",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          }
+        ]
+      },
+      {
+        "module": "@std/net/http/http_string",
+        "source": "src/stdlib/@std/net/http/http_string.dryad",
+        "docPage": "net.md",
+        "apis": [
+          {
+            "name": "Http_charAt",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "Http_startsWith",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "Http_indexOf",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "Http_substring",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "Http_trim",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": false
+          }
+        ]
+      },
+      {
+        "module": "@std/net/http/http_url",
+        "source": "src/stdlib/@std/net/http/http_url.dryad",
+        "docPage": "net.md",
+        "apis": [
+          {
+            "name": "Http_parseUrl",
+            "kind": "function",
+            "tested": true,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "Http_parsePort",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          }
+        ]
+      },
+      {
+        "module": "@std/net/net",
+        "source": "src/stdlib/@std/net/net.dryad",
+        "docPage": "net.md",
+        "apis": []
+      },
+      {
+        "module": "@std/net/net_errors",
+        "source": "src/stdlib/@std/net/net_errors.dryad",
+        "docPage": "net.md",
+        "apis": [
+          {
+            "name": "Net_validatePort",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "Net_validateConnectHost",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "Net_normalizeBindHost",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "Net_socketError",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": false
+          }
+        ]
+      },
+      {
+        "module": "@std/net/network_stream",
+        "source": "src/stdlib/@std/net/network_stream.dryad",
+        "docPage": "net.md",
+        "apis": [
+          {
+            "name": "NetworkStream_ensureSocket",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "NetworkStream",
+            "kind": "class",
+            "methods": [
+              {
+                "name": "canRead",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "canWrite",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "canSeek",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "length",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "position",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "read",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "write",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "seek",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "flush",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "close",
+                "tested": true,
+                "documented": true
+              }
+            ],
+            "tested": false,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "NetworkStream_fromSocket",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": false
+          }
+        ]
+      },
+      {
+        "module": "@std/net/socket",
+        "source": "src/stdlib/@std/net/socket.dryad",
+        "docPage": "net.md",
+        "apis": [
+          {
+            "name": "Socket_ensureOpen",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Socket_ensureConnected",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Socket_validateBufferArgs",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Socket",
+            "kind": "class",
+            "methods": [
+              {
+                "name": "connected",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "closed",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "listening",
+                "tested": false,
+                "documented": false
+              },
+              {
+                "name": "localPort",
+                "tested": false,
+                "documented": false
+              },
+              {
+                "name": "connect",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "sendTo",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "receiveFrom",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "bind",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "listen",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "accept",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "send",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "receive",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "shutdown",
+                "tested": false,
+                "documented": false
+              },
+              {
+                "name": "close",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "dispose",
+                "tested": true,
+                "documented": false
+              }
+            ],
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Socket_isSocket",
+            "kind": "function",
+            "tested": true,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "Socket_fromFd",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": false
+          }
+        ]
+      },
+      {
+        "module": "@std/net/socket_async",
+        "source": "src/stdlib/@std/net/socket_async.dryad",
+        "docPage": "net.md",
+        "apis": [
+          {
+            "name": "Socket_connectAsync",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Socket_sendAsync",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Socket_receiveAsync",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "TcpClient_connectAsync",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          }
+        ]
+      },
+      {
+        "module": "@std/net/tcp_client",
+        "source": "src/stdlib/@std/net/tcp_client.dryad",
+        "docPage": "net.md",
+        "apis": [
+          {
+            "name": "TcpClient",
+            "kind": "class",
+            "methods": [
+              {
+                "name": "connected",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "getStream",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "send",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "receive",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "close",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "dispose",
+                "tested": true,
+                "documented": false
+              }
+            ],
+            "tested": false,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "TcpClient_connect",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "TcpClient_wrap",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": false
+          }
+        ]
+      },
+      {
+        "module": "@std/net/tcp_listener",
+        "source": "src/stdlib/@std/net/tcp_listener.dryad",
+        "docPage": "net.md",
+        "apis": [
+          {
+            "name": "TcpListener",
+            "kind": "class",
+            "methods": [
+              {
+                "name": "port",
+                "tested": false,
+                "documented": true
+              },
+              {
+                "name": "isListening",
+                "tested": false,
+                "documented": false
+              },
+              {
+                "name": "start",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "accept",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "stop",
+                "tested": false,
+                "documented": false
+              },
+              {
+                "name": "dispose",
+                "tested": true,
+                "documented": false
+              }
+            ],
+            "tested": false,
+            "documented": true,
+            "internal": false
+          }
+        ]
+      },
+      {
+        "module": "@std/net/tls_stream",
+        "source": "src/stdlib/@std/net/tls_stream.dryad",
+        "docPage": "net.md",
+        "apis": [
+          {
+            "name": "TlsStream_ensureOpen",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "TlsStream",
+            "kind": "class",
+            "methods": [
+              {
+                "name": "canRead",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "canWrite",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "canSeek",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "length",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "position",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "read",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "write",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "seek",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "flush",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "close",
+                "tested": true,
+                "documented": true
+              }
+            ],
+            "tested": false,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "TlsStream_isAvailable",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "TlsStream_isTlsStream",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "TlsStream_connect",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": false
+          }
+        ]
+      },
+      {
+        "module": "@std/net/udp_client",
+        "source": "src/stdlib/@std/net/udp_client.dryad",
+        "docPage": "net.md",
+        "apis": [
+          {
+            "name": "UdpClient",
+            "kind": "class",
+            "methods": [
+              {
+                "name": "sendTo",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "receiveFrom",
+                "tested": true,
+                "documented": false
+              },
+              {
+                "name": "close",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "dispose",
+                "tested": true,
+                "documented": false
+              }
+            ],
+            "tested": false,
+            "documented": false,
+            "internal": false
+          },
+          {
+            "name": "UdpClient_create",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          }
+        ]
+      },
+      {
+        "module": "@std/text/text",
+        "source": "src/stdlib/@std/text/text.dryad",
+        "docPage": "text.md",
+        "apis": [
+          {
+            "name": "Text_ToBuffer",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Text_StringSlice",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Text_CodePointLength",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Text_DecodeCodePoint",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Text_MatchesAt",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Text_FindBytes",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Text_Length",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Text_CharAt",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Text_CodePointAt",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Text_FromCodePoint",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Text_Slice",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Text_Substring",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Text_IndexOf",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Text_LastIndexOf",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Text_Includes",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Text_StartsWith",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Text_EndsWith",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Text_Equals",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Text_Compare",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Text_CodePoints",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Text_CharCount",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Text_IsWhitespace",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Text_ConvertAsciiCase",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Text_ToLowerAscii",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Text_ToUpperAscii",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Text_TrimStart",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Text_TrimEnd",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Text_Trim",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Text_Repeat",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Text_Pad",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Text_PadStart",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Text_PadEnd",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Text_Split",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Text_Join",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Text_ReplaceInternal",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Text_Replace",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Text_ReplaceAll",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Text_DigitValue",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "Text_ParseInt",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Text_FormatInt",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Text_ParseFloat",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "Text_FormatFloat",
+            "kind": "function",
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "StringBuilder",
+            "kind": "class",
+            "methods": [
+              {
+                "name": "append",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "appendChar",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "appendBuffer",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "toString",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "clear",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "length",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "dispose",
+                "tested": true,
+                "documented": true
+              }
+            ],
+            "tested": true,
+            "documented": true,
+            "internal": false
+          },
+          {
+            "name": "TextView_Resolve",
+            "kind": "function",
+            "tested": false,
+            "documented": false,
+            "internal": true
+          },
+          {
+            "name": "TextView",
+            "kind": "class",
+            "methods": [
+              {
+                "name": "length",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "slice",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "codePointAt",
+                "tested": true,
+                "documented": true
+              },
+              {
+                "name": "toString",
+                "tested": true,
+                "documented": true
+              }
+            ],
+            "tested": true,
+            "documented": true,
+            "internal": false
+          }
+        ]
+      }
+    ]
+  },
+  "tiers": {
+    "source": "docs/implementation/plans/BYTECODE_COVERAGE.md",
+    "constructs": [
+      {
+        "construct": "Literals",
+        "interpreter": "✅",
+        "bytecode": "✅",
+        "notes": ""
+      },
+      {
+        "construct": "Variables `let`/`const`",
+        "interpreter": "✅",
+        "bytecode": "✅",
+        "notes": ""
+      },
+      {
+        "construct": "Arithmetic / compare",
+        "interpreter": "✅",
+        "bytecode": "✅",
+        "notes": "specialized when profiled"
+      },
+      {
+        "construct": "Logical `&&` `||`",
+        "interpreter": "✅",
+        "bytecode": "✅",
+        "notes": "short-circuit"
+      },
+      {
+        "construct": "Unary `!`, `-`",
+        "interpreter": "✅",
+        "bytecode": "✅",
+        "notes": ""
+      },
+      {
+        "construct": "`if` / `else`",
+        "interpreter": "✅",
+        "bytecode": "✅",
+        "notes": ""
+      },
+      {
+        "construct": "`while`",
+        "interpreter": "✅",
+        "bytecode": "✅",
+        "notes": ""
+      },
+      {
+        "construct": "`for (init; cond; incr)`",
+        "interpreter": "✅",
+        "bytecode": "✅",
+        "notes": ""
+      },
+      {
+        "construct": "`break` / `continue`",
+        "interpreter": "✅",
+        "bytecode": "✅",
+        "notes": ""
+      },
+      {
+        "construct": "`return`",
+        "interpreter": "✅",
+        "bytecode": "✅",
+        "notes": ""
+      },
+      {
+        "construct": "Array `[…]`, `arr[i]`",
+        "interpreter": "✅",
+        "bytecode": "✅",
+        "notes": ""
+      },
+      {
+        "construct": "`new Class()`, methods",
+        "interpreter": "✅",
+        "bytecode": "✅",
+        "notes": "via `VmRuntimeDelegate`"
+      },
+      {
+        "construct": "`this`",
+        "interpreter": "✅",
+        "bytecode": "✅",
+        "notes": "requires `this` slot/param"
+      },
+      {
+        "construct": "Direct `fn()` calls",
+        "interpreter": "✅",
+        "bytecode": "✅",
+        "notes": ""
+      },
+      {
+        "construct": "Calls through values `f(x)`, `make()(4)`",
+        "interpreter": "✅",
+        "bytecode": "✅",
+        "notes": "`CALL_VALUE`; arguments evaluated before the callee"
+      },
+      {
+        "construct": "Assignment to a script global",
+        "interpreter": "✅",
+        "bytecode": "✅",
+        "notes": "`STORE_GLOBAL`"
+      },
+      {
+        "construct": "Function expressions / closures",
+        "interpreter": "✅",
+        "bytecode": "✅",
+        "notes": "`MAKE_FUNCTION`, or `MAKE_CLOSURE` with cells when they capture locals"
+      },
+      {
+        "construct": "Intrinsic `__read`, `__runtime_*`",
+        "interpreter": "✅",
+        "bytecode": "✅",
+        "notes": "`INTRINSIC_SYSCALL`"
+      },
+      {
+        "construct": "`@compile` blocks",
+        "interpreter": "✅",
+        "bytecode": "✅",
+        "notes": "inline body"
+      }
+    ],
+    "interpreterOnly": [
+      {
+        "construct": "`class` / `interface` declarations",
+        "reason": "Setup phase; not in function bytecode"
+      },
+      {
+        "construct": "`import` / module loading",
+        "reason": "Program-level"
+      },
+      {
+        "construct": "`await` / async",
+        "reason": "Event loop integration"
+      },
+      {
+        "construct": "`super`",
+        "reason": "Constructor dispatch"
+      },
+      {
+        "construct": "Function expressions in library exports",
+        "reason": "`compile_function` alone has nowhere to append the lambda; `dryad compile --lib` reports it"
+      },
+      {
+        "construct": "`this` inside a function expression",
+        "reason": "Lambdas have no `this` slot"
+      },
+      {
+        "construct": "Object literals `{a:1}`",
+        "reason": "No `ObjectExpression` in parser"
+      },
+      {
+        "construct": "Computed method call `obj[x]()`",
+        "reason": "Rare; deferred"
+      }
+    ]
+  },
+  "gaps": [
+    {
+      "area": "runtime",
+      "kind": "low-coverage",
+      "item": "src/aot/package_installer.cpp",
+      "detail": "51.8% lines"
+    },
+    {
+      "area": "runtime",
+      "kind": "low-coverage",
+      "item": "src/aot/llvm_backend.cpp",
+      "detail": "69.4% lines"
+    },
+    {
+      "area": "runtime",
+      "kind": "low-coverage",
+      "item": "src/compiler/token.cpp",
+      "detail": "4.9% lines"
+    },
+    {
+      "area": "runtime",
+      "kind": "low-coverage",
+      "item": "src/compiler/execution_engine.cpp",
+      "detail": "62.6% lines"
+    },
+    {
+      "area": "runtime",
+      "kind": "low-coverage",
+      "item": "src/compiler/validator.cpp",
+      "detail": "64.7% lines"
+    },
+    {
+      "area": "runtime",
+      "kind": "low-coverage",
+      "item": "src/compiler/type_profiler.cpp",
+      "detail": "68.1% lines"
+    },
+    {
+      "area": "runtime",
+      "kind": "low-coverage",
+      "item": "src/runtime/opcode.cpp",
+      "detail": "0.0% lines"
+    },
+    {
+      "area": "runtime",
+      "kind": "low-coverage",
+      "item": "src/runtime/intrinsics_tls.cpp",
+      "detail": "9.4% lines"
+    },
+    {
+      "area": "runtime",
+      "kind": "low-coverage",
+      "item": "src/runtime/intrinsics_network.cpp",
+      "detail": "63.9% lines"
+    },
+    {
+      "area": "runtime",
+      "kind": "low-coverage",
+      "item": "src/runtime/promise_runtime.cpp",
+      "detail": "66.1% lines"
+    },
+    {
+      "area": "runtime",
+      "kind": "low-coverage",
+      "item": "src/runtime/bytecode_module.cpp",
+      "detail": "66.8% lines"
+    },
+    {
+      "area": "runtime",
+      "kind": "low-coverage",
+      "item": "src/runtime/native_module.cpp",
+      "detail": "67.4% lines"
+    },
+    {
+      "area": "runtime",
+      "kind": "low-coverage",
+      "item": "src/tools/main.cpp",
+      "detail": "0.0% lines"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/async/event_loop.EventLoop_pendingCount",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/async/event_loop.EventLoop_runTurn",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/async/event_loop.EventLoop_runTurn",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/async/promise.Promise_reject",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/async/promise.Promise_wrap",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/async/promise.Promise_wrap",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/async/promise.Promise_await",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/async/promise.Promise_race",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/async/threading/thread.Thread_hardwareConcurrency",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/async/threading/thread.Thread_startAsync",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/async/threading/thread_pool.ThreadPool_map",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/buffers/buffer.Buffer_GetActualHandle",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/buffers/buffer.Buffer_GetActualHandle",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/buffers/buffer.Buffer_GetOffset",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/buffers/buffer.Buffer_GetOffset",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/core/exceptions.Exception",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/core/exceptions.ArgumentException",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/core/exceptions.ArgumentOutOfRangeException",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/core/exceptions.IOException",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/core/exceptions.FileNotFoundException",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/core/exceptions.DirectoryNotFoundException",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/core/exceptions.EndOfStreamException",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/core/exceptions.InvalidOperationException",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/core/exceptions.IndexOutOfRangeException",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/core/exceptions.KeyNotFoundException",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/core/exceptions.NetworkException",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/core/exceptions.SocketException",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/core/exceptions.HttpException",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/io/filehandle.FileHandle_isOpen",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/io/filestream.File_exists",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/io/io_concurrency.FileLock",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/io/io_concurrency.FileLock_acquire",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/io/io_errors.ValidatePath",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/io/memory_stream.MemoryStream_new",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/io/memory_stream.MemoryStream_fromString",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/io/memory_stream.MemoryStream_fromBuffer",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/io/memory_stream.MemoryStream_fromBuffer",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/io/memory_stream.MemoryStream_toString",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/io/path.Path_ensureParentForFile",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/io/path.Path_ensureParentForFile",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/io/stream.SeekOrigin_Begin",
+      "detail": "value"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/io/stream.SeekOrigin_Begin",
+      "detail": "value"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/io/stream.SeekOrigin_Current",
+      "detail": "value"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/io/stream.SeekOrigin_Current",
+      "detail": "value"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/io/stream.SeekOrigin_End",
+      "detail": "value"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/io/stream.SeekOrigin_End",
+      "detail": "value"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/io/stream.Stream_isStream",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/io/stream.Stream_isStream",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/io/stream.Stream_isError",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/io/vfs.FileSystemBackend",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/io/vfs.VFS_listDirectory",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/io/vfs.VFS_removeFile",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/io/vfs.VFS_exists",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/io/vfs.VFS_mkdir",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/net/constants.SocketDomain_IPv4",
+      "detail": "value"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/net/constants.SocketType_Stream",
+      "detail": "value"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/net/constants.SocketType_Datagram",
+      "detail": "value"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/net/constants.SocketType_Datagram",
+      "detail": "value"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/net/constants.Shutdown_Both",
+      "detail": "value"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/net/constants.Shutdown_Both",
+      "detail": "value"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/net/constants.SocketDomain",
+      "detail": "value"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/net/constants.SocketType",
+      "detail": "value"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/net/constants.Shutdown",
+      "detail": "value"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/net/dns.Net_resolveHost",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/net/dns.Net_resolveHost",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/net/dns.Net_resolveHostOrError",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/net/dns.Net_resolveHostOrError",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/net/http/http_client.HttpClient",
+      "detail": "class"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/net/http/http_client.HttpClient_create",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/net/http/http_headers.HttpHeaders",
+      "detail": "class"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/net/http/http_headers.HttpHeaders",
+      "detail": "class"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/net/http/http_headers.HttpHeaders_fromLines",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/net/http/http_headers.HttpHeaders_fromLines",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/net/http/http_request.HttpRequest",
+      "detail": "class"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/net/http/http_request.HttpRequest",
+      "detail": "class"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/net/http/http_request.HttpRequest_buildWire",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/net/http/http_request.HttpRequest_buildWire",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/net/http/http_response.HttpResponse",
+      "detail": "class"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/net/http/http_response.HttpResponse",
+      "detail": "class"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/net/http/http_response.HttpResponse_parse",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/net/http/http_string.Http_charAt",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/net/http/http_string.Http_charAt",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/net/http/http_string.Http_startsWith",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/net/http/http_string.Http_startsWith",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/net/http/http_string.Http_indexOf",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/net/http/http_string.Http_indexOf",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/net/http/http_string.Http_substring",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/net/http/http_string.Http_substring",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/net/http/http_string.Http_trim",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/net/http/http_string.Http_trim",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/net/http/http_url.Http_parseUrl",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/net/net_errors.Net_validatePort",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/net/net_errors.Net_validatePort",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/net/net_errors.Net_validateConnectHost",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/net/net_errors.Net_validateConnectHost",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/net/net_errors.Net_normalizeBindHost",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/net/net_errors.Net_normalizeBindHost",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/net/net_errors.Net_socketError",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/net/net_errors.Net_socketError",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/net/network_stream.NetworkStream",
+      "detail": "class"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/net/network_stream.NetworkStream_fromSocket",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/net/network_stream.NetworkStream_fromSocket",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/net/socket.Socket_isSocket",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/net/socket.Socket_fromFd",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/net/socket.Socket_fromFd",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/net/tcp_client.TcpClient",
+      "detail": "class"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/net/tcp_client.TcpClient",
+      "detail": "class"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/net/tcp_client.TcpClient_wrap",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/net/tcp_client.TcpClient_wrap",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/net/tcp_listener.TcpListener",
+      "detail": "class"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/net/tls_stream.TlsStream",
+      "detail": "class"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/net/tls_stream.TlsStream",
+      "detail": "class"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/net/tls_stream.TlsStream_isAvailable",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/net/tls_stream.TlsStream_isAvailable",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/net/tls_stream.TlsStream_connect",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/net/tls_stream.TlsStream_connect",
+      "detail": "function"
+    },
+    {
+      "area": "stdlib",
+      "kind": "undocumented",
+      "item": "@std/net/udp_client.UdpClient",
+      "detail": "class"
+    },
+    {
+      "area": "stdlib",
+      "kind": "untested",
+      "item": "@std/net/udp_client.UdpClient",
+      "detail": "class"
+    }
+  ]
+}
