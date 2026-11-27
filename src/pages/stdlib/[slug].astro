@@ -1,0 +1,65 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import MarkdownBody from "../../components/MarkdownBody.astro";
+import { stdlib, type StdlibPage } from "../../lib/stdlibDocs";
+
+export function getStaticPaths() {
+  return stdlib.guides.map((page) => ({ params: { slug: page.slug }, props: { page } }));
+}
+
+interface Props {
+  page: StdlibPage;
+}
+
+const { page } = Astro.props;
+const i = stdlib.guides.findIndex((g) => g.slug === page.slug);
+const prev = i > 0 ? stdlib.guides[i - 1] : null;
+const next = i < stdlib.guides.length - 1 ? stdlib.guides[i + 1] : null;
+const edit = `https://github.com/dryadlang/docs/edit/main/stdlib/${page.slug}.md`;
+---
+
+<BaseLayout title={`${page.title} — Standard Library`} description={page.summary} wide>
+  <div class="lg:flex lg:items-start lg:gap-14">
+    <aside class="hidden lg:block w-52 shrink-0 sticky top-24 text-[13px]">
+      <p class="eyebrow mb-2">Standard library</p>
+      <nav class="flex flex-col mb-6">
+        {stdlib.guides.map((g) => (
+          <a href={`/stdlib/${g.slug}`} class:list={["no-underline py-1", g.slug === page.slug ? "is-current" : "text-gray-600 hover:text-[#0f6b4f]"]}>
+            {g.title.replace(/^@std\//, "")}
+          </a>
+        ))}
+      </nav>
+      {page.headings.length > 0 && (
+        <>
+          <p class="eyebrow mb-2">On this page</p>
+          <nav class="flex flex-col max-h-[50vh] overflow-y-auto">
+            {page.headings.map((h) => (
+              <a href={`#${h.id}`} class:list={["no-underline py-0.5 text-gray-500 hover:text-[#0f6b4f]", h.depth === 3 && "pl-3 text-[12px]"]}>{h.text}</a>
+            ))}
+          </nav>
+        </>
+      )}
+    </aside>
+
+    <article class="min-w-0 flex-1 max-w-[76ch]">
+      <p class="text-xs text-gray-400 mb-5">
+        <a href="/stdlib" class="text-gray-500 no-underline hover:text-[#0f6b4f] font-semibold">Standard library</a>
+        <span class="mx-1.5">/</span>
+        <span class="text-gray-500">{page.group}</span>
+      </p>
+      <h1 class="text-2xl md:text-3xl font-extrabold text-gray-900 mb-3 tracking-tight"><code>{page.title}</code></h1>
+      {page.coverage && (
+        <p class="text-[12px] text-gray-500 mb-8">
+          {page.coverage.apis} public APIs · {page.coverage.documented} documented · {page.coverage.tested} tested ·
+          <a href="/coverage">coverage map</a> · <a href={edit}>edit this page</a>
+        </p>
+      )}
+      <MarkdownBody html={page.html} />
+
+      <nav class="flex justify-between gap-4 text-sm mt-14 pt-6 border-t border-gray-100">
+        <span>{prev && <a href={`/stdlib/${prev.slug}`} class="text-gray-600 no-underline hover:text-[#0f6b4f] font-medium"><span class="text-gray-400">←</span> {prev.title}</a>}</span>
+        <span class="text-right">{next && <a href={`/stdlib/${next.slug}`} class="text-gray-600 no-underline hover:text-[#0f6b4f] font-medium">{next.title} <span class="text-gray-400">→</span></a>}</span>
+      </nav>
+    </article>
+  </div>
+</BaseLayout>

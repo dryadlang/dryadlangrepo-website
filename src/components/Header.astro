@@ -11,6 +11,7 @@ import SearchWidget from './SearchWidget.tsx';
       </a>
       <nav id="primary-nav" class="hidden sm:flex items-center gap-7 text-[13px] font-semibold text-gray-500">
         <a href="/docs" data-nav="docs" class="no-underline hover:text-[#0f6b4f] transition-colors py-1">Docs</a>
+        <a href="/stdlib" data-nav="stdlib" class="no-underline hover:text-[#0f6b4f] transition-colors py-1">Stdlib</a>
         <a href="/conventions" data-nav="conventions" class="no-underline hover:text-[#0f6b4f] transition-colors py-1">Conventions</a>
         <a href="/blog" data-nav="blog" class="no-underline hover:text-[#0f6b4f] transition-colors py-1">Blog</a>
         <a href="/coverage" data-nav="coverage" class="no-underline hover:text-[#0f6b4f] transition-colors py-1">Coverage</a>
@@ -35,6 +36,7 @@ import SearchWidget from './SearchWidget.tsx';
 
   <nav id="mobile-nav" class="hidden sm:hidden flex-col text-sm font-semibold text-gray-600 border-t border-gray-100 px-5 py-3 gap-1">
     <a href="/docs" data-nav="docs" class="no-underline hover:text-[#0f6b4f] py-2">Docs</a>
+    <a href="/stdlib" data-nav="stdlib" class="no-underline hover:text-[#0f6b4f] py-2">Stdlib</a>
     <a href="/conventions" data-nav="conventions" class="no-underline hover:text-[#0f6b4f] py-2">Conventions</a>
     <a href="/blog" data-nav="blog" class="no-underline hover:text-[#0f6b4f] py-2">Blog</a>
     <a href="/coverage" data-nav="coverage" class="no-underline hover:text-[#0f6b4f] py-2">Coverage</a>
@@ -47,6 +49,8 @@ import SearchWidget from './SearchWidget.tsx';
     const path = window.location.pathname;
     const section = path.startsWith('/docs')
       ? 'docs'
+      : path.startsWith('/stdlib')
+      ? 'stdlib'
       : path.startsWith('/conventions')
       ? 'conventions'
       : path.startsWith('/blog')
